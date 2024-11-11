@@ -23,16 +23,16 @@ model Customer {
     id       String    @id @default(cuid())
     name     String
     email    String    @unique
-    imageUrl String    @map("image_url")
+    imageUrl String?   @map("image_url")
     invoices Invoice[]
 }
 
 model Invoice {
-    id         String   @id @default(cuid())
+    id         String        @id @default(cuid())
     customerId String
     amount     Int
-    status     String
-    date       DateTime @default(now()) @map(name: "created_at")
+    status     InvoiceStatus @default(pending)
+    date       DateTime      @default(now()) @map(name: "created_at")
 
     customer Customer @relation(fields: [customerId], references: [id])
 }
@@ -40,4 +40,9 @@ model Invoice {
 model Revenue {
     month   String @id
     revenue Int
+}
+
+enum InvoiceStatus {
+    pending
+    paid
 }

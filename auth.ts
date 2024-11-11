@@ -3,10 +3,10 @@ import { authConfig } from "./auth.config";
 import Credentials from "next-auth/providers/credentials";
 import { z } from "zod";
 import bcrypt from "bcrypt";
-import { User } from "./app/lib/definitions";
+import { User } from "@prisma/client";
 import prisma from "./app/lib/prisma";
 
-async function getUser(email: string): Promise<User | undefined> {
+async function getUser(email: string): Promise<User | undefined | null> {
   try {
     const user = await prisma.user.findUnique({
       where: {

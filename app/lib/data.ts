@@ -84,7 +84,6 @@ export async function fetchFilteredInvoices(
       OR: [
         { customer: { name: { contains: query } } },
         { customer: { email: { contains: query } } },
-        { status: { contains: query } },
       ],
     },
     orderBy: {
@@ -101,7 +100,6 @@ export async function fetchInvoicesPages(query: string) {
       OR: [
         { customer: { name: { contains: query } } },
         { customer: { email: { contains: query } } },
-        { status: { contains: query } },
       ],
     },
   });
@@ -184,7 +182,7 @@ export async function fetchFilteredCustomers(query: string) {
         id: customer.id,
         name: customer.name,
         email: customer.email,
-        image_url: customer.imageUrl,
+        imageUrl: customer.imageUrl,
         total_invoices: customer.invoices.length,
         total_pending: formatCurrency(totalPending),
         total_paid: formatCurrency(totalPaid),

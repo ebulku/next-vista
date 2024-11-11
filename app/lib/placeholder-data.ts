@@ -1,4 +1,7 @@
 // This file contains placeholder data that you'll be replacing with real data in the Data Fetching chapter:
+
+import { InvoiceStatus } from "@prisma/client";
+
 // https://nextjs.org/learn/dashboard-app/fetching-data
 const users = [
   {
@@ -52,67 +55,67 @@ const invoices = [
   {
     customerId: customers[0].id,
     amount: 15795,
-    status: "pending",
+    status: InvoiceStatus.paid,
   },
   {
     customerId: customers[1].id,
     amount: 20348,
-    status: "pending",
+    status: InvoiceStatus.pending,
   },
   {
     customerId: customers[4].id,
     amount: 3040,
-    status: "paid",
+    status: InvoiceStatus.pending,
   },
   {
     customerId: customers[3].id,
     amount: 44800,
-    status: "paid",
+    status: InvoiceStatus.paid,
   },
   {
     customerId: customers[5].id,
     amount: 34577,
-    status: "pending",
+    status: InvoiceStatus.pending,
   },
   {
     customerId: customers[2].id,
     amount: 54246,
-    status: "pending",
+    status: InvoiceStatus.pending,
   },
   {
     customerId: customers[0].id,
     amount: 666,
-    status: "pending",
+    status: InvoiceStatus.pending,
   },
   {
     customerId: customers[3].id,
     amount: 32545,
-    status: "paid",
+    status: InvoiceStatus.paid,
   },
   {
     customerId: customers[4].id,
     amount: 1250,
-    status: "paid",
+    status: InvoiceStatus.paid,
   },
   {
     customerId: customers[5].id,
     amount: 8546,
-    status: "paid",
+    status: InvoiceStatus.paid,
   },
   {
     customerId: customers[1].id,
     amount: 500,
-    status: "paid",
+    status: InvoiceStatus.paid,
   },
   {
     customerId: customers[5].id,
     amount: 8945,
-    status: "paid",
+    status: InvoiceStatus.paid,
   },
   {
     customerId: customers[2].id,
     amount: 1000,
-    status: "paid",
+    status: InvoiceStatus.paid,
   },
 ];
 
