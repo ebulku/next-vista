@@ -3,7 +3,7 @@
 import { ChartData } from "@/app/lib/definitions";
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
 
-export function Chart(data: ChartData[]) {
+export function Chart({ data }: { data: ChartData[] }) {
   return (
     <ResponsiveContainer width="100%" height={350}>
       <BarChart data={data}>

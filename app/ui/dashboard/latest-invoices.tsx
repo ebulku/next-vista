@@ -11,7 +11,7 @@ export default async function LatestInvoices() {
           <div key={invoice.id} className="flex items-center">
             <Avatar className="h-9 w-9">
               <AvatarImage
-                src={invoice.customer.imageUrl}
+                src={invoice.customer.imageUrl || undefined}
                 alt={`${invoice.customer.name}'s profile picture`}
               />
               <AvatarFallback>
