@@ -32,6 +32,26 @@ export const generateYAxis = (revenue: Revenue[]) => {
   return { yAxisLabels, topLabel };
 };
 
+export const generateRevenueData = (revenue: Revenue[]) => {
+  const data = revenue.map((item) => ({
+    name: item.month,
+    total: item.revenue,
+  }));
+
+  return data;
+};
+
+export const generateInitials = (name: string) => {
+  if (!name) return "";
+
+  const words = name.trim().split(" ");
+  const firstInitial = words[0]?.charAt(0).toUpperCase();
+  const lastInitial =
+    words.length > 1 ? words[words.length - 1].charAt(0).toUpperCase() : "";
+
+  return firstInitial + lastInitial;
+};
+
 export const generatePagination = (currentPage: number, totalPages: number) => {
   // If the total number of pages is 7 or less,
   // display all pages without any ellipsis.

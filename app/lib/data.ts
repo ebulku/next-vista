@@ -2,11 +2,14 @@ import { formatCurrency } from "./utils";
 import prisma from "./prisma";
 
 export async function fetchRevenue() {
+  await new Promise((resolve) => setTimeout(resolve, 4000));
   const feed = await prisma.revenue.findMany();
   return feed;
 }
 
 export async function fetchLatestInvoices() {
+  await new Promise((resolve) => setTimeout(resolve, 5000));
+
   const feed = await prisma.invoice.findMany({
     take: 5,
     include: {
@@ -24,6 +27,9 @@ export async function fetchLatestInvoices() {
 }
 
 export async function fetchCardData() {
+  // delay 3 seconds
+  await new Promise((resolve) => setTimeout(resolve, 3000));
+
   try {
     // Execute queries in parallel
     const [
