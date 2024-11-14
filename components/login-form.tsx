@@ -11,7 +11,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useActionState } from "react";
-import { authenticate } from "@/app/lib/actions";
+import { authenticate } from "@/lib/actions";
 import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
 
 export function LoginForm() {

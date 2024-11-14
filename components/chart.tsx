@@ -1,6 +1,6 @@
 "use client";
 
-import { ChartData } from "@/app/lib/definitions";
+import { ChartData } from "@/types";
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
 
 export function Chart({ data }: { data: ChartData[] }) {
