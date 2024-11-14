@@ -1,8 +1,8 @@
-import { Skeleton } from "@/components/ui/skeleton";
+import { Skeleton } from '@/components/ui/skeleton'
 
 // Loading animation
 const shimmer =
-  "before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-white/60 before:to-transparent";
+  'before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-white/60 before:to-transparent'
 
 export function CardSkeleton() {
   return (
@@ -16,7 +16,7 @@ export function CardSkeleton() {
         <Skeleton className="h-8 w-[110px]" />
       </div>
     </div>
-  );
+  )
 }
 
 export function CardsSkeleton() {
@@ -27,7 +27,7 @@ export function CardsSkeleton() {
       <CardSkeleton />
       <CardSkeleton />
     </>
-  );
+  )
 }
 
 export function RevenueChartSkeleton() {
@@ -35,7 +35,7 @@ export function RevenueChartSkeleton() {
     <div className="pl-4">
       <Skeleton className="h-[350px] w-full" />
     </div>
-  );
+  )
 }
 
 export function InvoiceSkeleton() {
@@ -52,7 +52,7 @@ export function InvoiceSkeleton() {
         <Skeleton className="h-8 w-[80px]" />
       </div>
     </div>
-  );
+  )
 }
 
 export function LatestInvoicesSkeleton() {
@@ -64,7 +64,7 @@ export function LatestInvoicesSkeleton() {
       <InvoiceSkeleton />
       <InvoiceSkeleton />
     </div>
-  );
+  )
 }
 
 export default function DashboardSkeleton() {
@@ -84,7 +84,7 @@ export default function DashboardSkeleton() {
         <LatestInvoicesSkeleton />
       </div>
     </>
-  );
+  )
 }
 
 export function TableRowSkeleton() {
@@ -117,31 +117,43 @@ export function TableRowSkeleton() {
         </div>
       </td>
     </tr>
-  );
+  )
 }
 
 export function InvoicesMobileSkeleton() {
   return (
-    <div className="mb-2 w-full rounded-md bg-white p-4">
-      <div className="flex items-center justify-between border-b border-gray-100 pb-8">
-        <div className="flex items-center">
-          <div className="mr-2 h-8 w-8 rounded-full bg-gray-100"></div>
-          <div className="h-6 w-16 rounded bg-gray-100"></div>
+    <div className="rounded-xl border bg-card text-card-foreground shadow">
+      <div className="space-y-1.5 p-6 flex flex-row items-center justify-between">
+        <div className="flex items-center space-x-4">
+          <span className="relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full">
+            <Skeleton className="h-10 w-10 rounded-full" />
+          </span>
+          <div className="ml-4 space-y-1">
+            <Skeleton className="h-5 w-[100px]" />
+            <Skeleton className="h-3 w-[100px]" />
+          </div>
         </div>
-        <div className="h-6 w-16 rounded bg-gray-100"></div>
+        <Skeleton className="h-5 w-20" />
       </div>
-      <div className="flex w-full items-center justify-between pt-4">
-        <div>
-          <div className="h-6 w-16 rounded bg-gray-100"></div>
-          <div className="mt-2 h-6 w-24 rounded bg-gray-100"></div>
-        </div>
-        <div className="flex justify-end gap-2">
-          <div className="h-10 w-10 rounded bg-gray-100"></div>
-          <div className="h-10 w-10 rounded bg-gray-100"></div>
+      <div className="p-6 pt-0">
+        <div
+          data-orientation="horizontal"
+          role="none"
+          className="shrink-0 bg-border h-[1px] w-full"
+        ></div>
+        <div className="flex w-full items-center justify-between pt-4">
+          <div className="flex flex-col gap-2">
+            <Skeleton className="h-7 w-[120px]" />
+            <Skeleton className="h-4 w-[100px]" />
+          </div>
+          <div className="flex justify-end gap-2">
+            <Skeleton className="h-9 w-12" />
+            <Skeleton className="h-9 w-12" />
+          </div>
         </div>
       </div>
     </div>
-  );
+  )
 }
 
 export function InvoicesTableSkeleton() {
@@ -196,5 +208,5 @@ export function InvoicesTableSkeleton() {
         </div>
       </div>
     </div>
-  );
+  )
 }

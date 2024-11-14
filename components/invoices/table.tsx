@@ -1,13 +1,8 @@
-import {
-  formatDateToLocal,
-  formatCurrency,
-  generateInitials,
-} from '@/lib/utils'
+import { formatDateToLocal, formatCurrency } from '@/lib/utils'
 
 import { UpdateInvoice, DeleteInvoice } from '@/components/invoices/buttons'
 import InvoiceStatus from '@/components/invoices/status-badge'
 import { fetchFilteredInvoices } from '@/lib/data'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import {
   Table,
   TableBody,
@@ -19,6 +14,8 @@ import {
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import StatusBadge from '@/components/invoices/status-badge'
+import { UserAvatar } from '@/components/user-avatar'
+import { InvoicesMobileSkeleton } from '../skeletons'
 
 export default async function InvoicesTable({
   query,
@@ -34,19 +31,15 @@ export default async function InvoicesTable({
       <div className="inline-block min-w-full align-middle">
         <div className="rounded-lg p-2 md:pt-0">
           <div className="md:hidden space-y-4">
+            <InvoicesMobileSkeleton />
             {invoices?.map((invoice) => (
               <Card key={invoice.id}>
                 <CardHeader className="flex flex-row items-center justify-between">
                   <div className="flex items-center space-x-4">
-                    <Avatar>
-                      <AvatarImage
-                        src={invoice.customer.imageUrl || undefined}
-                        alt={`${invoice.customer.name}'s profile picture`}
-                      />
-                      <AvatarFallback>
-                        {generateInitials(invoice.customer.name)}
-                      </AvatarFallback>
-                    </Avatar>
+                    <UserAvatar
+                      imageUrl={invoice.customer.imageUrl || undefined}
+                      name={invoice.customer.name}
+                    />
                     <div>
                       <p className="text-sm font-medium leading-none">
                         {invoice.customer.name}
@@ -94,17 +87,10 @@ export default async function InvoicesTable({
                 <TableRow key={invoice.id}>
                   <TableCell>
                     <div className="flex items-center gap-3">
-                      {invoice.customer.imageUrl && (
-                        <Avatar className="h-9 w-9">
-                          <AvatarImage
-                            src={invoice.customer.imageUrl || undefined}
-                            alt={`${invoice.customer.name}'s profile picture`}
-                          />
-                          <AvatarFallback>
-                            {generateInitials(invoice.customer.name)}
-                          </AvatarFallback>
-                        </Avatar>
-                      )}
+                      <UserAvatar
+                        imageUrl={invoice.customer.imageUrl || undefined}
+                        name={invoice.customer.name}
+                      />
                       <p>{invoice.customer.name}</p>
                     </div>
                   </TableCell>
