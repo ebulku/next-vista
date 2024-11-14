@@ -1,153 +1,178 @@
-"use client";
+'use client'
 
-import { CustomerField } from "@/types";
-import Link from "next/link";
+import { CustomerField } from '@/types'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { createInvoice, State } from '@/lib/actions'
+import { startTransition, useActionState } from 'react'
+import { Button } from '@/components/ui/button'
 import {
-  CheckIcon,
-  ClockIcon,
-  CurrencyDollarIcon,
-  UserCircleIcon,
-} from "@heroicons/react/24/outline";
-import { createInvoice, State } from "@/lib/actions";
-import { useActionState } from "react";
-import { Button } from "@/components/ui/button";
+  Form as FormComponent,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
+import { CreateInvoiceSchema } from '@/lib/forms'
+import { Input } from '@/components/ui/input'
+import { CircleDollarSignIcon, CircleUserIcon } from 'lucide-react'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+import { useFormStatus } from 'react-dom'
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
+import Link from 'next/link'
+import StatusBadge from '@/components/invoices/status-badge'
 
 export default function Form({ customers }: { customers: CustomerField[] }) {
-  const initialState: State = { message: null, errors: {} };
-  const [state, formAction] = useActionState(createInvoice, initialState);
+  const { pending } = useFormStatus()
 
-  console.log(state);
+  const initialState: State = { message: null, errors: {} }
+  const [state, formAction] = useActionState(createInvoice, initialState)
+
+  const form = useForm<z.infer<typeof CreateInvoiceSchema>>({
+    resolver: zodResolver(CreateInvoiceSchema),
+    defaultValues: {
+      amount: 0,
+    },
+  })
+
+  function onSubmit(values: z.infer<typeof CreateInvoiceSchema>) {
+    startTransition(() => formAction(values))
+  }
+
   return (
-    <form action={formAction}>
-      <div className="rounded-md bg-gray-50 p-4 md:p-6">
-        {/* Customer Name */}
-        <div className="mb-4">
-          <label htmlFor="customer" className="mb-2 block text-sm font-medium">
-            Choose customer
-          </label>
-          <div className="relative">
-            <select
-              id="customer"
+    <Card className="w-[350px]">
+      <CardHeader>
+        <CardTitle>Create Invoice</CardTitle>
+        <CardDescription>Create a new invoice for a customer</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <FormComponent {...form}>
+          <form
+            id="create-invoice-form"
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="space-y-8"
+          >
+            <FormField
+              control={form.control}
               name="customerId"
-              className="peer block w-full cursor-pointer rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
-              defaultValue=""
-              aria-describedby="customer-error"
-            >
-              <option value="" disabled>
-                Select a customer
-              </option>
-              {customers.map((customer) => (
-                <option key={customer.id} value={customer.id}>
-                  {customer.name}
-                </option>
-              ))}
-            </select>
-            <UserCircleIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Choose customer</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <div className="relative">
+                      <FormControl className="pl-8">
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select a customer" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {customers.map((customer) => (
+                          <SelectItem
+                            className="pl-8"
+                            key={customer.id}
+                            value={customer.id}
+                          >
+                            {customer.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                      <CircleUserIcon className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+                    </div>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="amount"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Choose an amount</FormLabel>
+                  <FormControl>
+                    <div className="relative">
+                      <Input
+                        type="number"
+                        placeholder="Enter USD amount"
+                        className="pl-8"
+                        {...field}
+                      />
+                      <CircleDollarSignIcon className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+                    </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="status"
+              render={({ field }) => (
+                <FormItem className="space-y-3">
+                  <FormLabel>Set the invoice status</FormLabel>
+                  <FormControl>
+                    <RadioGroup
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                      className="flex gap-4 grid-flow-col"
+                    >
+                      <FormItem className="flex items-center space-y-0">
+                        <FormControl>
+                          <RadioGroupItem value="pending" />
+                        </FormControl>
+                        <FormLabel className="font-normal ml-2">
+                          <StatusBadge status="pending" />
+                        </FormLabel>
+                      </FormItem>
+                      <FormItem className="flex items-center space-y-0">
+                        <FormControl>
+                          <RadioGroupItem value="paid" />
+                        </FormControl>
+                        <FormLabel className="font-normal ml-2">
+                          <StatusBadge status="paid" />
+                        </FormLabel>
+                      </FormItem>
+                    </RadioGroup>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </form>
+          <div aria-live="polite" aria-atomic="true">
+            {state.message && (
+              <p className="mt-2 text-sm text-red-500">{state.message}</p>
+            )}
           </div>
-          <div id="customer-error" aria-live="polite" aria-atomic="true">
-            {state.errors?.customerId &&
-              state.errors.customerId.map((error: string) => (
-                <p className="mt-2 text-sm text-red-500" key={error}>
-                  {error}
-                </p>
-              ))}
-          </div>
-        </div>
-
-        {/* Invoice Amount */}
-        <div className="mb-4">
-          <label htmlFor="amount" className="mb-2 block text-sm font-medium">
-            Choose an amount
-          </label>
-          <div className="relative mt-2 rounded-md">
-            <div className="relative">
-              <input
-                id="amount"
-                name="amount"
-                type="number"
-                step="0.01"
-                placeholder="Enter USD amount"
-                className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
-                aria-describedby="amount-error"
-              />
-              <CurrencyDollarIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
-            </div>
-          </div>
-          <div id="amount-error" aria-live="polite" aria-atomic="true">
-            {state.errors?.amount &&
-              state.errors.amount.map((error: string) => (
-                <p className="mt-2 text-sm text-red-500" key={error}>
-                  {error}
-                </p>
-              ))}
-          </div>
-        </div>
-
-        {/* Invoice Status */}
-        <fieldset>
-          <legend className="mb-2 block text-sm font-medium">
-            Set the invoice status
-          </legend>
-          <div className="rounded-md border border-gray-200 bg-white px-[14px] py-3">
-            <div className="flex gap-4">
-              <div className="flex items-center">
-                <input
-                  id="pending"
-                  name="status"
-                  type="radio"
-                  value="pending"
-                  className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
-                  aria-describedby="status-error"
-                />
-                <label
-                  htmlFor="pending"
-                  className="ml-2 flex cursor-pointer items-center gap-1.5 rounded-full bg-gray-100 px-3 py-1.5 text-xs font-medium text-gray-600"
-                >
-                  Pending <ClockIcon className="h-4 w-4" />
-                </label>
-              </div>
-              <div className="flex items-center">
-                <input
-                  id="paid"
-                  name="status"
-                  type="radio"
-                  value="paid"
-                  className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
-                  aria-describedby="status-error"
-                />
-                <label
-                  htmlFor="paid"
-                  className="ml-2 flex cursor-pointer items-center gap-1.5 rounded-full bg-green-500 px-3 py-1.5 text-xs font-medium text-white"
-                >
-                  Paid <CheckIcon className="h-4 w-4" />
-                </label>
-              </div>
-            </div>
-          </div>
-          <div id="status-error" aria-live="polite" aria-atomic="true">
-            {state.errors?.status &&
-              state.errors.status.map((error: string) => (
-                <p className="mt-2 text-sm text-red-500" key={error}>
-                  {error}
-                </p>
-              ))}
-          </div>
-        </fieldset>
-        <div aria-live="polite" aria-atomic="true">
-          {state.message && (
-            <p className="mt-2 text-sm text-red-500">{state.message}</p>
-          )}
-        </div>
-      </div>
-      <div className="mt-6 flex justify-end gap-4">
-        <Link
-          href="/dashboard/invoices"
-          className="flex h-10 items-center rounded-lg bg-gray-100 px-4 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-200"
-        >
-          Cancel
-        </Link>
-        <Button type="submit">Create Invoice</Button>
-      </div>
-    </form>
-  );
+        </FormComponent>
+      </CardContent>
+      <CardFooter className="flex justify-between">
+        <Button variant="outline" asChild>
+          <Link href="/dashboard/invoices">Cancel</Link>
+        </Button>
+        <Button type="submit" form="create-invoice-form" disabled={pending}>
+          Create Invoice
+        </Button>
+      </CardFooter>
+    </Card>
+  )
 }

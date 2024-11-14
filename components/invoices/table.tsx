@@ -2,12 +2,12 @@ import {
   formatDateToLocal,
   formatCurrency,
   generateInitials,
-} from "@/lib/utils";
+} from '@/lib/utils'
 
-import { UpdateInvoice, DeleteInvoice } from "@/components/invoices/buttons";
-import InvoiceStatus from "@/components/invoices/status";
-import { fetchFilteredInvoices } from "@/lib/data";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { UpdateInvoice, DeleteInvoice } from '@/components/invoices/buttons'
+import InvoiceStatus from '@/components/invoices/status-badge'
+import { fetchFilteredInvoices } from '@/lib/data'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import {
   Table,
   TableBody,
@@ -15,18 +15,19 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
+} from '@/components/ui/table'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import { Separator } from '@/components/ui/separator'
+import StatusBadge from '@/components/invoices/status-badge'
 
 export default async function InvoicesTable({
   query,
   currentPage,
 }: {
-  query: string;
-  currentPage: number;
+  query: string
+  currentPage: number
 }) {
-  const invoices = await fetchFilteredInvoices(query, currentPage);
+  const invoices = await fetchFilteredInvoices(query, currentPage)
 
   return (
     <div className="mt-6 flow-root">
@@ -111,7 +112,7 @@ export default async function InvoicesTable({
                   <TableCell>{formatCurrency(invoice.amount)}</TableCell>
                   <TableCell>{formatDateToLocal(invoice.date)}</TableCell>
                   <TableCell>
-                    <InvoiceStatus status={invoice.status} />
+                    <StatusBadge status={invoice.status} />
                   </TableCell>
                   <TableCell>
                     <div className="flex justify-end gap-3">
@@ -126,5 +127,5 @@ export default async function InvoicesTable({
         </div>
       </div>
     </div>
-  );
+  )
 }
