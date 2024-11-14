@@ -1,5 +1,5 @@
-import "@/app/ui/global.css";
-import { inter } from "./ui/fonts";
+import "@/styles/global.css";
+import { inter } from "@/styles/fonts";
 import { Metadata } from "next";
 import { ThemeProvider } from "@/components/theme-provider";
 

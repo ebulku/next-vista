@@ -1,5 +1,5 @@
-import { generateRevenueData } from "@/app/lib/utils";
-import { fetchRevenue } from "@/app/lib/data";
+import { generateRevenueData } from "@/lib/utils";
+import { fetchRevenue } from "@/lib/data";
 import { Chart } from "@/components/chart";
 
 export default async function RevenueChart() {

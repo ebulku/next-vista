@@ -1,4 +1,4 @@
-import AcmeLogo from "@/app/ui/acme-logo";
+import AcmeLogo from "@/components/acme-logo";
 import { LoginForm } from "@/components/login-form";
 import { Metadata } from "next";
 

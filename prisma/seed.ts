@@ -1,11 +1,6 @@
 import bcrypt from "bcrypt";
-import {
-  customers,
-  invoices,
-  revenue,
-  users,
-} from "../app/lib/placeholder-data";
-import prisma from "../app/lib/prisma";
+import { customers, invoices, revenue, users } from "./data";
+import prisma from "../lib/prisma";
 
 const seedUsers = async () => {
   const hashedUsers = await Promise.all(

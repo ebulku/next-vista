@@ -6,36 +6,27 @@ import {
   BookOpen,
   Bot,
   Command,
-  Frame,
   HomeIcon,
   LifeBuoy,
-  Map,
-  MapIcon,
-  PieChart,
   Send,
   Settings2,
   SquareTerminal,
   Users,
 } from "lucide-react";
 
-import { NavMain } from "@/components/nav-main";
 import { NavProjects } from "@/components/nav-projects";
-import { NavSecondary } from "@/components/nav-secondary";
 import { NavUser } from "@/components/nav-user";
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import Link from "next/link";
-import { ModeToggle } from "./dark-button";
+import { ModeToggle } from "@/components/dark-button";
 
 const data = {
   user: {

@@ -1,4 +1,4 @@
-import { fetchCardData } from "@/app/lib/data";
+import { fetchCardData } from "@/lib/data";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { BanknoteIcon, Clock2Icon, InboxIcon, UsersIcon } from "lucide-react";
 

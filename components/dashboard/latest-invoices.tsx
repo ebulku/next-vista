@@ -1,7 +1,7 @@
-import { fetchLatestInvoices } from "@/app/lib/data";
+import { fetchLatestInvoices } from "@/lib/data";
+import { formatCurrency, generateInitials } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { formatCurrency, generateInitials } from "@/app/lib/utils";
-import { InvoiceSkeleton } from "../skeletons";
+
 export default async function LatestInvoices() {
   const latestInvoices = await fetchLatestInvoices();
   return (

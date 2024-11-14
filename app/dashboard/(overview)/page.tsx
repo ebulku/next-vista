@@ -1,22 +1,15 @@
-import CardWrapper from "@/app/ui/dashboard/cards";
-import RevenueChart from "@/app/ui/dashboard/revenue-chart";
-import LatestInvoices from "@/app/ui/dashboard/latest-invoices";
+import CardWrapper from "@/components/dashboard/dashboard-cards";
+import RevenueChart from "@/components/dashboard/revenue-chart";
+import LatestInvoices from "@/components/dashboard/latest-invoices";
 import { Suspense } from "react";
 import {
-  CardSkeleton,
   CardsSkeleton,
   LatestInvoicesSkeleton,
   RevenueChartSkeleton,
-} from "@/app/ui/skeletons";
+} from "@/components/skeletons";
 import { Metadata } from "next";
 import { TypographyH2 } from "@/components/ui/typography";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const title = "Dashboard";
 

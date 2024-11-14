@@ -1,5 +1,5 @@
-import { formatCurrency } from "./utils";
-import prisma from "./prisma";
+import { formatCurrency } from "@/lib/utils";
+import prisma from "@/lib/prisma";
 
 export async function fetchRevenue() {
   await new Promise((resolve) => setTimeout(resolve, 4000));
@@ -67,7 +67,7 @@ export async function fetchCardData() {
   }
 }
 
-const ITEMS_PER_PAGE = 6;
+const ITEMS_PER_PAGE = 10;
 export async function fetchFilteredInvoices(
   query: string,
   currentPage: number
