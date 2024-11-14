@@ -1,8 +1,8 @@
 'use client'
 
-import { CustomerField } from '@/types'
+import { CustomerField, InvoiceForm } from '@/types'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { createInvoice, State } from '@/lib/actions'
+import { createInvoice, State, updateInvoice } from '@/lib/actions'
 import { startTransition, useActionState } from 'react'
 import { Button } from '@/components/ui/button'
 import {
@@ -38,17 +38,29 @@ import {
 import Link from 'next/link'
 import StatusBadge from '@/components/invoices/status-badge'
 
-export default function Form({ customers }: { customers: CustomerField[] }) {
+export default function Form({
+  customers,
+  invoice,
+}: {
+  customers: CustomerField[]
+  invoice?: InvoiceForm
+}) {
   const { pending } = useFormStatus()
 
   const initialState: State = { message: null, errors: {} }
-  const [state, formAction] = useActionState(createInvoice, initialState)
+
+  let formAction: (values: z.infer<typeof CreateInvoiceSchema>) => void
+  let state: typeof initialState
+
+  if (invoice) {
+    const updateInvoiceWithId = updateInvoice.bind(null, invoice.id)
+    ;[state, formAction] = useActionState(updateInvoiceWithId, initialState)
+  } else {
+    ;[state, formAction] = useActionState(createInvoice, initialState)
+  }
 
   const form = useForm<z.infer<typeof CreateInvoiceSchema>>({
     resolver: zodResolver(CreateInvoiceSchema),
-    defaultValues: {
-      amount: 0,
-    },
   })
 
   function onSubmit(values: z.infer<typeof CreateInvoiceSchema>) {
@@ -71,6 +83,7 @@ export default function Form({ customers }: { customers: CustomerField[] }) {
             <FormField
               control={form.control}
               name="customerId"
+              defaultValue={invoice?.customerId}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Choose customer</FormLabel>
@@ -105,6 +118,7 @@ export default function Form({ customers }: { customers: CustomerField[] }) {
             <FormField
               control={form.control}
               name="amount"
+              defaultValue={invoice?.amount || 0}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Choose an amount</FormLabel>
@@ -126,6 +140,7 @@ export default function Form({ customers }: { customers: CustomerField[] }) {
             <FormField
               control={form.control}
               name="status"
+              defaultValue={invoice?.status || 'pending'}
               render={({ field }) => (
                 <FormItem className="space-y-3">
                   <FormLabel>Set the invoice status</FormLabel>
@@ -170,7 +185,7 @@ export default function Form({ customers }: { customers: CustomerField[] }) {
           <Link href="/dashboard/invoices">Cancel</Link>
         </Button>
         <Button type="submit" form="create-invoice-form" disabled={pending}>
-          Create Invoice
+          {invoice ? 'Update invoice' : 'Create invoice'}
         </Button>
       </CardFooter>
     </Card>

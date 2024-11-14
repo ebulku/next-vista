@@ -1,4 +1,4 @@
-import Form from '@/app/ui/invoices/create-form'
+import Form from '@/components/invoices/form'
 import { fetchCustomers } from '@/lib/data'
 import { Metadata } from 'next'
 
@@ -8,9 +8,5 @@ export const metadata: Metadata = {
 export default async function Page() {
   const customers = await fetchCustomers()
 
-  return (
-    <main>
-      <Form customers={customers} />
-    </main>
-  )
+  return <Form customers={customers} />
 }

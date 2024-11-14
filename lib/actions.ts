@@ -59,12 +59,12 @@ export async function createInvoice(
 export async function updateInvoice(
   id: string,
   prevState: State,
-  formData: FormData
+  formData: z.infer<typeof CreateInvoiceSchema>
 ) {
   const validatedFields = CreateInvoiceSchema.safeParse({
-    customerId: formData.get('customerId'),
-    amount: formData.get('amount'),
-    status: formData.get('status'),
+    customerId: formData.customerId,
+    amount: formData.amount,
+    status: formData.status,
   })
 
   if (!validatedFields.success) {
