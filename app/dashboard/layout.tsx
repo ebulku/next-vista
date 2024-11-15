@@ -1,12 +1,32 @@
-import SideNav from "@/app/ui/dashboard/sidenav";
+import { auth } from '@/auth'
+import { AppSidebar } from '@/components/app-sidebar'
+import BreadcrumbNav from '@/components/breadcrumb-nav'
+import { Separator } from '@/components/ui/separator'
+import {
+  SidebarInset,
+  SidebarProvider,
+  SidebarTrigger,
+} from '@/components/ui/sidebar'
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default async function Layout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  const info = await auth()
   return (
-    <div className="flex h-screen flex-col md:flex-row md:overflow-hidden">
-      <div className="w-full flex-none md:w-64">
-        <SideNav />
-      </div>
-      <div className="flex-grow p-6 md:overflow-y-auto md:p-12">{children}</div>
-    </div>
-  );
+    <SidebarProvider>
+      <AppSidebar user={info?.user} />
+      <SidebarInset>
+        <header className="flex h-16 shrink-0 items-center gap-2">
+          <div className="flex items-center gap-2 px-4">
+            <SidebarTrigger className="-ml-1" />
+            <Separator orientation="vertical" className="mr-2 h-4" />
+            <BreadcrumbNav />
+          </div>
+        </header>
+        <div className="flex flex-1 flex-col gap-4 p-4 pt-2">{children}</div>
+      </SidebarInset>
+    </SidebarProvider>
+  )
 }

@@ -1,8 +1,6 @@
-# Next.js Admin Dashboard with Prisma
+# Next.js Admin Dashboard with Prisma and shadcn/ui
 
-A Next.js-based admin dashboard application following the official tutorial, enhanced with Prisma ORM integration to manage and interact with database data efficiently.
-
-This repository is a project built following the [Next.js tutorial](https://nextjs.org/learn) with added integration of [Prisma](https://www.prisma.io/), a next-generation ORM for seamless database interaction.
+This repository is a project built following the [Next.js tutorial](https://nextjs.org/learn) with added integration of [Prisma](https://www.prisma.io/), a next-generation ORM for seamless database interaction. Additionally, this project incorporates [shadcn/ui](https://shadcn.dev/) for reusable and beautifully designed UI components.
 
 ## Demo
 
@@ -17,6 +15,10 @@ You can try a live demo of this dashboard here:
 
 > **Note**: The demo site may have limited functionality or reset periodically.
 
+### Preview
+
+![Dashboard Preview](./public/dark-preview.png)
+
 ## Overview
 
 This application is built using [Next.js](https://nextjs.org/), a React framework that enables server-side rendering, static site generation, and more. Prisma has been integrated to simplify data management and provide a strong type-safe connection to the database.
@@ -25,6 +27,7 @@ This application is built using [Next.js](https://nextjs.org/), a React framewor
 
 - **Next.js**: Framework for creating performant and scalable React applications with a focus on server-rendering and static exports.
 - **Prisma**: Used as the ORM for database management, providing a smooth way to interact with the database in a type-safe manner.
+- **shadcn/ui**: Integrated for building elegant, reusable components with consistent styling.
 
 ## Getting Started
 
@@ -88,6 +91,7 @@ This application is built using [Next.js](https://nextjs.org/), a React framewor
 
 - `app/`: Contains the main pages for the Next.js application.
 - `prisma/`: Contains Prisma schema and migration files.
+- `components/`: Contains reusable components implemented with shadcn/ui.
 
 ### Usage
 
