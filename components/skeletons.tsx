@@ -112,8 +112,8 @@ export function TableRowSkeleton() {
       </td>
       <td className="p-2 align-middle [&amp;:has([role=checkbox])]:pr-0 [&amp;>[role=checkbox]]:translate-y-[2px]">
         <div className="flex justify-end gap-3">
-          <Skeleton className="h-9 w-12" />
-          <Skeleton className="h-9 w-12" />
+          <Skeleton className="h-9 w-9" />
+          <Skeleton className="h-9 w-9" />
         </div>
       </td>
     </tr>
@@ -147,8 +147,8 @@ export function InvoicesMobileSkeleton() {
             <Skeleton className="h-4 w-[100px]" />
           </div>
           <div className="flex justify-end gap-2">
-            <Skeleton className="h-9 w-12" />
-            <Skeleton className="h-9 w-12" />
+            <Skeleton className="h-9 w-9" />
+            <Skeleton className="h-9 w-9" />
           </div>
         </div>
       </div>
@@ -158,7 +158,7 @@ export function InvoicesMobileSkeleton() {
 
 export function InvoicesTableSkeleton() {
   return (
-    <div className="mt-6 flow-root">
+    <div className="mt-2 flow-root">
       <div className="inline-block min-w-full align-middle">
         <div className="rounded-lg p-2 md:pt-0">
           <div className="md:hidden">

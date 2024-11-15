@@ -26,7 +26,7 @@ export default async function InvoicesTable({
   const invoices = await fetchFilteredInvoices(query, currentPage)
 
   return (
-    <div className="mt-6 flow-root">
+    <div className="mt-2 flow-root">
       <div className="inline-block min-w-full align-middle">
         <div className="rounded-lg p-2 md:pt-0">
           <div className="md:hidden space-y-4">
