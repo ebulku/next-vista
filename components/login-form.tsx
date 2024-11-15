@@ -39,13 +39,20 @@ export function LoginForm() {
                 type="email"
                 placeholder="m@example.com"
                 required
+                defaultValue={'user@nextmail.com'}
               />
             </div>
             <div className="grid gap-2">
               <div className="flex items-center">
                 <Label htmlFor="password">Password</Label>
               </div>
-              <Input id="password" type="password" name="password" required />
+              <Input
+                id="password"
+                type="password"
+                name="password"
+                required
+                defaultValue={'123456'}
+              />
             </div>
             <Button type="submit" className="w-full" aria-disabled={isPending}>
               Login
