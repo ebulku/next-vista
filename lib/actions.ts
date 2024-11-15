@@ -169,3 +169,45 @@ export async function createOrder(
   revalidatePath('/dashboard/orders')
   redirect('/dashboard/orders')
 }
+
+export async function updateOrder(
+  id: string,
+  prevState: State,
+  formData: z.infer<typeof CreateOrderSchema>
+) {
+  const validatedFields = CreateOrderSchema.safeParse({
+    customerId: formData.customerId,
+    amount: formData.amount,
+    status: formData.status,
+    title: formData.title,
+  })
+
+  if (!validatedFields.success) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: 'Missing Fields. Failed to Update Invoice.',
+    }
+  }
+
+  const { customerId, amount, status, title } = validatedFields.data
+  const amountInCents = amount * 100
+
+  try {
+    await prisma.order.update({
+      where: {
+        id: id,
+      },
+      data: {
+        customerId,
+        amount: amountInCents,
+        title,
+        status,
+      },
+    })
+  } catch (error) {
+    return { message: 'Database Error: Failed to update invoice.' }
+  }
+
+  revalidatePath('/dashboard/orders')
+  redirect('/dashboard/orders')
+}

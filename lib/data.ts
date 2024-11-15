@@ -115,7 +115,7 @@ export async function fetchInvoiceById(id: string) {
     })
 
     if (!invoice) {
-      throw new Error('Invoice not found')
+      return null
     }
     // Convert amount from cents to dollars
     return {
@@ -133,10 +133,10 @@ export async function fetchOrdersPages(query: string) {
   const feed = await prisma.order.count({
     where: {
       OR: [
-        { customer: { name: { contains: query } } },
-        { customer: { email: { contains: query } } },
-        { title: { contains: query } },
-        { notes: { some: { body: { contains: query } } } },
+        { customer: { name: { contains: query, mode: 'insensitive' } } },
+        { customer: { email: { contains: query, mode: 'insensitive' } } },
+        { title: { contains: query, mode: 'insensitive' } },
+        { notes: { some: { body: { contains: query, mode: 'insensitive' } } } },
       ],
     },
   })
@@ -169,10 +169,10 @@ export async function fetchFilteredOrders(query: string, currentPage: number) {
     },
     where: {
       OR: [
-        { customer: { name: { contains: query } } },
-        { customer: { email: { contains: query } } },
-        { title: { contains: query } },
-        { notes: { some: { body: { contains: query } } } },
+        { customer: { name: { contains: query, mode: 'insensitive' } } },
+        { customer: { email: { contains: query, mode: 'insensitive' } } },
+        { title: { contains: query, mode: 'insensitive' } },
+        { notes: { some: { body: { contains: query, mode: 'insensitive' } } } },
       ],
     },
     orderBy: {
@@ -181,6 +181,28 @@ export async function fetchFilteredOrders(query: string, currentPage: number) {
   })
 
   return feed
+}
+
+export async function fetchOrderById(id: string) {
+  try {
+    const order = await prisma.order.findUnique({
+      where: {
+        id: id,
+      },
+    })
+
+    if (!order) {
+      return null
+    }
+    // Convert amount from cents to dollars
+    return {
+      ...order,
+      amount: order.amount ? order.amount / 100 : 0,
+    }
+  } catch (error) {
+    console.error('Database Error:', error)
+    throw new Error('Failed to fetch invoice.')
+  }
 }
 
 export async function fetchCustomers() {
