@@ -1,6 +1,6 @@
-"use client";
+'use client'
 
-import { type LucideIcon } from "lucide-react";
+import { type LucideIcon } from 'lucide-react'
 
 import {
   SidebarGroup,
@@ -8,25 +8,25 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+} from '@/components/ui/sidebar'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 
 export function NavProjects({
-  projects,
+  links,
 }: {
-  projects: {
-    name: string;
-    url: string;
-    icon: LucideIcon;
-  }[];
+  links: {
+    name: string
+    url: string
+    icon: LucideIcon
+  }[]
 }) {
-  const pathname = usePathname();
+  const pathname = usePathname()
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
       <SidebarGroupLabel>Main Menu</SidebarGroupLabel>
       <SidebarMenu>
-        {projects.map((item) => (
+        {links.map((item) => (
           <SidebarMenuItem key={item.name}>
             <SidebarMenuButton isActive={pathname === item.url} asChild>
               <Link href={item.url}>
@@ -38,5 +38,5 @@ export function NavProjects({
         ))}
       </SidebarMenu>
     </SidebarGroup>
-  );
+  )
 }

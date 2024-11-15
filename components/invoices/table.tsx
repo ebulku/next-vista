@@ -1,7 +1,7 @@
 import { formatDateToLocal, formatCurrency } from '@/lib/utils'
 
 import { UpdateInvoice, DeleteInvoice } from '@/components/invoices/buttons'
-import InvoiceStatus from '@/components/invoices/status-badge'
+import InvoiceStatus from '@/components/status-badge'
 import { fetchFilteredInvoices } from '@/lib/data'
 import {
   Table,
@@ -13,9 +13,8 @@ import {
 } from '@/components/ui/table'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
-import StatusBadge from '@/components/invoices/status-badge'
+import StatusBadge from '@/components/status-badge'
 import { UserAvatar } from '@/components/user-avatar'
-import { InvoicesMobileSkeleton } from '../skeletons'
 
 export default async function InvoicesTable({
   query,
@@ -31,7 +30,6 @@ export default async function InvoicesTable({
       <div className="inline-block min-w-full align-middle">
         <div className="rounded-lg p-2 md:pt-0">
           <div className="md:hidden space-y-4">
-            <InvoicesMobileSkeleton />
             {invoices?.map((invoice) => (
               <Card key={invoice.id}>
                 <CardHeader className="flex flex-row items-center justify-between">

@@ -108,7 +108,7 @@ export function TableRowSkeleton() {
         <Skeleton className="h-5 w-[150px]" />
       </td>
       <td className="p-2 align-middle [&amp;:has([role=checkbox])]:pr-0 [&amp;>[role=checkbox]]:translate-y-[2px]">
-        <Skeleton className="h-7 w-[100px] rounded-full" />
+        <Skeleton className="h-8 w-[100px] rounded-full" />
       </td>
       <td className="p-2 align-middle [&amp;:has([role=checkbox])]:pr-0 [&amp;>[role=checkbox]]:translate-y-[2px]">
         <div className="flex justify-end gap-3">

@@ -1,16 +1,22 @@
-import { AppSidebar } from '@/components/app-sidebar';
-import BreadcrumbNav from '@/components/breadcrumb-nav';
-import { Separator } from '@/components/ui/separator';
+import { auth } from '@/auth'
+import { AppSidebar } from '@/components/app-sidebar'
+import BreadcrumbNav from '@/components/breadcrumb-nav'
+import { Separator } from '@/components/ui/separator'
 import {
   SidebarInset,
   SidebarProvider,
   SidebarTrigger,
-} from '@/components/ui/sidebar';
+} from '@/components/ui/sidebar'
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default async function Layout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  const info = await auth()
   return (
     <SidebarProvider>
-      <AppSidebar />
+      <AppSidebar user={info?.user} />
       <SidebarInset>
         <header className="flex h-16 shrink-0 items-center gap-2">
           <div className="flex items-center gap-2 px-4">
@@ -22,5 +28,5 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <div className="flex flex-1 flex-col gap-4 p-4 pt-2">{children}</div>
       </SidebarInset>
     </SidebarProvider>
-  );
+  )
 }

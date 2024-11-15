@@ -6,12 +6,12 @@ export const UserAvatar = ({
   name,
 }: {
   imageUrl: string | undefined
-  name: string
+  name: string | undefined | null
 }) => {
   return (
     <Avatar>
       <AvatarImage src={imageUrl} alt={`${name}'s profile picture`} />
-      <AvatarFallback>{generateInitials(name)}</AvatarFallback>
+      <AvatarFallback>{name && generateInitials(name)}</AvatarFallback>
     </Avatar>
   )
 }

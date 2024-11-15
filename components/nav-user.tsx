@@ -14,22 +14,14 @@ import {
   useSidebar,
 } from '@/components/ui/sidebar'
 import { UserAvatar } from '@/components/user-avatar'
-import { Button } from './ui/button'
 import { signOut } from '@/auth'
+import { User } from 'next-auth'
 
-export function NavUser({
-  user,
-}: {
-  user: {
-    name: string
-    email: string
-    avatar: string
-  }
-}) {
+export function NavUser({ user }: { user: User | undefined }) {
   const { isMobile } = useSidebar()
 
   return (
-    <>
+    user && (
       <SidebarMenu>
         <SidebarMenuItem>
           <DropdownMenu>
@@ -38,10 +30,7 @@ export function NavUser({
                 size="lg"
                 className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
               >
-                <UserAvatar
-                  imageUrl={user.avatar || undefined}
-                  name={user.name}
-                />
+                <UserAvatar imageUrl={undefined} name={user.name} />
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-semibold">{user.name}</span>
                   <span className="truncate text-xs">{user.email}</span>
@@ -57,10 +46,7 @@ export function NavUser({
             >
               <DropdownMenuLabel className="p-0 font-normal">
                 <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-                  <UserAvatar
-                    imageUrl={user.avatar || undefined}
-                    name={user.name}
-                  />
+                  <UserAvatar imageUrl={undefined} name={user.name} />
                   <div className="grid flex-1 text-left text-sm leading-tight">
                     <span className="truncate font-semibold">{user.name}</span>
                     <span className="truncate text-xs">{user.email}</span>
@@ -80,6 +66,6 @@ export function NavUser({
           </DropdownMenu>
         </SidebarMenuItem>
       </SidebarMenu>
-    </>
+    )
   )
 }

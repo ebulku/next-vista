@@ -1,12 +1,12 @@
-import Pagination from '@/components/pagination'
 import Search from '@/components/search'
 import Table from '@/components/invoices/table'
 import { CreateInvoice } from '@/components/invoices/buttons'
 import { InvoicesTableSkeleton } from '@/components/skeletons'
 import { Suspense } from 'react'
-import { fetchInvoicesPages } from '@/lib/data'
 import { Metadata } from 'next'
 import { TypographyH2 } from '@/components/ui/typography'
+import Pagination from '@/components/pagination'
+import { fetchInvoicesPages } from '@/lib/data'
 
 const title = 'Invoices'
 export const metadata: Metadata = {

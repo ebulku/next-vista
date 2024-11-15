@@ -36,7 +36,7 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import Link from 'next/link'
-import StatusBadge from '@/components/invoices/status-badge'
+import StatusBadge from '@/components/status-badge'
 
 export default function Form({
   customers,
