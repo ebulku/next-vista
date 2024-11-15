@@ -80,7 +80,7 @@ export default async function OrdersTable({
                 <TableHead>Status</TableHead>
                 <TableHead>Last Note</TableHead>
                 <TableHead>Created</TableHead>
-                <TableHead className="text-right">Edit</TableHead>
+                <TableHead className="text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
