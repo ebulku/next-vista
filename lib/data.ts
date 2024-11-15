@@ -128,8 +128,67 @@ export async function fetchInvoiceById(id: string) {
   }
 }
 
+export async function fetchOrdersPages(query: string) {
+  // await new Promise((resolve) => setTimeout(resolve, 5000))
+  const feed = await prisma.order.count({
+    where: {
+      OR: [
+        { customer: { name: { contains: query } } },
+        { customer: { email: { contains: query } } },
+        { title: { contains: query } },
+        { notes: { some: { body: { contains: query } } } },
+      ],
+    },
+  })
+
+  return Math.ceil(feed / ITEMS_PER_PAGE)
+}
+
+export async function fetchFilteredOrders(query: string, currentPage: number) {
+  const offset = (currentPage - 1) * ITEMS_PER_PAGE
+  const feed = await prisma.order.findMany({
+    take: ITEMS_PER_PAGE,
+    skip: offset,
+    include: {
+      customer: {
+        select: {
+          name: true,
+          imageUrl: true,
+          email: true,
+        },
+      },
+      notes: {
+        take: 1,
+        orderBy: {
+          createdAt: 'desc',
+        },
+        select: {
+          body: true,
+        },
+      },
+    },
+    where: {
+      OR: [
+        { customer: { name: { contains: query } } },
+        { customer: { email: { contains: query } } },
+        { title: { contains: query } },
+        { notes: { some: { body: { contains: query } } } },
+      ],
+    },
+    orderBy: {
+      createdAt: 'desc',
+    },
+  })
+
+  return feed
+}
+
 export async function fetchCustomers() {
-  const customers = await prisma.customer.findMany()
+  const customers = await prisma.customer.findMany({
+    orderBy: {
+      name: 'asc',
+    },
+  })
   return customers
 }
 

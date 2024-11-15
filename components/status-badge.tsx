@@ -7,7 +7,7 @@ export default function StatusBadge({ status }: { status: string }) {
       className={clsx(
         'inline-flex items-center rounded-full px-2 py-1 text-xs',
         {
-          'bg-gray-100 text-gray-500': status === 'pending',
+          'bg-gray-100 text-gray-800': status !== 'paid',
           'bg-green-500 text-white': status === 'paid',
         }
       )}
@@ -23,7 +23,9 @@ export default function StatusBadge({ status }: { status: string }) {
           Paid
           <CheckIcon className="ml-1 w-4 text-white" />
         </>
-      ) : null}
+      ) : (
+        <>{status}</>
+      )}
     </span>
   )
 }

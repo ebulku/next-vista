@@ -5,7 +5,7 @@ import { AuthError } from 'next-auth'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import prisma from './prisma'
-import { CreateInvoiceSchema } from './forms'
+import { CreateInvoiceSchema, CreateOrderSchema } from './forms'
 import { z } from 'zod'
 
 // const InvoiceForm = CreateInvoiceSchema.omit({ id: true });
@@ -129,4 +129,43 @@ export async function authenticate(
       redirect('/dashboard')
     }
   }
+}
+
+export async function createOrder(
+  prevState: State,
+  formData: z.infer<typeof CreateOrderSchema>
+) {
+  const validatedFields = CreateOrderSchema.safeParse({
+    customerId: formData.customerId,
+    amount: formData.amount,
+    status: formData.status,
+    title: formData.title,
+  })
+
+  if (!validatedFields.success) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: 'Missing Fields. Failed to Create Invoice.',
+    }
+  }
+
+  const { customerId, amount, status, title } = validatedFields.data
+  const amountInCents = amount * 100
+
+  try {
+    await prisma.order.create({
+      data: {
+        customerId,
+        title,
+        amount: amountInCents,
+        status,
+      },
+    })
+  } catch (error) {
+    return { message: 'Database Error: Failed to create invoice.' }
+  }
+
+  // Test it out:
+  revalidatePath('/dashboard/orders')
+  redirect('/dashboard/orders')
 }

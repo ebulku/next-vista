@@ -1,6 +1,6 @@
 'use client'
 
-import { BookCopy, HomeIcon, Users } from 'lucide-react'
+import { BookCopy, HomeIcon, ListCollapseIcon, Users } from 'lucide-react'
 
 import { NavProjects } from '@/components/nav-projects'
 import { NavUser } from '@/components/nav-user'
@@ -24,6 +24,11 @@ const data = {
       name: 'Home',
       url: '/dashboard',
       icon: HomeIcon,
+    },
+    {
+      name: 'Orders',
+      url: '/dashboard/orders',
+      icon: ListCollapseIcon,
     },
     {
       name: 'Invoices',
