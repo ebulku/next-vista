@@ -63,7 +63,7 @@ model Note {
     body      String
     createdAt DateTime @default(now()) @map(name: "created_at")
     updatedAt DateTime @updatedAt @map(name: "updated_at")
-    order     Order    @relation(fields: [orderId], references: [id])
+    order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
     orderId   String   @map("order_id")
 }
 
@@ -71,7 +71,7 @@ model File {
     id        String   @id @default(cuid())
     url       String
     createdAt DateTime @default(now()) @map(name: "created_at")
-    order     Order    @relation(fields: [orderId], references: [id])
+    order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
     orderId   String   @map("order_id")
 }
 

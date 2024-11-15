@@ -211,3 +211,14 @@ export async function updateOrder(
   revalidatePath('/dashboard/orders')
   redirect('/dashboard/orders')
 }
+
+export async function deleteOrder(id: string) {
+  console.log('Deleting order with id:', id)
+  try {
+    await prisma.order.delete({ where: { id: id } })
+  } catch (error) {
+    console.log(error)
+    return { message: 'Database Error: Failed to delete order.' }
+  }
+  revalidatePath('/dashboard/orders')
+}

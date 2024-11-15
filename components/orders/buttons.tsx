@@ -1,4 +1,4 @@
-import { deleteInvoice } from '@/lib/actions'
+import { deleteOrder } from '@/lib/actions'
 import { Button } from '@/components/ui/button'
 import { EyeIcon, PencilLineIcon, PlusCircle, TrashIcon } from 'lucide-react'
 import Link from 'next/link'
@@ -37,9 +37,9 @@ export function ViewOrder({ id }: { id: string }) {
 }
 
 export function DeleteOrder({ id }: { id: string }) {
-  const deleteInvoiceWithId = deleteInvoice.bind(null, id)
+  const deleteOrderWithId = deleteOrder.bind(null, id)
   return (
-    <form action={deleteInvoiceWithId}>
+    <form action={deleteOrderWithId}>
       <Button size={'icon'}>
         <span className="sr-only">Delete</span>
         <TrashIcon className="w-5" />
