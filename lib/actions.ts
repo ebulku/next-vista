@@ -109,10 +109,13 @@ export async function authenticate(
   prevState: string | undefined,
   formData: FormData
 ) {
+  let errorOccurred = false
+
   try {
     await signIn('credentials', formData)
   } catch (error) {
     if (error instanceof AuthError) {
+      errorOccurred = true
       switch (error.type) {
         case 'CredentialsSignin':
           return 'Invalid credentials.'
@@ -121,5 +124,9 @@ export async function authenticate(
       }
     }
     throw error
+  } finally {
+    if (!errorOccurred) {
+      redirect('/dashboard')
+    }
   }
 }
