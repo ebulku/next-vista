@@ -47,6 +47,7 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@faker-js/faker": "^9.2.0",
     "@hookform/resolvers": "^3.9.1",
     "@types/bcrypt": "^5.0.2",
     "@types/node": "20.14.8",

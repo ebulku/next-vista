@@ -25,6 +25,7 @@ model Customer {
     email    String    @unique
     imageUrl String?   @map("image_url")
     invoices Invoice[]
+    Order    Order[]
 }
 
 model Invoice {
@@ -42,7 +43,46 @@ model Revenue {
     revenue Int
 }
 
+model Order {
+    id         String      @id @default(cuid())
+    title      String
+    customerId String?     @map("customer_id")
+    amount     Int?
+    status     OrderStatus @default(new)
+    notes      Note[]
+    files      File[]
+
+    createdAt DateTime @default(now()) @map(name: "created_at")
+    updatedAt DateTime @updatedAt @map(name: "updated_at")
+
+    customer Customer? @relation(fields: [customerId], references: [id])
+}
+
+model Note {
+    id        String   @id @default(cuid())
+    body      String
+    createdAt DateTime @default(now()) @map(name: "created_at")
+    updatedAt DateTime @updatedAt @map(name: "updated_at")
+    order     Order    @relation(fields: [orderId], references: [id])
+    orderId   String   @map("order_id")
+}
+
+model File {
+    id        String   @id @default(cuid())
+    url       String
+    createdAt DateTime @default(now()) @map(name: "created_at")
+    order     Order    @relation(fields: [orderId], references: [id])
+    orderId   String   @map("order_id")
+}
+
 enum InvoiceStatus {
     pending
+    paid
+}
+
+enum OrderStatus {
+    new
+    production
+    shipped
     paid
 }
