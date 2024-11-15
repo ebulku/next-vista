@@ -2,8 +2,8 @@
 
 import { CustomerField, InvoiceForm } from '@/types'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { createInvoice, State, updateInvoice } from '@/lib/actions'
-import { startTransition, useActionState } from 'react'
+import { State } from '@/lib/actions'
+import { startTransition } from 'react'
 import { Button } from '@/components/ui/button'
 import {
   Form as FormComponent,
@@ -41,23 +41,15 @@ import StatusBadge from '@/components/invoices/status-badge'
 export default function Form({
   customers,
   invoice,
+  state,
+  formAction,
 }: {
   customers: CustomerField[]
   invoice?: InvoiceForm
+  state: State
+  formAction: (values: z.infer<typeof CreateInvoiceSchema>) => void
 }) {
   const { pending } = useFormStatus()
-
-  const initialState: State = { message: null, errors: {} }
-
-  let formAction: (values: z.infer<typeof CreateInvoiceSchema>) => void
-  let state: typeof initialState
-
-  if (invoice) {
-    const updateInvoiceWithId = updateInvoice.bind(null, invoice.id)
-    ;[state, formAction] = useActionState(updateInvoiceWithId, initialState)
-  } else {
-    ;[state, formAction] = useActionState(createInvoice, initialState)
-  }
 
   const form = useForm<z.infer<typeof CreateInvoiceSchema>>({
     resolver: zodResolver(CreateInvoiceSchema),

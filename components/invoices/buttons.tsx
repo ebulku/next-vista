@@ -1,7 +1,7 @@
-import { deleteInvoice } from "@/lib/actions";
-import { Button } from "@/components/ui/button";
-import { PencilLineIcon, PlusCircle, TrashIcon } from "lucide-react";
-import Link from "next/link";
+import { deleteInvoice } from '@/lib/actions'
+import { Button } from '@/components/ui/button'
+import { PencilLineIcon, PlusCircle, TrashIcon } from 'lucide-react'
+import Link from 'next/link'
 
 export function CreateInvoice() {
   return (
@@ -11,7 +11,7 @@ export function CreateInvoice() {
         Create Invoice
       </Link>
     </Button>
-  );
+  )
 }
 
 export function UpdateInvoice({ id }: { id: string }) {
@@ -22,11 +22,11 @@ export function UpdateInvoice({ id }: { id: string }) {
         <PencilLineIcon className="w-5" />
       </Link>
     </Button>
-  );
+  )
 }
 
 export function DeleteInvoice({ id }: { id: string }) {
-  const deleteInvoiceWithId = deleteInvoice.bind(null, id);
+  const deleteInvoiceWithId = deleteInvoice.bind(null, id)
   return (
     <form action={deleteInvoiceWithId}>
       <Button>
@@ -34,5 +34,5 @@ export function DeleteInvoice({ id }: { id: string }) {
         <TrashIcon className="w-5" />
       </Button>
     </form>
-  );
+  )
 }
