@@ -15,9 +15,11 @@ export const CreateInvoiceSchema = z.object({
 
 export const CreateOrderSchema = z.object({
   // id: z.string(),
-  customerId: z.string({
-    invalid_type_error: 'Please select a valid Customer',
-  }),
+  customerId: z
+    .string({
+      invalid_type_error: 'Please select a valid Customer',
+    })
+    .optional(),
   amount: z.coerce.number({
     invalid_type_error: 'Please enter a valid amount',
   }),

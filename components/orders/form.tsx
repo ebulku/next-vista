@@ -86,7 +86,7 @@ export default function Form({
             <FormField
               control={form.control}
               name="customerId"
-              defaultValue={order?.customerId}
+              defaultValue={order?.customerId || undefined}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Choose customer</FormLabel>

@@ -92,13 +92,15 @@ export default async function OrdersTable({
                     </Link>
                   </TableCell>
                   <TableCell>
-                    <div className="flex items-center gap-3">
-                      <UserAvatar
-                        imageUrl={order.customer?.imageUrl || undefined}
-                        name={order.customer?.name}
-                      />
-                      <p>{order.customer?.name}</p>
-                    </div>
+                    {order.customer && (
+                      <div className="flex items-center gap-3">
+                        <UserAvatar
+                          imageUrl={order.customer?.imageUrl || undefined}
+                          name={order.customer?.name}
+                        />
+                        <p>{order.customer?.name}</p>
+                      </div>
+                    )}
                   </TableCell>
                   <TableCell>
                     {order.amount && formatCurrency(order.amount)}

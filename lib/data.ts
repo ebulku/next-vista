@@ -275,3 +275,34 @@ export async function fetchFilteredCustomers(query: string) {
     throw new Error('Failed to fetch customer table.')
   }
 }
+
+export async function fetchOrderNotes(id: string) {
+  try {
+    const notes = await prisma.note.findMany({
+      where: {
+        orderId: id,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    })
+    return notes
+  } catch (err) {
+    console.error('Database Error:', err)
+    throw new Error('Failed to fetch order notes.')
+  }
+}
+
+export async function fetchOrderFiles(id: string) {
+  try {
+    const files = await prisma.file.findMany({
+      where: {
+        orderId: id,
+      },
+    })
+    return files
+  } catch (err) {
+    console.error('Database Error:', err)
+    throw new Error('Failed to fetch order files.')
+  }
+}
