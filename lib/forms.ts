@@ -30,3 +30,9 @@ export const CreateOrderSchema = z.object({
     invalid_type_error: 'Please enter a valid title',
   }),
 })
+
+export const CreateNoteSchema = z.object({
+  body: z.string({
+    invalid_type_error: 'Please enter a valid Note',
+  }),
+})

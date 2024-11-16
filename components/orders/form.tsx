@@ -255,7 +255,7 @@ export default function Form({
       </CardContent>
       <CardFooter className="flex justify-between">
         <Button variant="outline" asChild>
-          <Link href="/dashboard/orders">Cancel</Link>
+          <Link href={`/dashboard/orders/${order?.id}`}>Cancel</Link>
         </Button>
         <Button type="submit" form="create-invoice-form" disabled={pending}>
           {order ? 'Update Order' : 'Create Order'}

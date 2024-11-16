@@ -5,10 +5,12 @@ import { AuthError } from 'next-auth'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import prisma from './prisma'
-import { CreateInvoiceSchema, CreateOrderSchema } from './forms'
+import {
+  CreateInvoiceSchema,
+  CreateNoteSchema,
+  CreateOrderSchema,
+} from './forms'
 import { z } from 'zod'
-
-// const InvoiceForm = CreateInvoiceSchema.omit({ id: true });
 
 export type State = {
   errors?: {
@@ -16,6 +18,14 @@ export type State = {
     amount?: string[]
     status?: string[]
   }
+  message?: string | null
+}
+
+export type AddNoteState = {
+  errors?: {
+    body?: string[]
+  }
+  success?: boolean
   message?: string | null
 }
 
@@ -80,7 +90,7 @@ export async function updateInvoice(
   try {
     await prisma.invoice.update({
       where: {
-        id: id,
+        id,
       },
       data: {
         customerId,
@@ -165,7 +175,6 @@ export async function createOrder(
     return { message: 'Database Error: Failed to create invoice.' }
   }
 
-  // Test it out:
   revalidatePath('/dashboard/orders')
   redirect('/dashboard/orders')
 }
@@ -208,8 +217,8 @@ export async function updateOrder(
     return { message: 'Database Error: Failed to update invoice.' }
   }
 
-  revalidatePath('/dashboard/orders')
-  redirect('/dashboard/orders')
+  revalidatePath(`/dashboard/orders/${id}`)
+  redirect(`/dashboard/orders/${id}`)
 }
 
 export async function deleteOrder(id: string) {
@@ -221,4 +230,39 @@ export async function deleteOrder(id: string) {
     return { message: 'Database Error: Failed to delete order.' }
   }
   revalidatePath('/dashboard/orders')
+}
+
+export async function addNoteToOrder(
+  orderId: string,
+  prevState: AddNoteState | undefined,
+  formData: z.infer<typeof CreateNoteSchema>
+) {
+  const validatedFields = CreateNoteSchema.safeParse({
+    body: formData.body,
+  })
+
+  if (!validatedFields.success) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: 'Missing Fields. Failed to Add Note.',
+    }
+  }
+
+  const { body } = validatedFields.data
+
+  try {
+    await prisma.note.create({
+      data: {
+        orderId,
+        body,
+      },
+    })
+  } catch (error) {
+    return { message: 'Database Error: Failed to add note.' }
+  }
+
+  revalidatePath(`/dashboard/orders/${orderId}`)
+
+  return { success: true }
+  // redirect(`/dashboard/orders/${id}`)
 }

@@ -189,6 +189,15 @@ export async function fetchOrderById(id: string) {
       where: {
         id: id,
       },
+      include: {
+        customer: {
+          select: {
+            name: true,
+            imageUrl: true,
+            email: true,
+          },
+        },
+      },
     })
 
     if (!order) {
