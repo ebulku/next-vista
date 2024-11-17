@@ -274,35 +274,26 @@ export async function addNoteToOrder(
 export async function addFileToOrder(
   orderId: string,
   prevState: AddNoteState,
-  formData: FormData
+  files: File[]
 ) {
   try {
-    const imageFile = formData.get('image') as File
-    const blob = await put(imageFile.name, imageFile, {
-      access: 'public',
+    // Upload files concurrently
+    const uploadPromises = files.map(async (file) => {
+      const blob = await put(file.name, file, { access: 'public' })
+      await prisma.file.create({
+        data: { orderId, url: blob.url },
+      })
     })
 
-    await prisma.file.create({
-      data: {
-        orderId,
-        url: blob.url,
-      },
-    })
-
-    console.log('blob:', blob)
-    console.log('imageFile:', imageFile)
+    await Promise.all(uploadPromises)
 
     revalidatePath(`/dashboard/orders/${orderId}`)
-    return {
-      message: `${imageFile.name} uploaded`,
-      success: true,
-    }
+    return { message: `All files uploaded successfully`, success: true }
   } catch (error) {
+    console.error('Error uploading files:', error)
     return {
       success: false,
       message: 'Database Error: Failed to add note.',
     }
   }
-
-  // redirect(`/dashboard/orders/${id}`)
 }
