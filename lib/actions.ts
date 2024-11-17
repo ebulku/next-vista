@@ -11,6 +11,7 @@ import {
   CreateOrderSchema,
 } from './forms'
 import { z } from 'zod'
+import { put } from '@vercel/blob'
 
 export type State = {
   errors?: {
@@ -25,8 +26,8 @@ export type AddNoteState = {
   errors?: {
     body?: string[]
   }
-  success?: boolean
-  message?: string | null
+  success: boolean
+  message: string
 }
 
 export async function createInvoice(
@@ -234,7 +235,7 @@ export async function deleteOrder(id: string) {
 
 export async function addNoteToOrder(
   orderId: string,
-  prevState: AddNoteState | undefined,
+  prevState: AddNoteState,
   formData: z.infer<typeof CreateNoteSchema>
 ) {
   const validatedFields = CreateNoteSchema.safeParse({
@@ -244,6 +245,7 @@ export async function addNoteToOrder(
   if (!validatedFields.success) {
     return {
       errors: validatedFields.error.flatten().fieldErrors,
+      success: false,
       message: 'Missing Fields. Failed to Add Note.',
     }
   }
@@ -257,12 +259,50 @@ export async function addNoteToOrder(
         body,
       },
     })
+
+    revalidatePath(`/dashboard/orders/${orderId}`)
+
+    return { success: true, message: 'Note Added.' }
   } catch (error) {
-    return { message: 'Database Error: Failed to add note.' }
+    return {
+      success: false,
+      message: 'Database Error: Failed to add note.',
+    }
+  }
+}
+
+export async function addFileToOrder(
+  orderId: string,
+  prevState: AddNoteState,
+  formData: FormData
+) {
+  try {
+    const imageFile = formData.get('image') as File
+    const blob = await put(imageFile.name, imageFile, {
+      access: 'public',
+    })
+
+    await prisma.file.create({
+      data: {
+        orderId,
+        url: blob.url,
+      },
+    })
+
+    console.log('blob:', blob)
+    console.log('imageFile:', imageFile)
+
+    revalidatePath(`/dashboard/orders/${orderId}`)
+    return {
+      message: `${imageFile.name} uploaded`,
+      success: true,
+    }
+  } catch (error) {
+    return {
+      success: false,
+      message: 'Database Error: Failed to add note.',
+    }
   }
 
-  revalidatePath(`/dashboard/orders/${orderId}`)
-
-  return { success: true }
   // redirect(`/dashboard/orders/${id}`)
 }

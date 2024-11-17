@@ -23,7 +23,7 @@ import { useForm } from 'react-hook-form'
 
 export default function AddNote({ orderId }: { orderId: string }) {
   const initialState: AddNoteState = {
-    message: null,
+    message: '',
     errors: {},
     success: false,
   }

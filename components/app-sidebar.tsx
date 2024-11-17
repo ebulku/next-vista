@@ -14,7 +14,7 @@ import {
   SidebarMenuItem,
 } from '@/components/ui/sidebar'
 import Link from 'next/link'
-import { ModeToggle } from '@/components/dark-button'
+import { ModeToggle } from '@/components/mode-toggle'
 import { User } from 'next-auth'
 import AppLogo from './app-logo'
 

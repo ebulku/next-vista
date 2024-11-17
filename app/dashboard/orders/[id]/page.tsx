@@ -1,4 +1,5 @@
 // Redirect to the edit invoice page
+import AddFile from '@/components/orders/add-file'
 import AddNote from '@/components/orders/add-note'
 import { DeleteOrder, UpdateOrder } from '@/components/orders/buttons'
 import OrderTimeline from '@/components/orders/order-timeline'
@@ -58,10 +59,7 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
         </Card>
         <Card>
           <CardContent className="pt-6 space-x-4">
-            <Button>
-              <UploadIcon />
-              Upload Files
-            </Button>
+            <AddFile orderId={id} />
             <AddNote orderId={id} />
           </CardContent>
         </Card>

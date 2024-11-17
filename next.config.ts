@@ -17,6 +17,11 @@ module.exports = {
         port: '',
         pathname: '**',
       },
+      {
+        protocol: 'https',
+        hostname: process.env.BLOB_STORE_HOSTNAME,
+        port: '',
+      },
     ],
   },
 }
