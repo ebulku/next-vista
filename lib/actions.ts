@@ -182,6 +182,8 @@ export async function createOrder(
   order
     ? redirect(`/dashboard/orders/${order.id}`)
     : redirect('/dashboard/orders')
+
+  return { message: 'Order Created.' }
 }
 
 export async function updateOrder(
@@ -224,6 +226,8 @@ export async function updateOrder(
 
   revalidatePath(`/dashboard/orders/${id}`)
   redirect(`/dashboard/orders/${id}`)
+
+  return { message: 'Order Edited.' }
 }
 
 export async function deleteOrder(id: string) {
