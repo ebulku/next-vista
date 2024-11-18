@@ -111,3 +111,7 @@ export function formatBytes(
     sizeType === 'accurate' ? accurateSizes[i] ?? 'Bytes' : sizes[i] ?? 'Bytes'
   }`
 }
+
+export function isImageType(fileType: string) {
+  return fileType.startsWith('image/')
+}

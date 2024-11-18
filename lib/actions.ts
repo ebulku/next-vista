@@ -12,6 +12,7 @@ import {
 } from './forms'
 import { z } from 'zod'
 import { put } from '@vercel/blob'
+import { isImageType } from './utils'
 
 export type State = {
   errors?: {
@@ -163,8 +164,10 @@ export async function createOrder(
   const { customerId, amount, status, title } = validatedFields.data
   const amountInCents = amount * 100
 
+  let order
+
   try {
-    await prisma.order.create({
+    order = await prisma.order.create({
       data: {
         customerId,
         title,
@@ -173,11 +176,12 @@ export async function createOrder(
       },
     })
   } catch (error) {
-    return { message: 'Database Error: Failed to create invoice.' }
+    return { message: 'Database Error: Failed to create Order.' }
   }
 
-  revalidatePath('/dashboard/orders')
-  redirect('/dashboard/orders')
+  order
+    ? redirect(`/dashboard/orders/${order.id}`)
+    : redirect('/dashboard/orders')
 }
 
 export async function updateOrder(
@@ -277,11 +281,14 @@ export async function addFileToOrder(
   files: File[]
 ) {
   try {
-    // Upload files concurrently
     const uploadPromises = files.map(async (file) => {
-      const blob = await put(file.name, file, { access: 'public' })
+      const isImage = isImageType(file.type)
+      const directory = isImage ? 'images' : 'docs'
+      const blob = await put(`${directory}/${file.name}`, file, {
+        access: 'public',
+      })
       await prisma.file.create({
-        data: { orderId, url: blob.url },
+        data: { orderId, url: blob.url, type: file.type, name: file.name },
       })
     })
 

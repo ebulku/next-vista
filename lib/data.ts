@@ -315,3 +315,18 @@ export async function fetchOrderFiles(id: string) {
     throw new Error('Failed to fetch order files.')
   }
 }
+
+export async function getFileUrlById(id: string) {
+  try {
+    const file = await prisma.file.findUnique({
+      where: {
+        id: id,
+      },
+    })
+
+    return file?.url
+  } catch (err) {
+    console.error('Database Error:', err)
+    throw new Error('Failed to fetch file.')
+  }
+}

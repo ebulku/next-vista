@@ -6,13 +6,15 @@ import {
   TimelineItem,
   TimelineLine,
 } from '@/components/ui/timeline'
-import { formatDateToLocal } from '@/lib/utils'
+import { formatDateToLocal, isImageType } from '@/lib/utils'
 import { File, Note } from '@prisma/client'
-import Image from 'next/image'
 import Zoom from 'react-medium-image-zoom'
 import '@/styles/zoom.css'
+import { Button } from '../ui/button'
+import { FileDownIcon } from 'lucide-react'
+import Link from 'next/link'
 
-type TimelinItemType = Note | File
+type TimelineItemType = Note | File
 
 export default function OrderTimeline({
   notes,
@@ -22,11 +24,9 @@ export default function OrderTimeline({
   files: File[]
 }) {
   // TODO: merge notes and files into one array sort by createdAt
-  const allNotes: TimelinItemType[] = [...notes, ...files]
-
-  allNotes.sort((a, b) => {
-    return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-  })
+  const allNotes: TimelineItemType[] = [...notes, ...files].sort(
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+  )
 
   return (
     <>
@@ -38,18 +38,42 @@ export default function OrderTimeline({
             </TimelineHeading>
             <TimelineDot />
             <TimelineLine />
-            <TimelineContent>
+            <TimelineContent className="pt-4">
               {'url' in item && item.url && (
-                <Zoom>
-                  <div className="relative w-[500px] aspect-[500/300] ">
-                    <Image
-                      src={item.url}
-                      alt=""
-                      fill={true}
-                      className="object-cover"
-                    />
-                  </div>
-                </Zoom>
+                <>
+                  {isImageType(item.type) ? (
+                    <Zoom>
+                      <img
+                        src={`/dashboard/api/files/${item.id}`}
+                        alt="Uploaded File"
+                        className="object-cover rounded"
+                      />
+                    </Zoom>
+                  ) : (
+                    <div className="flex items-center gap-4">
+                      <Button
+                        asChild
+                        className="w-36 h-52"
+                        variant={'secondary'}
+                      >
+                        <Link
+                          href={`/dashboard/api/files/${item.id}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <FileDownIcon size={64} />
+                        </Link>
+                      </Button>
+                      <a
+                        href={`/dashboard/api/files/${item.id}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {item.name}
+                      </a>
+                    </div>
+                  )}
+                </>
               )}
               {'body' in item && item.body && <>{item.body}</>}
             </TimelineContent>

@@ -69,7 +69,9 @@ model Note {
 
 model File {
     id        String   @id @default(cuid())
+    name      String?
     url       String
+    type      String   @default("image")
     createdAt DateTime @default(now()) @map(name: "created_at")
     order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
     orderId   String   @map("order_id")
