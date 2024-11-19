@@ -53,7 +53,7 @@ export default function OrderTimeline({
                     <div className="flex items-center gap-4">
                       <Button
                         asChild
-                        className="w-36 h-52"
+                        className="w-36 h-52 [&_svg]:size-10"
                         variant={'secondary'}
                       >
                         <Link
@@ -61,7 +61,7 @@ export default function OrderTimeline({
                           target="_blank"
                           rel="noopener noreferrer"
                         >
-                          <FileDownIcon size={64} />
+                          <FileDownIcon />
                         </Link>
                       </Button>
                       <a
