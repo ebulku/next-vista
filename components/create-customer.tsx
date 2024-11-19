@@ -59,7 +59,7 @@ export default function CreateCustomer({
       setOpen(false)
       toast.success('Customer Created Successfully.')
     }
-  }, [state])
+  }, [state, form])
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -92,7 +92,7 @@ export default function CreateCustomer({
               control={form.control}
               name="name"
               render={({ field }) => (
-                <FormInput name="Name" field={field} required={true} />
+                <FormInput name="Name" field={field} required />
               )}
             />
             <FormField

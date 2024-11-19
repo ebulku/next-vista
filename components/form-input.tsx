@@ -1,3 +1,5 @@
+import { FieldValues } from 'react-hook-form'
+
 import {
   FormControl,
   FormItem,
@@ -12,7 +14,7 @@ export default function FormInput({
   required = false,
 }: {
   name: string
-  field: any
+  field: FieldValues
   required?: boolean
 }) {
   const placeholder = name + ' ' + (required ? '*' : '(optional)')

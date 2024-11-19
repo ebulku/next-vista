@@ -194,11 +194,11 @@ export async function createOrder(
     return { message: 'Database Error: Failed to create Order.' }
   }
 
-  order
-    ? redirect(`/dashboard/orders/${order.id}`)
-    : redirect('/dashboard/orders')
-
-  return { message: 'Order Created.' }
+  if (order) {
+    redirect(`/dashboard/orders/${order.id}`)
+  } else {
+    redirect('/dashboard/orders')
+  }
 }
 
 export async function updateOrder(

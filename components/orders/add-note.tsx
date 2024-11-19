@@ -1,5 +1,15 @@
 'use client'
 
+import { zodResolver } from '@hookform/resolvers/zod'
+import { NotebookPenIcon } from 'lucide-react'
+import { startTransition, useActionState, useEffect, useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
+
+import { AddNoteState, addNoteToOrder } from '@/lib/actions'
+import { CreateNoteSchema } from '@/lib/forms'
+
+import { Button } from '@/components/ui/button'
 import {
   Dialog,
   DialogClose,
@@ -10,16 +20,14 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
-import { Textarea } from '../ui/textarea'
-import { Button } from '../ui/button'
-import { NotebookPenIcon } from 'lucide-react'
-import { AddNoteState, addNoteToOrder } from '@/lib/actions'
-import { startTransition, useActionState, useEffect, useState } from 'react'
-import { Form, FormControl, FormField, FormItem, FormMessage } from '../ui/form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { CreateNoteSchema } from '@/lib/forms'
-import { z } from 'zod'
-import { useForm } from 'react-hook-form'
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from '@/components/ui/form'
+import { Textarea } from '@/components/ui/textarea'
 
 export default function AddNote({ orderId }: { orderId: string }) {
   const initialState: AddNoteState = {
@@ -47,7 +55,7 @@ export default function AddNote({ orderId }: { orderId: string }) {
       form.reset()
       setOpen(false)
     }
-  }, [state])
+  }, [state, form])
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>

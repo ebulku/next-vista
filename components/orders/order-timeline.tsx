@@ -1,3 +1,11 @@
+import { File, Note } from '@prisma/client'
+import { FileDownIcon } from 'lucide-react'
+import Link from 'next/link'
+import Zoom from 'react-medium-image-zoom'
+
+import { formatDateToLocal, isImageType } from '@/lib/utils'
+
+import { Button } from '@/components/ui/button'
 import {
   Timeline,
   TimelineContent,
@@ -6,13 +14,8 @@ import {
   TimelineItem,
   TimelineLine,
 } from '@/components/ui/timeline'
-import { formatDateToLocal, isImageType } from '@/lib/utils'
-import { File, Note } from '@prisma/client'
-import Zoom from 'react-medium-image-zoom'
+
 import '@/styles/zoom.css'
-import { Button } from '../ui/button'
-import { FileDownIcon } from 'lucide-react'
-import Link from 'next/link'
 
 type TimelineItemType = Note | File
 
@@ -23,7 +26,6 @@ export default function OrderTimeline({
   notes: Note[]
   files: File[]
 }) {
-  // TODO: merge notes and files into one array sort by createdAt
   const allNotes: TimelineItemType[] = [...notes, ...files].sort(
     (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
   )
