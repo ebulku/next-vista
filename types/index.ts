@@ -40,7 +40,7 @@ export type CustomersTableType = {
 export type FormattedCustomersTable = {
   id: string
   name: string
-  email: string
+  email: string | null
   imageUrl: string | null
   total_invoices: number
   total_pending: string

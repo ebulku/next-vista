@@ -1,5 +1,19 @@
 'use client'
 
+import { UploadIcon } from 'lucide-react'
+import React, {
+  startTransition,
+  useActionState,
+  useEffect,
+  useState,
+} from 'react'
+import Dropzone, { FileRejection } from 'react-dropzone'
+import { toast } from 'sonner'
+
+import { AddNoteState, addFileToOrder } from '@/lib/actions'
+import { cn, formatBytes } from '@/lib/utils'
+
+import { Button } from '@/components/ui/button'
 import {
   Dialog,
   DialogClose,
@@ -10,22 +24,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
-import { Button } from '../ui/button'
-import { UploadIcon } from 'lucide-react'
-import { addFileToOrder, AddNoteState } from '@/lib/actions'
-import React, {
-  startTransition,
-  useActionState,
-  useEffect,
-  useState,
-} from 'react'
-import Dropzone, { FileRejection } from 'react-dropzone'
-import { cn, formatBytes } from '@/lib/utils'
-import { useToast } from '@/hooks/use-toast'
 
 export default function AddFile({ orderId }: { orderId: string }) {
-  const { toast } = useToast()
-
   const initialState: AddNoteState = {
     message: '',
     errors: {},
@@ -44,9 +44,7 @@ export default function AddFile({ orderId }: { orderId: string }) {
     if (state?.success) {
       setOpen(false)
       setDisabled(false)
-      toast({
-        title: 'File(s) uploaded successfully',
-      })
+      toast.success('File(s) uploaded successfully')
     }
   }, [state])
 
@@ -57,20 +55,14 @@ export default function AddFile({ orderId }: { orderId: string }) {
     async (acceptedFiles: File[], rejectedFiles: FileRejection[]) => {
       setDisabled(true)
       if (acceptedFiles.length > maxFileCount) {
-        toast({
-          variant: 'destructive',
-          title: `Cannot upload more than ${maxFileCount} files`,
-        })
+        toast.error(`Cannot upload more than ${maxFileCount} files`)
         setDisabled(false)
         return
       }
 
       if (rejectedFiles.length > 0) {
         rejectedFiles.forEach(({ file }) => {
-          toast({
-            variant: 'destructive',
-            title: `File ${file.name} was rejected`,
-          })
+          toast.error(`File ${file.name} was rejected`)
         })
         setDisabled(false)
       }

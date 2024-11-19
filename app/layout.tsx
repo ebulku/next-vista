@@ -1,8 +1,10 @@
-import '@/styles/global.css'
-import { inter } from '@/styles/fonts'
 import { Metadata } from 'next'
+import { Toaster } from 'sonner'
+
 import { ThemeProvider } from '@/components/theme-provider'
-import { Toaster } from '@/components/ui/toaster'
+
+import { inter } from '@/styles/fonts'
+import '@/styles/global.css'
 
 export const metadata: Metadata = {
   title: {
@@ -29,7 +31,7 @@ export default function RootLayout({
         >
           {children}
         </ThemeProvider>
-        <Toaster />
+        <Toaster position="top-right" />
       </body>
     </html>
   )

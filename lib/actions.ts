@@ -1,18 +1,21 @@
 'use server'
 
-import { signIn } from '@/auth'
+import { put } from '@vercel/blob'
 import { AuthError } from 'next-auth'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
-import prisma from './prisma'
+import { z } from 'zod'
+
 import {
+  CreateCustomerSchema,
   CreateInvoiceSchema,
   CreateNoteSchema,
   CreateOrderSchema,
-} from './forms'
-import { z } from 'zod'
-import { put } from '@vercel/blob'
-import { isImageType } from './utils'
+} from '@/lib/forms'
+import prisma from '@/lib/prisma'
+import { isImageType } from '@/lib/utils'
+
+import { signIn } from '@/auth'
 
 export type State = {
   errors?: {
@@ -29,6 +32,18 @@ export type AddNoteState = {
   }
   success: boolean
   message: string
+}
+
+export type CreateCustomerState = {
+  errors?: {
+    name?: string[]
+    email?: string[]
+    phone?: string[]
+    address?: string[]
+    description?: string[]
+  }
+  message: string
+  success: boolean
 }
 
 export async function createInvoice(
@@ -305,6 +320,51 @@ export async function addFileToOrder(
     return {
       success: false,
       message: 'Database Error: Failed to add note.',
+    }
+  }
+}
+
+export async function createCustomer(
+  prevState: CreateCustomerState,
+  formData: z.infer<typeof CreateCustomerSchema>
+) {
+  const validatedFields = CreateCustomerSchema.safeParse({
+    name: formData.name,
+    email: formData.email,
+    phone: formData.phone,
+    address: formData.address,
+    description: formData.description,
+  })
+
+  if (!validatedFields.success) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: 'Missing Fields. Failed to Add Customer.',
+      success: false,
+    }
+  }
+
+  const { name, email, phone, address, description } = validatedFields.data
+
+  try {
+    await prisma.customer.create({
+      data: {
+        name,
+        email,
+        phone,
+        address,
+        description,
+      },
+    })
+
+    revalidatePath('/')
+
+    return { message: 'Customer Added.', success: true }
+  } catch (error) {
+    console.log(error)
+    return {
+      message: 'Database Error: Failed to add customer.',
+      success: false,
     }
   }
 }

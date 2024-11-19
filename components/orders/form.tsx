@@ -1,22 +1,6 @@
 'use client'
 
-import { CustomerField, OrderForm } from '@/types'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { State } from '@/lib/actions'
-import { startTransition } from 'react'
-import { Button } from '@/components/ui/button'
-import {
-  Form as FormComponent,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form'
-import { useForm } from 'react-hook-form'
-import { z } from 'zod'
-import { CreateOrderSchema } from '@/lib/forms'
-import { Input } from '@/components/ui/input'
 import {
   Check,
   ChevronsUpDown,
@@ -24,8 +8,19 @@ import {
   CircleUserIcon,
   TextIcon,
 } from 'lucide-react'
+import Link from 'next/link'
+import { startTransition } from 'react'
 import { useFormStatus } from 'react-dom'
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
+
+import { State } from '@/lib/actions'
+import { CreateOrderSchema } from '@/lib/forms'
+import { cn } from '@/lib/utils'
+
+import CreateCustomer from '@/components/create-customer'
+import StatusBadge from '@/components/status-badge'
+import { Button } from '@/components/ui/button'
 import {
   Card,
   CardContent,
@@ -34,9 +29,6 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import Link from 'next/link'
-import StatusBadge from '@/components/status-badge'
-import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
 import {
   Command,
   CommandEmpty,
@@ -44,8 +36,24 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from '../ui/command'
-import { cn } from '@/lib/utils'
+} from '@/components/ui/command'
+import {
+  Form as FormComponent,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover'
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
+
+import { CustomerField, OrderForm } from '@/types'
 
 export default function Form({
   customers,
@@ -90,62 +98,69 @@ export default function Form({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Choose customer</FormLabel>
-                  <Popover modal={true}>
-                    <PopoverTrigger asChild>
-                      <FormControl className="pl-8 w-full">
-                        {/* <div className="relative"> */}
-                        <Button
-                          variant="outline"
-                          role="combobox"
-                          className={cn(
-                            'justify-between relative',
-                            !field.value && 'text-muted-foreground'
-                          )}
-                        >
-                          {field.value
-                            ? customers.find(
-                                (customer) => customer.id === field.value
-                              )?.name
-                            : 'Select Customer'}
-                          <ChevronsUpDown className="opacity-50" />
-                          <CircleUserIcon className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-                        </Button>
-                        {/* </div> */}
-                      </FormControl>
-                    </PopoverTrigger>
-                    <PopoverContent className="p-2 pl-4">
-                      <Command>
-                        <CommandInput
-                          placeholder="Search Customer..."
-                          className="h-9"
-                        />
-                        <CommandList>
-                          <CommandEmpty>No framework found.</CommandEmpty>
-                          <CommandGroup>
-                            {customers.map((customer) => (
-                              <CommandItem
-                                value={customer.name}
-                                key={customer.id}
-                                onSelect={() => {
-                                  form.setValue('customerId', customer.id)
-                                }}
-                              >
-                                {customer.name}
-                                <Check
-                                  className={cn(
-                                    'ml-auto',
-                                    customer.id === field.value
-                                      ? 'opacity-100'
-                                      : 'opacity-0'
-                                  )}
-                                />
-                              </CommandItem>
-                            ))}
-                          </CommandGroup>
-                        </CommandList>
-                      </Command>
-                    </PopoverContent>
-                  </Popover>
+                  <div className="grid grid-cols-7 gap-2">
+                    <div className="col-span-6">
+                      <Popover modal={true}>
+                        <PopoverTrigger asChild>
+                          <FormControl className="pl-8 w-full">
+                            {/* <div className="relative"> */}
+                            <Button
+                              variant="outline"
+                              role="combobox"
+                              className={cn(
+                                'justify-between relative',
+                                !field.value && 'text-muted-foreground'
+                              )}
+                            >
+                              {field.value
+                                ? customers.find(
+                                    (customer) => customer.id === field.value
+                                  )?.name
+                                : 'Select Customer'}
+                              <ChevronsUpDown className="opacity-50" />
+                              <CircleUserIcon className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+                            </Button>
+                            {/* </div> */}
+                          </FormControl>
+                        </PopoverTrigger>
+                        <PopoverContent className="p-2 pl-4">
+                          <Command>
+                            <CommandInput
+                              placeholder="Search Customer..."
+                              className="h-9"
+                            />
+                            <CommandList>
+                              <CommandEmpty>No framework found.</CommandEmpty>
+                              <CommandGroup>
+                                {customers.map((customer) => (
+                                  <CommandItem
+                                    value={customer.name}
+                                    key={customer.id}
+                                    onSelect={() => {
+                                      form.setValue('customerId', customer.id)
+                                    }}
+                                  >
+                                    {customer.name}
+                                    <Check
+                                      className={cn(
+                                        'ml-auto',
+                                        customer.id === field.value
+                                          ? 'opacity-100'
+                                          : 'opacity-0'
+                                      )}
+                                    />
+                                  </CommandItem>
+                                ))}
+                              </CommandGroup>
+                            </CommandList>
+                          </Command>
+                        </PopoverContent>
+                      </Popover>
+                    </div>
+                    <div className="col-span-1">
+                      <CreateCustomer isIcon={true} />
+                    </div>
+                  </div>
                   <FormMessage />
                 </FormItem>
               )}
