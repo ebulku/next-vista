@@ -8,6 +8,17 @@ import {
   TimelineLine,
 } from '@/components/ui/timeline'
 
+import { Card, CardContent, CardHeader } from './ui/card'
+import { Separator } from './ui/separator'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from './ui/table'
+
 // Loading animation
 const shimmer =
   'before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-white/60 before:to-transparent'
@@ -411,5 +422,151 @@ export function OrderTimelineSkeleton() {
       <TimelineItemSkeleton />
       <TimelineItemSkeleton />
     </Timeline>
+  )
+}
+
+export function CustomerMobileSkeleton() {
+  return (
+    <Card>
+      <CardHeader className="flex flex-row items-center justify-between ">
+        <div className="flex items-center space-x-4">
+          <span className="relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full">
+            <Skeleton className="h-10 w-10 rounded-full" />
+          </span>
+          <div className="ml-4 space-y-2 ">
+            <Skeleton className="h-5 w-[100px]" />
+            <Skeleton className="h-3 w-[100px]" />
+          </div>
+        </div>
+        <div className="flex items-center gap-2 space-y-1">
+          <Skeleton className="h-9 w-9" />
+          <Skeleton className="h-9 w-9" />
+        </div>
+      </CardHeader>
+      <CardContent>
+        <Separator />
+        <div className="flex w-full items-center justify-between py-5 space-y-1">
+          <div className="flex w-1/2 flex-col space-y-1">
+            <Skeleton className="h-3 w-[100px]" />
+            <Skeleton className="h-5 w-[50px]" />
+          </div>
+          <div className="flex w-1/2 flex-col space-y-1">
+            <Skeleton className="h-3 w-[100px]" />
+            <Skeleton className="h-5 w-[50px]" />
+          </div>
+        </div>
+        <Separator />
+        <div className="flex w-full items-center justify-between py-5 space-y-1">
+          <div className="flex w-1/2 flex-col space-y-1">
+            <Skeleton className="h-3 w-[100px]" />
+            <Skeleton className="h-5 w-[150px]" />
+          </div>
+          <div className="flex w-1/2 flex-col space-y-1">
+            <Skeleton className="h-3 w-[100px]" />
+            <Skeleton className="h-5 w-[150px]" />
+          </div>
+        </div>
+        <Separator />
+        <div className="pt-2 space-y-1">
+          <Skeleton className="h-3 w-[120px]" />
+          <Skeleton className="h-3 w-[120px]" />
+        </div>
+      </CardContent>
+    </Card>
+  )
+}
+
+export function CustomerTableRowSkeleton() {
+  return (
+    <TableRow>
+      <TableCell>
+        <div className="flex items-center gap-3">
+          <Skeleton className="h-9 w-9 rounded-full" />
+          <Skeleton className="h-6 w-[200px]" />
+        </div>
+      </TableCell>
+      <TableCell>
+        <Skeleton className="h-6 w-[200px]" />
+      </TableCell>
+      <TableCell>
+        <Skeleton className="h-6 w-[200px]" />
+      </TableCell>
+      <TableCell>
+        <Skeleton className="h-6 w-[120px]" />
+      </TableCell>
+      <TableCell>
+        <Skeleton className="h-6 w-[120px]" />
+      </TableCell>
+      <TableCell>
+        <Skeleton className="h-6 w-8" />
+      </TableCell>
+      <TableCell>
+        <Skeleton className="h-6 w-8" />
+      </TableCell>
+      <TableCell>
+        <Skeleton className="h-6 w-[120px]" />
+      </TableCell>
+      <TableCell>
+        <Skeleton className="h-6 w-[120px]" />
+      </TableCell>
+      <TableCell>
+        <div className="flex justify-end gap-3">
+          <Skeleton className="h-8 w-8" />
+          <Skeleton className="h-8 w-8" />
+        </div>
+      </TableCell>
+    </TableRow>
+  )
+}
+
+export function CustomerTableSkeleton() {
+  return (
+    <div className="mt-6 flow-root">
+      <div className="inline-block min-w-full align-middle">
+        <div className="rounded-lg p-2 md:pt-0">
+          <div className="md:hidden space-y-4">
+            <CustomerMobileSkeleton />
+            <CustomerMobileSkeleton />
+            <CustomerMobileSkeleton />
+            <CustomerMobileSkeleton />
+            <CustomerMobileSkeleton />
+            <CustomerMobileSkeleton />
+            <CustomerMobileSkeleton />
+            <CustomerMobileSkeleton />
+            <CustomerMobileSkeleton />
+            <CustomerMobileSkeleton />
+          </div>
+          <Table className="hidden md:table">
+            <TableHeader>
+              <TableRow>
+                <TableHead>Name</TableHead>
+                <TableHead>Email</TableHead>
+                <TableHead>Phone</TableHead>
+                <TableHead>Address</TableHead>
+                <TableHead>Notes</TableHead>
+                <TableHead>Total Orders</TableHead>
+                <TableHead>Total Invoices</TableHead>
+                <TableHead>Total Pending</TableHead>
+                <TableHead>Total Paid</TableHead>
+                <TableHead className="text-right">Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              <CustomerTableRowSkeleton />
+              <CustomerTableRowSkeleton />
+              <CustomerTableRowSkeleton />
+              <CustomerTableRowSkeleton />
+              <CustomerTableRowSkeleton />
+              <CustomerTableRowSkeleton />
+              <CustomerTableRowSkeleton />
+              <CustomerTableRowSkeleton />
+              <CustomerTableRowSkeleton />
+              <CustomerTableRowSkeleton />
+              <CustomerTableRowSkeleton />
+            </TableBody>
+          </Table>
+        </div>
+      </div>
+    </div>
   )
 }

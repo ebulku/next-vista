@@ -1,7 +1,9 @@
 'use client'
 
-import { generatePagination } from '@/lib/utils'
 import { usePathname, useSearchParams } from 'next/navigation'
+
+import { generatePagination } from '@/lib/utils'
+
 import {
   PaginationContent,
   PaginationEllipsis,
@@ -13,7 +15,6 @@ import {
 } from '@/components/ui/pagination'
 
 export default function Pagination({ totalPages }: { totalPages: number }) {
-  // NOTE: Uncomment this code in Chapter 11
   const pathname = usePathname()
   const searchParams = useSearchParams()
   const currentPage = Number(searchParams.get('page')) || 1

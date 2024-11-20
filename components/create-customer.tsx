@@ -82,7 +82,10 @@ export default function CreateCustomer({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant={'link'} size={isIcon ? 'icon' : 'default'}>
+        <Button
+          variant={isIcon ? 'link' : 'default'}
+          size={isIcon ? 'icon' : 'default'}
+        >
           {customer ? <EditIcon /> : <PlusCircleIcon />}
           {isIcon ? '' : customer ? 'Edit' : 'Create'}
         </Button>

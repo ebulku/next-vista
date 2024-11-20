@@ -1,3 +1,5 @@
+import { fetchFilteredCustomers } from '@/lib/data'
+
 import { DeleteCustomerButton } from '@/components/buttons'
 import CreateCustomer from '@/components/create-customer'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
@@ -12,13 +14,8 @@ import {
 } from '@/components/ui/table'
 import { UserAvatar } from '@/components/user-avatar'
 
-import { FormattedCustomersTable } from '@/types'
-
-export default async function CustomersTable({
-  customers,
-}: {
-  customers: FormattedCustomersTable[]
-}) {
+export default async function CustomersTable({ query }: { query: string }) {
+  const customers = await fetchFilteredCustomers(query)
   return (
     <div className="mt-6 flow-root">
       <div className="inline-block min-w-full align-middle">
@@ -26,7 +23,7 @@ export default async function CustomersTable({
           <div className="md:hidden space-y-4">
             {customers?.map((customer) => (
               <Card key={customer.id}>
-                <CardHeader className="flex flex-row items-center justify-between">
+                <CardHeader className="flex flex-row items-center justify-between ">
                   <div className="flex items-center space-x-4">
                     <UserAvatar
                       imageUrl={customer.imageUrl || undefined}
@@ -39,24 +36,55 @@ export default async function CustomersTable({
                       <p className="text-sm text-muted-foreground">
                         {customer.email}
                       </p>
+                      <p className="text-sm text-muted-foreground">
+                        {customer.phone}
+                      </p>
                     </div>
+                  </div>
+                  <div>
+                    <CreateCustomer isIcon={true} customer={customer} />
+                    <DeleteCustomerButton id={customer.id} />
                   </div>
                 </CardHeader>
                 <CardContent>
                   <Separator />
                   <div className="flex w-full items-center justify-between py-5">
                     <div className="flex w-1/2 flex-col">
-                      <p className="text-xs">Pending</p>
-                      <p className="font-medium">{customer.total_pending}</p>
+                      <p className="text-xs">Orders</p>
+                      <p className="text-lg font-medium">
+                        {customer.total_orders}
+                      </p>
                     </div>
                     <div className="flex w-1/2 flex-col">
-                      <p className="text-xs">Paid</p>
-                      <p className="font-medium">{customer.total_paid}</p>
+                      <p className="text-xs">Invoices</p>
+                      <p className="text-lg font-medium">
+                        {customer.total_invoices}
+                      </p>
                     </div>
                   </div>
                   <Separator />
-                  <div className="pt-4 text-sm">
-                    <p>{customer.total_invoices} invoices</p>
+                  <div className="flex w-full items-center justify-between py-5">
+                    <div className="flex w-1/2 flex-col">
+                      <p className="text-xs">Pending</p>
+                      <p className="text-lg font-medium">
+                        {customer.total_pending}
+                      </p>
+                    </div>
+                    <div className="flex w-1/2 flex-col">
+                      <p className="text-xs">Paid</p>
+                      <p className="text-lg font-medium">
+                        {customer.total_paid}
+                      </p>
+                    </div>
+                  </div>
+                  <Separator />
+                  <div className="pt-2">
+                    <p className="text-sm font-medium">
+                      Address: {customer.address}
+                    </p>
+                    <p className="text-sm font-medium">
+                      Notes: {customer.description}
+                    </p>
                   </div>
                 </CardContent>
               </Card>
