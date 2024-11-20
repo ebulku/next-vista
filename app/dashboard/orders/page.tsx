@@ -7,7 +7,7 @@ import { CreateOrderButton } from '@/components/buttons'
 import OrdersTable from '@/components/orders/table'
 import Pagination from '@/components/pagination'
 import Search from '@/components/search'
-import { InvoicesTableSkeleton } from '@/components/skeletons'
+import { OrdersTableSkeleton } from '@/components/skeletons'
 import { TypographyH2 } from '@/components/ui/typography'
 
 const title = 'Orders'
@@ -33,7 +33,7 @@ export default async function Page(props: {
         <Search placeholder="Search Orders..." />
         <CreateOrderButton />
       </div>
-      <Suspense key={query + currentPage} fallback={<InvoicesTableSkeleton />}>
+      <Suspense key={query + currentPage} fallback={<OrdersTableSkeleton />}>
         <OrdersTable query={query} currentPage={currentPage} />
       </Suspense>
       <div className="mt-5 flex w-full justify-center">

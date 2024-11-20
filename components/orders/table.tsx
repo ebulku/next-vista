@@ -4,9 +4,7 @@ import { fetchFilteredOrders } from '@/lib/data'
 import { formatCurrency, formatDateToLocal } from '@/lib/utils'
 
 import {
-  DeleteInvoiceButton,
   DeleteOrderButton,
-  UpdateInvoiceButton,
   UpdateOrderButton,
   ViewOrderButton,
 } from '@/components/buttons'
@@ -59,18 +57,25 @@ export default async function OrdersTable({
                 </CardHeader>
                 <CardContent>
                   <Separator />
+                  <div className="text-xl font-bold py-2">
+                    <Link href={`/dashboard/orders/${order.id}`}>
+                      {order.title}
+                    </Link>
+                  </div>
+                  <Separator />
                   <div className="flex w-full items-center justify-between pt-4">
                     <div>
                       <div className="text-2xl font-bold">
-                        {order.amount && formatCurrency(order.amount)}
+                        {formatCurrency(order.amount || 0)}
                       </div>
                       <p className="text-muted-foreground">
                         {formatDateToLocal(order.createdAt)}
                       </p>
                     </div>
                     <div className="flex justify-end gap-2">
-                      <UpdateInvoiceButton id={order.id} />
-                      <DeleteInvoiceButton id={order.id} />
+                      <ViewOrderButton id={order.id} />
+                      <UpdateOrderButton id={order.id} />
+                      <DeleteOrderButton id={order.id} />
                     </div>
                   </div>
                 </CardContent>
