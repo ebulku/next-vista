@@ -1,8 +1,19 @@
-import { formatDateToLocal, formatCurrency } from '@/lib/utils'
+import Link from 'next/link'
 
-import { UpdateInvoice, DeleteInvoice } from '@/components/invoices/buttons'
-import InvoiceStatus from '@/components/status-badge'
 import { fetchFilteredOrders } from '@/lib/data'
+import { formatCurrency, formatDateToLocal } from '@/lib/utils'
+
+import {
+  DeleteInvoiceButton,
+  DeleteOrderButton,
+  UpdateInvoiceButton,
+  UpdateOrderButton,
+  ViewOrderButton,
+} from '@/components/buttons'
+import InvoiceStatus from '@/components/status-badge'
+import StatusBadge from '@/components/status-badge'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import { Separator } from '@/components/ui/separator'
 import {
   Table,
   TableBody,
@@ -11,12 +22,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { Card, CardContent, CardHeader } from '@/components/ui/card'
-import { Separator } from '@/components/ui/separator'
-import StatusBadge from '@/components/status-badge'
 import { UserAvatar } from '@/components/user-avatar'
-import { DeleteOrder, UpdateOrder, ViewOrder } from './buttons'
-import Link from 'next/link'
 
 export default async function OrdersTable({
   query,
@@ -63,8 +69,8 @@ export default async function OrdersTable({
                       </p>
                     </div>
                     <div className="flex justify-end gap-2">
-                      <UpdateInvoice id={order.id} />
-                      <DeleteInvoice id={order.id} />
+                      <UpdateInvoiceButton id={order.id} />
+                      <DeleteInvoiceButton id={order.id} />
                     </div>
                   </div>
                 </CardContent>
@@ -114,9 +120,9 @@ export default async function OrdersTable({
                   <TableCell>{formatDateToLocal(order.createdAt)}</TableCell>
                   <TableCell>
                     <div className="flex justify-end gap-3">
-                      <ViewOrder id={order.id} />
-                      <UpdateOrder id={order.id} />
-                      <DeleteOrder id={order.id} />
+                      <ViewOrderButton id={order.id} />
+                      <UpdateOrderButton id={order.id} />
+                      <DeleteOrderButton id={order.id} />
                     </div>
                   </TableCell>
                 </TableRow>

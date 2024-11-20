@@ -1,12 +1,14 @@
+import { Metadata } from 'next'
+import { Suspense } from 'react'
+
+import { fetchOrdersPages } from '@/lib/data'
+
+import { CreateOrderButton } from '@/components/buttons'
+import OrdersTable from '@/components/orders/table'
+import Pagination from '@/components/pagination'
 import Search from '@/components/search'
 import { InvoicesTableSkeleton } from '@/components/skeletons'
-import { Suspense } from 'react'
-import { Metadata } from 'next'
 import { TypographyH2 } from '@/components/ui/typography'
-import Pagination from '@/components/pagination'
-import { fetchOrdersPages } from '@/lib/data'
-import OrdersTable from '@/components/orders/table'
-import { CreateOrder } from '@/components/orders/buttons'
 
 const title = 'Orders'
 export const metadata: Metadata = {
@@ -29,7 +31,7 @@ export default async function Page(props: {
       <TypographyH2 text={title} />
       <div className="flex items-center justify-between gap-2 mt-2">
         <Search placeholder="Search Orders..." />
-        <CreateOrder />
+        <CreateOrderButton />
       </div>
       <Suspense key={query + currentPage} fallback={<InvoicesTableSkeleton />}>
         <OrdersTable query={query} currentPage={currentPage} />

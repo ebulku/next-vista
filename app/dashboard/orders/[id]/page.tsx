@@ -1,17 +1,16 @@
 // Redirect to the edit invoice page
+import { notFound } from 'next/navigation'
+
+import { fetchOrderById, fetchOrderFiles, fetchOrderNotes } from '@/lib/data'
+
+import { DeleteOrderButton, UpdateOrderButton } from '@/components/buttons'
 import AddFile from '@/components/orders/add-file'
 import AddNote from '@/components/orders/add-note'
-import { DeleteOrder, UpdateOrder } from '@/components/orders/buttons'
 import OrderTimeline from '@/components/orders/order-timeline'
 import StatusBadge from '@/components/status-badge'
-import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { UserAvatar } from '@/components/user-avatar'
-import { fetchOrderById, fetchOrderFiles, fetchOrderNotes } from '@/lib/data'
-import { UploadIcon } from 'lucide-react'
-import { notFound } from 'next/navigation'
 
 export default async function Page(props: { params: Promise<{ id: string }> }) {
   const params = await props.params
@@ -36,8 +35,8 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
                 <StatusBadge status={order.status} />
               </div>
               <div className="flex">
-                <UpdateOrder id={id} />
-                <DeleteOrder id={id} />
+                <UpdateOrderButton id={id} />
+                <DeleteOrderButton id={id} />
               </div>
             </div>
 

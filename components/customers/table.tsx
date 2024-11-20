@@ -1,3 +1,4 @@
+import { DeleteCustomerButton } from '@/components/buttons'
 import CreateCustomer from '@/components/create-customer'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
@@ -98,6 +99,7 @@ export default async function CustomersTable({
                   <TableCell>{customer.total_paid}</TableCell>
                   <TableCell>
                     <CreateCustomer isIcon={true} customer={customer} />
+                    <DeleteCustomerButton id={customer.id} />
                   </TableCell>
                 </TableRow>
               ))}

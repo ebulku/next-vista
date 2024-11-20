@@ -82,7 +82,7 @@ export default function CreateCustomer({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button size={isIcon ? 'icon' : 'default'}>
+        <Button variant={'link'} size={isIcon ? 'icon' : 'default'}>
           {customer ? <EditIcon /> : <PlusCircleIcon />}
           {isIcon ? '' : customer ? 'Edit' : 'Create'}
         </Button>
@@ -135,7 +135,6 @@ export default function CreateCustomer({
                 <FormInput name="Description" field={field} />
               )}
             />
-
             {state?.message && (
               <div className="text-sm text-red-500">{state.message}</div>
             )}
