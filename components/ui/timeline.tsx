@@ -1,6 +1,6 @@
-import React from 'react'
 import { VariantProps, cva } from 'class-variance-authority'
 import { Check, Circle, X } from 'lucide-react'
+import React from 'react'
 
 import { cn } from '@/lib/utils'
 
@@ -161,7 +161,7 @@ interface TimelineConent
 
 const TimelineHeading = React.forwardRef<HTMLParagraphElement, TimelineConent>(
   ({ className, side, variant, ...props }, ref) => (
-    <p
+    <div
       role="heading"
       aria-level={variant === 'primary' ? 2 : 3}
       className={cn(timelineHeadingVariants({ side, variant }), className)}

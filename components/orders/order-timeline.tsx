@@ -1,8 +1,9 @@
 import { File, Note } from '@prisma/client'
 import { FileDownIcon } from 'lucide-react'
+import Image from 'next/image'
 import Link from 'next/link'
-import Zoom from 'react-medium-image-zoom'
 
+import { fetchOrderFiles, fetchOrderNotes } from '@/lib/data'
 import { formatDateToLocal, isImageType } from '@/lib/utils'
 
 import { Button } from '@/components/ui/button'
@@ -19,13 +20,10 @@ import '@/styles/zoom.css'
 
 type TimelineItemType = Note | File
 
-export default function OrderTimeline({
-  notes,
-  files,
-}: {
-  notes: Note[]
-  files: File[]
-}) {
+export default async function OrderTimeline({ orderId }: { orderId: string }) {
+  const notes = await fetchOrderNotes(orderId)
+  const files = await fetchOrderFiles(orderId)
+
   const allNotes: TimelineItemType[] = [...notes, ...files].sort(
     (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
   )
@@ -44,13 +42,25 @@ export default function OrderTimeline({
               {'url' in item && item.url && (
                 <>
                   {isImageType(item.type) ? (
-                    <Zoom>
-                      <img
+                    <>
+                      <Image
+                        width={500}
+                        height={500}
                         src={`/dashboard/api/files/${item.id}`}
                         alt="Uploaded File"
                         className="object-cover rounded"
                       />
-                    </Zoom>
+                      <Button variant={'ghost'} asChild>
+                        <Link
+                          href={`/dashboard/api/files/${item.id}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <FileDownIcon />
+                          View High Resolution
+                        </Link>
+                      </Button>
+                    </>
                   ) : (
                     <div className="flex items-center gap-4">
                       <Button

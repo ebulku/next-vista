@@ -1,4 +1,12 @@
 import { Skeleton } from '@/components/ui/skeleton'
+import {
+  Timeline,
+  TimelineContent,
+  TimelineDot,
+  TimelineHeading,
+  TimelineItem,
+  TimelineLine,
+} from '@/components/ui/timeline'
 
 // Loading animation
 const shimmer =
@@ -378,5 +386,30 @@ export function OrdersTableSkeleton() {
         </div>
       </div>
     </div>
+  )
+}
+
+function TimelineItemSkeleton() {
+  return (
+    <TimelineItem>
+      <TimelineHeading variant="secondary">
+        <Skeleton className="h-6 w-[200px]" />
+      </TimelineHeading>
+      <TimelineDot />
+      <TimelineLine />
+      <TimelineContent className="pt-4">
+        <Skeleton className="h-80 w-80" />
+      </TimelineContent>
+    </TimelineItem>
+  )
+}
+
+export function OrderTimelineSkeleton() {
+  return (
+    <Timeline>
+      <TimelineItemSkeleton />
+      <TimelineItemSkeleton />
+      <TimelineItemSkeleton />
+    </Timeline>
   )
 }

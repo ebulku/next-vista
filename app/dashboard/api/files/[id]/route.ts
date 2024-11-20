@@ -1,4 +1,5 @@
 import { type NextRequest } from 'next/server'
+
 import { getFileUrlById } from '@/lib/data'
 
 export async function GET(
