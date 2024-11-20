@@ -1,5 +1,5 @@
-import { formatCurrency } from '@/lib/utils'
 import prisma from '@/lib/prisma'
+import { formatCurrency } from '@/lib/utils'
 
 export async function fetchRevenue() {
   const feed = await prisma.revenue.findMany()
@@ -223,6 +223,25 @@ export async function fetchCustomers() {
   return customers
 }
 
+export async function fetchCustomerById(id: string) {
+  try {
+    const customer = await prisma.customer.findUnique({
+      where: {
+        id: id,
+      },
+    })
+
+    if (!customer) {
+      return null
+    }
+
+    return customer
+  } catch (error) {
+    console.error('Database Error:', error)
+    throw new Error('Failed to fetch customer.')
+  }
+}
+
 export async function fetchFilteredCustomers(query: string) {
   try {
     const customers = await prisma.customer.findMany({
@@ -246,11 +265,19 @@ export async function fetchFilteredCustomers(query: string) {
         id: true,
         name: true,
         email: true,
+        phone: true,
+        address: true,
+        description: true,
         imageUrl: true,
         invoices: {
           select: {
             status: true,
             amount: true,
+          },
+        },
+        _count: {
+          select: {
+            orders: true,
           },
         },
       },
@@ -271,7 +298,11 @@ export async function fetchFilteredCustomers(query: string) {
         id: customer.id,
         name: customer.name,
         email: customer.email,
+        phone: customer.phone,
+        address: customer.address,
+        description: customer.description,
         imageUrl: customer.imageUrl,
+        total_orders: customer._count.orders,
         total_invoices: customer.invoices.length,
         total_pending: formatCurrency(totalPending),
         total_paid: formatCurrency(totalPaid),

@@ -1,4 +1,6 @@
-import { FormattedCustomersTable } from '@/types'
+import CreateCustomer from '@/components/create-customer'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import { Separator } from '@/components/ui/separator'
 import {
   Table,
   TableBody,
@@ -7,9 +9,9 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { Card, CardContent, CardHeader } from '@/components/ui/card'
-import { Separator } from '@/components/ui/separator'
 import { UserAvatar } from '@/components/user-avatar'
+
+import { FormattedCustomersTable } from '@/types'
 
 export default async function CustomersTable({
   customers,
@@ -64,9 +66,14 @@ export default async function CustomersTable({
               <TableRow>
                 <TableHead>Name</TableHead>
                 <TableHead>Email</TableHead>
+                <TableHead>Phone</TableHead>
+                <TableHead>Address</TableHead>
+                <TableHead>Notes</TableHead>
+                <TableHead>Total Orders</TableHead>
                 <TableHead>Total Invoices</TableHead>
                 <TableHead>Total Pending</TableHead>
                 <TableHead>Total Paid</TableHead>
+                <TableHead className="text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -82,9 +89,16 @@ export default async function CustomersTable({
                     </div>
                   </TableCell>
                   <TableCell>{customer.email}</TableCell>
+                  <TableCell>{customer.phone}</TableCell>
+                  <TableCell>{customer.address}</TableCell>
+                  <TableCell>{customer.description}</TableCell>
+                  <TableCell>{customer.total_orders}</TableCell>
                   <TableCell>{customer.total_invoices}</TableCell>
                   <TableCell>{customer.total_pending}</TableCell>
                   <TableCell>{customer.total_paid}</TableCell>
+                  <TableCell>
+                    <CreateCustomer isIcon={true} customer={customer} />
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>

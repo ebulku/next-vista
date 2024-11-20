@@ -368,3 +368,61 @@ export async function createCustomer(
     }
   }
 }
+
+export async function editCustomer(
+  id: string,
+  prevState: CreateCustomerState,
+  formData: z.infer<typeof CreateCustomerSchema>
+) {
+  const validatedFields = CreateCustomerSchema.safeParse({
+    name: formData.name,
+    email: formData.email,
+    phone: formData.phone,
+    address: formData.address,
+    description: formData.description,
+  })
+
+  if (!validatedFields.success) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: 'Missing Fields. Failed to Edit Customer.',
+      success: false,
+    }
+  }
+
+  const { name, email, phone, address, description } = validatedFields.data
+
+  try {
+    await prisma.customer.update({
+      where: {
+        id,
+      },
+      data: {
+        name,
+        email,
+        phone,
+        address,
+        description,
+      },
+    })
+  } catch (error) {
+    console.log(error)
+    return {
+      message: 'Database Error: Failed to edit customer.',
+      success: false,
+    }
+  }
+
+  revalidatePath(`/dashboard/customers/`)
+
+  return { message: 'Customer Updated.', success: true }
+}
+
+export async function deleteCustomer(id: string) {
+  try {
+    await prisma.customer.delete({ where: { id: id } })
+  } catch (error) {
+    return { message: 'Database Error: Failed to delete customer.' }
+  }
+  revalidatePath('/dashboard/customers')
+}

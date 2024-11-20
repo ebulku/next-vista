@@ -41,7 +41,11 @@ export type FormattedCustomersTable = {
   id: string
   name: string
   email: string | null
+  phone: string | null
+  address: string | null
+  description: string | null
   imageUrl: string | null
+  total_orders: number
   total_invoices: number
   total_pending: string
   total_paid: string

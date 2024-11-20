@@ -1,13 +1,17 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { PlusCircleIcon } from 'lucide-react'
+import { EditIcon, PlusCircleIcon } from 'lucide-react'
 import { startTransition, useActionState, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
-import { CreateCustomerState, createCustomer } from '@/lib/actions'
+import {
+  CreateCustomerState,
+  createCustomer,
+  editCustomer,
+} from '@/lib/actions'
 import { CreateCustomerSchema } from '@/lib/forms'
 
 import FormInput from '@/components/form-input'
@@ -24,10 +28,14 @@ import {
 } from '@/components/ui/dialog'
 import { Form, FormField } from '@/components/ui/form'
 
+import { FormattedCustomersTable } from '@/types'
+
 export default function CreateCustomer({
   isIcon = false,
+  customer,
 }: {
   isIcon?: boolean
+  customer?: FormattedCustomersTable
 }) {
   const initialState: CreateCustomerState = {
     message: '',
@@ -36,17 +44,26 @@ export default function CreateCustomer({
   }
 
   const [open, setOpen] = useState(false)
-  const [state, formAction] = useActionState(createCustomer, initialState)
 
+  const actionFunction = customer
+    ? (
+        prevState: CreateCustomerState,
+        formData: z.infer<typeof CreateCustomerSchema>
+      ) => editCustomer(customer.id, prevState, formData)
+    : createCustomer
+
+  const defaultValues = {
+    name: customer?.name || '',
+    email: customer?.email || '',
+    phone: customer?.phone || '',
+    address: customer?.address || '',
+    description: customer?.description || '',
+  }
+
+  const [state, formAction] = useActionState(actionFunction, initialState)
   const form = useForm<z.infer<typeof CreateCustomerSchema>>({
     resolver: zodResolver(CreateCustomerSchema),
-    defaultValues: {
-      name: '',
-      email: undefined,
-      phone: undefined,
-      address: undefined,
-      description: undefined,
-    },
+    defaultValues,
   })
 
   function onSubmit(values: z.infer<typeof CreateCustomerSchema>) {
@@ -57,7 +74,8 @@ export default function CreateCustomer({
     if (state?.success) {
       form.reset()
       setOpen(false)
-      toast.success('Customer Created Successfully.')
+      const method = customer ? 'Edited' : 'Created'
+      toast.success(`Customer ${method} Successfully.`)
     }
   }, [state, form])
 
@@ -65,8 +83,8 @@ export default function CreateCustomer({
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button size={isIcon ? 'icon' : 'default'}>
-          <PlusCircleIcon />
-          {isIcon ? '' : 'Create Customer'}
+          {customer ? <EditIcon /> : <PlusCircleIcon />}
+          {isIcon ? '' : customer ? 'Edit' : 'Create'}
         </Button>
       </DialogTrigger>
       <DialogContent
@@ -113,7 +131,9 @@ export default function CreateCustomer({
             <FormField
               control={form.control}
               name="description"
-              render={({ field }) => <FormInput name="Notes" field={field} />}
+              render={({ field }) => (
+                <FormInput name="Description" field={field} />
+              )}
             />
 
             {state?.message && (
@@ -125,7 +145,7 @@ export default function CreateCustomer({
                   Cancel
                 </Button>
               </DialogClose>
-              <Button type="submit">Create Customer</Button>
+              <Button type="submit">{customer ? 'Edit' : 'Create'}</Button>
             </DialogFooter>
           </form>
         </Form>
