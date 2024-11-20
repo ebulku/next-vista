@@ -1,21 +1,22 @@
-import CardWrapper from "@/components/dashboard/dashboard-cards";
-import RevenueChart from "@/components/dashboard/revenue-chart";
-import LatestInvoices from "@/components/dashboard/latest-invoices";
-import { Suspense } from "react";
+import { Metadata } from 'next'
+import { Suspense } from 'react'
+
+import CardWrapper from '@/components/dashboard/dashboard-cards'
+import LatestOrders from '@/components/dashboard/latest-orders'
+import RevenueChart from '@/components/dashboard/revenue-chart'
 import {
   CardsSkeleton,
-  LatestInvoicesSkeleton,
+  LatestOrdersSkeleton,
   RevenueChartSkeleton,
-} from "@/components/skeletons";
-import { Metadata } from "next";
-import { TypographyH2 } from "@/components/ui/typography";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+} from '@/components/skeletons'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { TypographyH2 } from '@/components/ui/typography'
 
-const title = "Dashboard";
+const title = 'Dashboard'
 
 export const metadata: Metadata = {
   title: title,
-};
+}
 
 export default async function Page() {
   return (
@@ -26,10 +27,10 @@ export default async function Page() {
           <CardWrapper />
         </Suspense>
       </div>
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-        <Card className="col-span-4">
+      <div className="grid gap-4 lg:grid-cols-7">
+        <Card className="lg:col-span-3">
           <CardHeader>
-            <CardTitle>Recent Revenue</CardTitle>
+            <CardTitle>Recent Revenue (demo)</CardTitle>
           </CardHeader>
           <CardContent className="pl-2 pt-4">
             <Suspense fallback={<RevenueChartSkeleton />}>
@@ -37,17 +38,17 @@ export default async function Page() {
             </Suspense>
           </CardContent>
         </Card>
-        <Card className="col-span-3">
+        <Card className="lg:col-span-4">
           <CardHeader>
-            <CardTitle>Latest Invoices</CardTitle>
+            <CardTitle>Latest Orders</CardTitle>
           </CardHeader>
           <CardContent className="pt-4">
-            <Suspense fallback={<LatestInvoicesSkeleton />}>
-              <LatestInvoices />
+            <Suspense fallback={<LatestOrdersSkeleton />}>
+              <LatestOrders />
             </Suspense>
           </CardContent>
         </Card>
       </div>
     </main>
-  );
+  )
 }

@@ -24,15 +24,14 @@ export async function fetchLatestInvoices() {
 
 export async function fetchCardData() {
   try {
-    // Execute queries in parallel
     const [
+      numberOfOrders,
       numberOfInvoices,
-      numberOfCustomers,
       paidInvoiceSum,
       pendingInvoiceSum,
     ] = await Promise.all([
+      prisma.order.count(),
       prisma.invoice.count(),
-      prisma.customer.count(),
       prisma.invoice.aggregate({
         _sum: { amount: true },
         where: { status: 'paid' },
@@ -49,7 +48,7 @@ export async function fetchCardData() {
     )
 
     return {
-      numberOfCustomers,
+      numberOfOrders,
       numberOfInvoices,
       totalPaidInvoices,
       totalPendingInvoices,
@@ -212,6 +211,25 @@ export async function fetchOrderById(id: string) {
     console.error('Database Error:', error)
     throw new Error('Failed to fetch invoice.')
   }
+}
+
+export async function fetchLatestOrders() {
+  const feed = await prisma.order.findMany({
+    take: 5,
+    include: {
+      customer: {
+        select: {
+          name: true,
+          imageUrl: true,
+          email: true,
+        },
+      },
+    },
+    orderBy: {
+      createdAt: 'desc',
+    },
+  })
+  return feed
 }
 
 export async function fetchCustomers() {

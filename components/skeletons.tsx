@@ -67,6 +67,35 @@ export function LatestInvoicesSkeleton() {
   )
 }
 
+export function LatestOrderSkeleton() {
+  return (
+    <div className="flex items-center">
+      <span className="relative flex shrink-0 overflow-hidden rounded-full h-9 w-9">
+        <Skeleton className="h-10 w-10 rounded-full" />
+      </span>
+      <div className="ml-4 space-y-1">
+        <Skeleton className="h-5 w-[100px]" />
+        <Skeleton className="h-3 w-[100px]" />
+      </div>
+      <div className="ml-auto font-medium">
+        <Skeleton className="h-8 w-[120px]" />
+      </div>
+    </div>
+  )
+}
+
+export function LatestOrdersSkeleton() {
+  return (
+    <div className="space-y-8">
+      <LatestOrderSkeleton />
+      <LatestOrderSkeleton />
+      <LatestOrderSkeleton />
+      <LatestOrderSkeleton />
+      <LatestOrderSkeleton />
+    </div>
+  )
+}
+
 export default function DashboardSkeleton() {
   return (
     <>
