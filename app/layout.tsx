@@ -1,21 +1,24 @@
-import "@/styles/global.css";
-import { inter } from "@/styles/fonts";
-import { Metadata } from "next";
-import { ThemeProvider } from "@/components/theme-provider";
+import { Metadata } from 'next'
+import { Toaster } from 'sonner'
+
+import { ThemeProvider } from '@/components/theme-provider'
+
+import { inter } from '@/styles/fonts'
+import '@/styles/global.css'
 
 export const metadata: Metadata = {
   title: {
-    template: "%s | Acme Dashboard",
-    default: "Acme Dashboard",
+    template: '%s | Acme Dashboard',
+    default: 'Acme Dashboard',
   },
-  description: "The official Next.js Course Dashboard, built with App Router.",
-  metadataBase: new URL("https://next-learn-dashboard.vercel.sh"),
-};
+  description: 'The official Next.js Course Dashboard, built with App Router.',
+  metadataBase: new URL('https://next-learn-dashboard.vercel.sh'),
+}
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: React.ReactNode
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
@@ -28,7 +31,8 @@ export default function RootLayout({
         >
           {children}
         </ThemeProvider>
+        <Toaster position="top-right" />
       </body>
     </html>
-  );
+  )
 }

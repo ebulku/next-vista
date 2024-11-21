@@ -15,7 +15,7 @@ export default async function Layout({
 }) {
   const info = await auth()
   return (
-    <SidebarProvider>
+    <SidebarProvider className="h-screen">
       <AppSidebar user={info?.user} />
       <SidebarInset>
         <header className="flex h-16 shrink-0 items-center gap-2">
@@ -25,7 +25,9 @@ export default async function Layout({
             <BreadcrumbNav />
           </div>
         </header>
-        <div className="flex flex-1 flex-col gap-4 p-4 pt-2">{children}</div>
+        <div className="flex flex-1 flex-col gap-4 p-4 pt-2 overflow-scroll">
+          {children}
+        </div>
       </SidebarInset>
     </SidebarProvider>
   )

@@ -1,4 +1,9 @@
-import { FormattedCustomersTable } from '@/types'
+import { fetchFilteredCustomers } from '@/lib/data'
+
+import { DeleteCustomerButton } from '@/components/buttons'
+import CreateCustomer from '@/components/create-customer'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import { Separator } from '@/components/ui/separator'
 import {
   Table,
   TableBody,
@@ -7,15 +12,10 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { Card, CardContent, CardHeader } from '@/components/ui/card'
-import { Separator } from '@/components/ui/separator'
 import { UserAvatar } from '@/components/user-avatar'
 
-export default async function CustomersTable({
-  customers,
-}: {
-  customers: FormattedCustomersTable[]
-}) {
+export default async function CustomersTable({ query }: { query: string }) {
+  const customers = await fetchFilteredCustomers(query)
   return (
     <div className="mt-6 flow-root">
       <div className="inline-block min-w-full align-middle">
@@ -23,7 +23,7 @@ export default async function CustomersTable({
           <div className="md:hidden space-y-4">
             {customers?.map((customer) => (
               <Card key={customer.id}>
-                <CardHeader className="flex flex-row items-center justify-between">
+                <CardHeader className="flex flex-row items-center justify-between ">
                   <div className="flex items-center space-x-4">
                     <UserAvatar
                       imageUrl={customer.imageUrl || undefined}
@@ -36,24 +36,55 @@ export default async function CustomersTable({
                       <p className="text-sm text-muted-foreground">
                         {customer.email}
                       </p>
+                      <p className="text-sm text-muted-foreground">
+                        {customer.phone}
+                      </p>
                     </div>
+                  </div>
+                  <div>
+                    <CreateCustomer isIcon={true} customer={customer} />
+                    <DeleteCustomerButton id={customer.id} />
                   </div>
                 </CardHeader>
                 <CardContent>
                   <Separator />
                   <div className="flex w-full items-center justify-between py-5">
                     <div className="flex w-1/2 flex-col">
-                      <p className="text-xs">Pending</p>
-                      <p className="font-medium">{customer.total_pending}</p>
+                      <p className="text-xs">Orders</p>
+                      <p className="text-lg font-medium">
+                        {customer.total_orders}
+                      </p>
                     </div>
                     <div className="flex w-1/2 flex-col">
-                      <p className="text-xs">Paid</p>
-                      <p className="font-medium">{customer.total_paid}</p>
+                      <p className="text-xs">Invoices</p>
+                      <p className="text-lg font-medium">
+                        {customer.total_invoices}
+                      </p>
                     </div>
                   </div>
                   <Separator />
-                  <div className="pt-4 text-sm">
-                    <p>{customer.total_invoices} invoices</p>
+                  <div className="flex w-full items-center justify-between py-5">
+                    <div className="flex w-1/2 flex-col">
+                      <p className="text-xs">Pending</p>
+                      <p className="text-lg font-medium">
+                        {customer.total_pending}
+                      </p>
+                    </div>
+                    <div className="flex w-1/2 flex-col">
+                      <p className="text-xs">Paid</p>
+                      <p className="text-lg font-medium">
+                        {customer.total_paid}
+                      </p>
+                    </div>
+                  </div>
+                  <Separator />
+                  <div className="pt-2">
+                    <p className="text-sm font-medium">
+                      Address: {customer.address}
+                    </p>
+                    <p className="text-sm font-medium">
+                      Notes: {customer.description}
+                    </p>
                   </div>
                 </CardContent>
               </Card>
@@ -64,9 +95,14 @@ export default async function CustomersTable({
               <TableRow>
                 <TableHead>Name</TableHead>
                 <TableHead>Email</TableHead>
+                <TableHead>Phone</TableHead>
+                <TableHead>Address</TableHead>
+                <TableHead>Notes</TableHead>
+                <TableHead>Total Orders</TableHead>
                 <TableHead>Total Invoices</TableHead>
                 <TableHead>Total Pending</TableHead>
                 <TableHead>Total Paid</TableHead>
+                <TableHead className="text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -82,9 +118,17 @@ export default async function CustomersTable({
                     </div>
                   </TableCell>
                   <TableCell>{customer.email}</TableCell>
+                  <TableCell>{customer.phone}</TableCell>
+                  <TableCell>{customer.address}</TableCell>
+                  <TableCell>{customer.description}</TableCell>
+                  <TableCell>{customer.total_orders}</TableCell>
                   <TableCell>{customer.total_invoices}</TableCell>
                   <TableCell>{customer.total_pending}</TableCell>
                   <TableCell>{customer.total_paid}</TableCell>
+                  <TableCell>
+                    <CreateCustomer isIcon={true} customer={customer} />
+                    <DeleteCustomerButton id={customer.id} />
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>

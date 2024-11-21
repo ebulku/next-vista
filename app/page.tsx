@@ -1,10 +1,9 @@
 import AcmeLogo from '@/components/app-logo'
 import { ArrowRightIcon } from '@heroicons/react/24/outline'
 import Link from 'next/link'
-import { lusitana } from '@/styles/fonts'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
-import { ModeToggle } from '@/components/dark-button'
+import { ModeToggle } from '@/components/mode-toggle'
 import { GithubIcon } from 'lucide-react'
 
 export default function Page() {

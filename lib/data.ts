@@ -1,5 +1,5 @@
-import { formatCurrency } from '@/lib/utils'
 import prisma from '@/lib/prisma'
+import { formatCurrency } from '@/lib/utils'
 
 export async function fetchRevenue() {
   const feed = await prisma.revenue.findMany()
@@ -24,15 +24,14 @@ export async function fetchLatestInvoices() {
 
 export async function fetchCardData() {
   try {
-    // Execute queries in parallel
     const [
+      numberOfOrders,
       numberOfInvoices,
-      numberOfCustomers,
       paidInvoiceSum,
       pendingInvoiceSum,
     ] = await Promise.all([
+      prisma.order.count(),
       prisma.invoice.count(),
-      prisma.customer.count(),
       prisma.invoice.aggregate({
         _sum: { amount: true },
         where: { status: 'paid' },
@@ -49,7 +48,7 @@ export async function fetchCardData() {
     )
 
     return {
-      numberOfCustomers,
+      numberOfOrders,
       numberOfInvoices,
       totalPaidInvoices,
       totalPendingInvoices,
@@ -115,7 +114,7 @@ export async function fetchInvoiceById(id: string) {
     })
 
     if (!invoice) {
-      throw new Error('Invoice not found')
+      return null
     }
     // Convert amount from cents to dollars
     return {
@@ -128,9 +127,137 @@ export async function fetchInvoiceById(id: string) {
   }
 }
 
+export async function fetchOrdersPages(query: string) {
+  // await new Promise((resolve) => setTimeout(resolve, 5000))
+  const feed = await prisma.order.count({
+    where: {
+      OR: [
+        { customer: { name: { contains: query, mode: 'insensitive' } } },
+        { customer: { email: { contains: query, mode: 'insensitive' } } },
+        { title: { contains: query, mode: 'insensitive' } },
+        { notes: { some: { body: { contains: query, mode: 'insensitive' } } } },
+      ],
+    },
+  })
+
+  return Math.ceil(feed / ITEMS_PER_PAGE)
+}
+
+export async function fetchFilteredOrders(query: string, currentPage: number) {
+  const offset = (currentPage - 1) * ITEMS_PER_PAGE
+  const feed = await prisma.order.findMany({
+    take: ITEMS_PER_PAGE,
+    skip: offset,
+    include: {
+      customer: {
+        select: {
+          name: true,
+          imageUrl: true,
+          email: true,
+        },
+      },
+      notes: {
+        take: 1,
+        orderBy: {
+          createdAt: 'desc',
+        },
+        select: {
+          body: true,
+        },
+      },
+    },
+    where: {
+      OR: [
+        { customer: { name: { contains: query, mode: 'insensitive' } } },
+        { customer: { email: { contains: query, mode: 'insensitive' } } },
+        { title: { contains: query, mode: 'insensitive' } },
+        { notes: { some: { body: { contains: query, mode: 'insensitive' } } } },
+      ],
+    },
+    orderBy: {
+      createdAt: 'desc',
+    },
+  })
+
+  return feed
+}
+
+export async function fetchOrderById(id: string) {
+  try {
+    const order = await prisma.order.findUnique({
+      where: {
+        id: id,
+      },
+      include: {
+        customer: {
+          select: {
+            name: true,
+            imageUrl: true,
+            email: true,
+          },
+        },
+      },
+    })
+
+    if (!order) {
+      return null
+    }
+    // Convert amount from cents to dollars
+    return {
+      ...order,
+      amount: order.amount ? order.amount / 100 : 0,
+    }
+  } catch (error) {
+    console.error('Database Error:', error)
+    throw new Error('Failed to fetch invoice.')
+  }
+}
+
+export async function fetchLatestOrders() {
+  const feed = await prisma.order.findMany({
+    take: 5,
+    include: {
+      customer: {
+        select: {
+          name: true,
+          imageUrl: true,
+          email: true,
+        },
+      },
+    },
+    orderBy: {
+      createdAt: 'desc',
+    },
+  })
+  return feed
+}
+
 export async function fetchCustomers() {
-  const customers = await prisma.customer.findMany()
+  const customers = await prisma.customer.findMany({
+    orderBy: {
+      name: 'asc',
+    },
+  })
   return customers
+}
+
+export async function fetchCustomerById(id: string) {
+  try {
+    const customer = await prisma.customer.findUnique({
+      where: {
+        id: id,
+      },
+    })
+
+    if (!customer) {
+      return null
+    }
+
+    return customer
+  } catch (error) {
+    console.error('Database Error:', error)
+    throw new Error('Failed to fetch customer.')
+  }
 }
 
 export async function fetchFilteredCustomers(query: string) {
@@ -156,11 +283,19 @@ export async function fetchFilteredCustomers(query: string) {
         id: true,
         name: true,
         email: true,
+        phone: true,
+        address: true,
+        description: true,
         imageUrl: true,
         invoices: {
           select: {
             status: true,
             amount: true,
+          },
+        },
+        _count: {
+          select: {
+            orders: true,
           },
         },
       },
@@ -181,7 +316,11 @@ export async function fetchFilteredCustomers(query: string) {
         id: customer.id,
         name: customer.name,
         email: customer.email,
+        phone: customer.phone,
+        address: customer.address,
+        description: customer.description,
         imageUrl: customer.imageUrl,
+        total_orders: customer._count.orders,
         total_invoices: customer.invoices.length,
         total_pending: formatCurrency(totalPending),
         total_paid: formatCurrency(totalPaid),
@@ -192,5 +331,51 @@ export async function fetchFilteredCustomers(query: string) {
   } catch (err) {
     console.error('Database Error:', err)
     throw new Error('Failed to fetch customer table.')
+  }
+}
+
+export async function fetchOrderNotes(id: string) {
+  try {
+    const notes = await prisma.note.findMany({
+      where: {
+        orderId: id,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    })
+    return notes
+  } catch (err) {
+    console.error('Database Error:', err)
+    throw new Error('Failed to fetch order notes.')
+  }
+}
+
+export async function fetchOrderFiles(id: string) {
+  try {
+    const files = await prisma.file.findMany({
+      where: {
+        orderId: id,
+      },
+    })
+    return files
+  } catch (err) {
+    console.error('Database Error:', err)
+    throw new Error('Failed to fetch order files.')
+  }
+}
+
+export async function getFileUrlById(id: string) {
+  try {
+    const file = await prisma.file.findUnique({
+      where: {
+        id: id,
+      },
+    })
+
+    return file?.url
+  } catch (err) {
+    console.error('Database Error:', err)
+    throw new Error('Failed to fetch file.')
   }
 }

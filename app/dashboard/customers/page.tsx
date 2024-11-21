@@ -1,10 +1,11 @@
-import { fetchFilteredCustomers } from '@/lib/data'
 import { Metadata } from 'next'
-import { TypographyH2 } from '@/components/ui/typography'
-import Search from '@/components/search'
 import { Suspense } from 'react'
-import { InvoicesTableSkeleton } from '@/components/skeletons'
+
+import CreateCustomer from '@/components/create-customer'
 import CustomersTable from '@/components/customers/table'
+import Search from '@/components/search'
+import { CustomerTableSkeleton } from '@/components/skeletons'
+import { TypographyH2 } from '@/components/ui/typography'
 
 const title = 'Customers'
 export const metadata: Metadata = {
@@ -20,16 +21,15 @@ export default async function Page(props: {
   const searchParams = await props.searchParams
   const query = searchParams?.query || ''
 
-  const customers = await fetchFilteredCustomers(query)
-
   return (
     <>
       <TypographyH2 text={title} />
       <div className="mt-4 flex items-center justify-between gap-2 md:mt-8">
         <Search placeholder="Search Customers..." />
+        <CreateCustomer />
       </div>
-      <Suspense key={query} fallback={<InvoicesTableSkeleton />}>
-        <CustomersTable customers={customers} />
+      <Suspense key={query} fallback={<CustomerTableSkeleton />}>
+        <CustomersTable query={query} />
       </Suspense>
     </>
   )

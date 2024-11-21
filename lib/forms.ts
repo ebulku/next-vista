@@ -12,3 +12,54 @@ export const CreateInvoiceSchema = z.object({
     invalid_type_error: 'Please select a valid Status',
   }),
 })
+
+export const CreateOrderSchema = z.object({
+  // id: z.string(),
+  customerId: z
+    .string({
+      invalid_type_error: 'Please select a valid Customer',
+    })
+    .optional(),
+  amount: z.coerce.number({
+    invalid_type_error: 'Please enter a valid amount',
+  }),
+  status: z.enum(['new', 'production', 'shipped', 'paid'], {
+    invalid_type_error: 'Please select a valid Status',
+  }),
+  title: z.string({
+    invalid_type_error: 'Please enter a valid title',
+  }),
+})
+
+export const CreateNoteSchema = z.object({
+  body: z.string({
+    invalid_type_error: 'Please enter a valid Note',
+  }),
+})
+
+export const CreateCustomerSchema = z.object({
+  name: z.string({
+    invalid_type_error: 'Please enter a valid name',
+  }),
+  email: z
+    .string({
+      invalid_type_error: 'Please enter a valid email',
+    })
+    .email()
+    .optional(),
+  phone: z
+    .string({
+      invalid_type_error: 'Please enter a valid phone number',
+    })
+    .optional(),
+  address: z
+    .string({
+      invalid_type_error: 'Please enter a valid address',
+    })
+    .optional(),
+  description: z
+    .string({
+      invalid_type_error: 'Please enter a valid description',
+    })
+    .optional(),
+})

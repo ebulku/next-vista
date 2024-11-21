@@ -1,6 +1,7 @@
 import { fetchLatestInvoices } from '@/lib/data'
 import { formatCurrency } from '@/lib/utils'
-import { UserAvatar } from '../user-avatar'
+
+import { UserAvatar } from '@/components/user-avatar'
 
 export default async function LatestInvoices() {
   const latestInvoices = await fetchLatestInvoices()

@@ -29,7 +29,7 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "prisma/data.ts",
-    "scripts/seed.js"
+    "prisma/seed.ts"
   ],
   "exclude": ["node_modules"],
   "ts-node": {

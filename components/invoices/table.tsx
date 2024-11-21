@@ -1,8 +1,11 @@
-import { formatDateToLocal, formatCurrency } from '@/lib/utils'
-
-import { UpdateInvoice, DeleteInvoice } from '@/components/invoices/buttons'
-import InvoiceStatus from '@/components/status-badge'
 import { fetchFilteredInvoices } from '@/lib/data'
+import { formatCurrency, formatDateToLocal } from '@/lib/utils'
+
+import { DeleteInvoiceButton, UpdateInvoiceButton } from '@/components/buttons'
+import InvoiceStatus from '@/components/status-badge'
+import StatusBadge from '@/components/status-badge'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import { Separator } from '@/components/ui/separator'
 import {
   Table,
   TableBody,
@@ -11,9 +14,6 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { Card, CardContent, CardHeader } from '@/components/ui/card'
-import { Separator } from '@/components/ui/separator'
-import StatusBadge from '@/components/status-badge'
 import { UserAvatar } from '@/components/user-avatar'
 
 export default async function InvoicesTable({
@@ -61,8 +61,8 @@ export default async function InvoicesTable({
                       </p>
                     </div>
                     <div className="flex justify-end gap-2">
-                      <UpdateInvoice id={invoice.id} />
-                      <DeleteInvoice id={invoice.id} />
+                      <UpdateInvoiceButton id={invoice.id} />
+                      <DeleteInvoiceButton id={invoice.id} />
                     </div>
                   </div>
                 </CardContent>
@@ -100,8 +100,8 @@ export default async function InvoicesTable({
                   </TableCell>
                   <TableCell>
                     <div className="flex justify-end gap-3">
-                      <UpdateInvoice id={invoice.id} />
-                      <DeleteInvoice id={invoice.id} />
+                      <UpdateInvoiceButton id={invoice.id} />
+                      <DeleteInvoiceButton id={invoice.id} />
                     </div>
                   </TableCell>
                 </TableRow>

@@ -1,6 +1,11 @@
-# Next.js Admin Dashboard with Prisma and shadcn/ui
+# Next.js 15 Admin Dashboard with Prisma and shadcn/ui
 
-This repository is a project built following the [Next.js tutorial](https://nextjs.org/learn) with added integration of [Prisma](https://www.prisma.io/), a next-generation ORM for seamless database interaction. Additionally, this project incorporates [shadcn/ui](https://shadcn.dev/) for reusable and beautifully designed UI components.
+This Admin Dashboard is built following the
+[Next.js tutorial](https://nextjs.org/learn) for Next.js 15 with added
+integration of [Prisma](https://www.prisma.io/). Additionally, this project
+incorporates [shadcn/ui](https://shadcn.dev/) for reusable and beautifully
+designed UI components. [Vercel Storage](https://vercel.com/docs/storage) is
+used for storing images and files.
 
 ## Demo
 
@@ -21,13 +26,19 @@ You can try a live demo of this dashboard here:
 
 ## Overview
 
-This application is built using [Next.js](https://nextjs.org/), a React framework that enables server-side rendering, static site generation, and more. Prisma has been integrated to simplify data management and provide a strong type-safe connection to the database.
+This application is built using [Next.js](https://nextjs.org/), a React
+framework that enables server-side rendering, static site generation, and more.
+Prisma has been integrated to simplify data management and provide a strong
+type-safe connection to the database.
 
-## Features
+## Technologies
 
-- **Next.js**: Framework for creating performant and scalable React applications with a focus on server-rendering and static exports.
-- **Prisma**: Used as the ORM for database management, providing a smooth way to interact with the database in a type-safe manner.
-- **shadcn/ui**: Integrated for building elegant, reusable components with consistent styling.
+- **Next.js**: Framework for creating performant and scalable React applications
+  with a focus on server-rendering and static exports.
+- **Prisma**: Used as the ORM for database management, providing a smooth way to
+  interact with the database in a type-safe manner.
+- **shadcn/ui**: Integrated for building elegant, reusable components with
+  consistent styling.
 
 ## Getting Started
 
@@ -54,8 +65,9 @@ This application is built using [Next.js](https://nextjs.org/), a React framewor
 
 3. **Configure Prisma**:
 
-   Copy `.env.example` to `.env` and fill your database connection:
-   (For more details, see this step guide in the [Next.js Tutorial](https://nextjs.org/learn/dashboard-app/setting-up-your-database#create-a-postgres-database))
+   Copy `.env.example` to `.env` and fill your database connection: (For more
+   details, see this step guide in the
+   [Next.js Tutorial](https://nextjs.org/learn/dashboard-app/setting-up-your-database#create-a-postgres-database))
 
    ```plaintext
     POSTGRES_URL=
@@ -105,7 +117,8 @@ The app should be available at `http://localhost:3000`.
 
 ## Prisma Integration
 
-Prisma is used in this project to handle data interactions. Here’s a quick overview of commands to manage the database with Prisma:
+Prisma is used in this project to handle data interactions. Here’s a quick
+overview of commands to manage the database with Prisma:
 
 - **Run migrations**:
 
@@ -119,14 +132,16 @@ Prisma is used in this project to handle data interactions. Here’s a quick ove
   npx prisma generate
   ```
 
-- **Open Prisma Studio** (a web-based interface for interacting with your database):
+- **Open Prisma Studio** (a web-based interface for interacting with your
+  database):
   ```bash
   npx prisma studio
   ```
 
 ## Contributing
 
-Contributions are welcome! Please submit an issue or pull request if you have suggestions or improvements.
+Contributions are welcome! Please submit an issue or pull request if you have
+suggestions or improvements.
 
 ## License
 

@@ -20,11 +20,15 @@ model User {
 }
 
 model Customer {
-    id       String    @id @default(cuid())
-    name     String
-    email    String    @unique
-    imageUrl String?   @map("image_url")
-    invoices Invoice[]
+    id          String    @id @default(cuid())
+    name        String
+    email       String?
+    phone       String?
+    address     String?
+    description String?
+    imageUrl    String?   @map("image_url")
+    invoices    Invoice[]
+    orders      Order[]
 }
 
 model Invoice {
@@ -34,7 +38,7 @@ model Invoice {
     status     InvoiceStatus @default(pending)
     date       DateTime      @default(now()) @map(name: "created_at")
 
-    customer Customer @relation(fields: [customerId], references: [id])
+    customer Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
 }
 
 model Revenue {
@@ -42,7 +46,48 @@ model Revenue {
     revenue Int
 }
 
+model Order {
+    id         String      @id @default(cuid())
+    title      String
+    customerId String?     @map("customer_id")
+    amount     Int?
+    status     OrderStatus @default(new)
+    notes      Note[]
+    files      File[]
+
+    createdAt DateTime @default(now()) @map(name: "created_at")
+    updatedAt DateTime @updatedAt @map(name: "updated_at")
+
+    customer Customer? @relation(fields: [customerId], references: [id])
+}
+
+model Note {
+    id        String   @id @default(cuid())
+    body      String
+    createdAt DateTime @default(now()) @map(name: "created_at")
+    updatedAt DateTime @updatedAt @map(name: "updated_at")
+    order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+    orderId   String   @map("order_id")
+}
+
+model File {
+    id        String   @id @default(cuid())
+    name      String?
+    url       String
+    type      String   @default("image")
+    createdAt DateTime @default(now()) @map(name: "created_at")
+    order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+    orderId   String   @map("order_id")
+}
+
 enum InvoiceStatus {
     pending
+    paid
+}
+
+enum OrderStatus {
+    new
+    production
+    shipped
     paid
 }

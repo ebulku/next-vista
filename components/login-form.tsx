@@ -1,5 +1,10 @@
 'use client'
 
+import { ExclamationCircleIcon } from '@heroicons/react/24/outline'
+import { useActionState } from 'react'
+
+import { authenticate } from '@/lib/actions'
+
 import { Button } from '@/components/ui/button'
 import {
   Card,
@@ -10,9 +15,6 @@ import {
 } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { useActionState } from 'react'
-import { authenticate } from '@/lib/actions'
-import { ExclamationCircleIcon } from '@heroicons/react/24/outline'
 
 export function LoginForm() {
   const [errorMessage, formAction, isPending] = useActionState(
@@ -54,7 +56,12 @@ export function LoginForm() {
                 defaultValue={'123456'}
               />
             </div>
-            <Button type="submit" className="w-full" aria-disabled={isPending}>
+            <Button
+              loading={isPending}
+              type="submit"
+              className="w-full"
+              aria-disabled={isPending}
+            >
               Login
             </Button>
             <div
