@@ -1,10 +1,11 @@
 import { File, Note } from '@prisma/client'
 import { FileDownIcon } from 'lucide-react'
+import { headers } from 'next/headers'
 import Image from 'next/image'
 import Link from 'next/link'
 
 import { fetchOrderFiles, fetchOrderNotes } from '@/lib/data'
-import { formatDateToLocal, isImageType } from '@/lib/utils'
+import { formatDateToLocal, getHostname, isImageType } from '@/lib/utils'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -28,6 +29,9 @@ export default async function OrderTimeline({ orderId }: { orderId: string }) {
     (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
   )
 
+  const headersList = await headers()
+  const hostName = getHostname(headersList)
+
   return (
     <>
       <Timeline>
@@ -46,13 +50,13 @@ export default async function OrderTimeline({ orderId }: { orderId: string }) {
                       <Image
                         width={500}
                         height={500}
-                        src={`/dashboard/api/files/${item.id}`}
+                        src={`${hostName}/api/files/${item.id}`}
                         alt="Uploaded File"
                         className="object-cover rounded"
                       />
                       <Button variant={'ghost'} asChild>
                         <Link
-                          href={`/dashboard/api/files/${item.id}`}
+                          href={`/api/files/${item.id}`}
                           target="_blank"
                           rel="noopener noreferrer"
                         >
@@ -69,7 +73,7 @@ export default async function OrderTimeline({ orderId }: { orderId: string }) {
                         variant={'secondary'}
                       >
                         <Link
-                          href={`/dashboard/api/files/${item.id}`}
+                          href={`/api/files/${item.id}`}
                           target="_blank"
                           rel="noopener noreferrer"
                         >
@@ -77,7 +81,7 @@ export default async function OrderTimeline({ orderId }: { orderId: string }) {
                         </Link>
                       </Button>
                       <a
-                        href={`/dashboard/api/files/${item.id}`}
+                        href={`/api/files/${item.id}`}
                         target="_blank"
                         rel="noopener noreferrer"
                       >

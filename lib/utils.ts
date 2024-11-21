@@ -1,5 +1,6 @@
 import { Revenue } from '@prisma/client'
 import { type ClassValue, clsx } from 'clsx'
+import { ReadonlyHeaders } from 'next/dist/server/web/spec-extension/adapters/headers'
 import { twMerge } from 'tailwind-merge'
 
 export const formatCurrency = (amount: number) => {
@@ -116,4 +117,10 @@ export function formatBytes(
 
 export function isImageType(fileType: string) {
   return fileType.startsWith('image/')
+}
+
+export const getHostname = (headersList: ReadonlyHeaders) => {
+  const proto = headersList.get('x-forwarded-proto')
+  const host = headersList.get('host')
+  return `${proto}://${host}`
 }
