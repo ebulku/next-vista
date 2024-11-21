@@ -22,6 +22,10 @@ module.exports = {
         hostname: process.env.BLOB_STORE_HOSTNAME,
         port: '',
       },
+      {
+        protocol: 'https',
+        hostname: '**.vercel.app',
+      },
     ],
   },
   experimental: {

@@ -77,7 +77,7 @@ export default function CreateCustomer({
       const method = customer ? 'Edited' : 'Created'
       toast.success(`Customer ${method} Successfully.`)
     }
-  }, [state, form])
+  }, [state, form, customer])
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
