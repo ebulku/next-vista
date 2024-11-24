@@ -107,7 +107,7 @@ export default function CreateCustomer({
             className="space-y-4"
           >
             <DialogHeader>
-              <DialogTitle>Add a new Note</DialogTitle>
+              <DialogTitle>Create a new customer</DialogTitle>
             </DialogHeader>
             <FormField
               control={form.control}

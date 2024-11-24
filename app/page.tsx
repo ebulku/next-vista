@@ -1,4 +1,4 @@
-import AcmeLogo from '@/components/app-logo'
+import AppLogo from '@/components/app-logo'
 import { ArrowRightIcon } from '@heroicons/react/24/outline'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -9,7 +9,7 @@ import { GithubIcon } from 'lucide-react'
 export default function Page() {
   return (
     <main className="flex min-h-screen flex-col p-6">
-      <AcmeLogo />
+      <AppLogo />
       <div className="mt-4 flex grow flex-col gap-4 md:flex-row">
         <div className="flex flex-col justify-center gap-6 rounded-lgpx-6 py-10 md:w-2/5 md:px-20">
           <p className={`text-xl md:text-3xl md:leading-normal`}>
@@ -31,7 +31,7 @@ export default function Page() {
             <ModeToggle />
             <Button size="icon" asChild>
               <a
-                href="https://github.com/ebulku/nextjs-dashboard"
+                href="https://github.com/ebulku/next-vista"
                 target="_blank"
               >
                 <GithubIcon />
