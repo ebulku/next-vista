@@ -1,6 +1,6 @@
 import { auth } from '@/auth'
-import { AppSidebar } from '@/components/app-sidebar'
-import BreadcrumbNav from '@/components/breadcrumb-nav'
+import { AppSidebar } from '@/components/layout/app-sidebar'
+import BreadcrumbNav from '@/components/layout/breadcrumb-nav'
 import { Separator } from '@/components/ui/separator'
 import {
   SidebarInset,

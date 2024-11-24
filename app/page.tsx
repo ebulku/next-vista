@@ -1,9 +1,9 @@
-import AppLogo from '@/components/app-logo'
+import AppLogo from '@/components/layout/app-logo'
 import { ArrowRightIcon } from '@heroicons/react/24/outline'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
-import { ModeToggle } from '@/components/mode-toggle'
+import { ModeToggle } from '@/components/layout/mode-toggle'
 import { GithubIcon } from 'lucide-react'
 
 export default function Page() {

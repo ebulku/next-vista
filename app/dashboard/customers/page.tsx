@@ -1,7 +1,7 @@
 import { Metadata } from 'next'
 import { Suspense } from 'react'
 
-import CreateCustomer from '@/components/create-customer'
+import CreateCustomer from '@/components/customers/create-customer'
 import CustomersTable from '@/components/customers/table'
 import Search from '@/components/search'
 import { CustomerTableSkeleton } from '@/components/skeletons'

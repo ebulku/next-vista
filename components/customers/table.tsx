@@ -1,7 +1,7 @@
 import { fetchFilteredCustomers } from '@/lib/data'
 
 import { DeleteCustomerButton } from '@/components/buttons'
-import CreateCustomer from '@/components/create-customer'
+import CreateCustomer from '@/components/customers/create-customer'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import {

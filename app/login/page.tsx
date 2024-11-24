@@ -1,4 +1,4 @@
-import AppLogo from '@/components/app-logo'
+import AppLogo from '@/components/layout/app-logo'
 import { LoginForm } from '@/components/login-form'
 import { Metadata } from 'next'
 

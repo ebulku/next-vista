@@ -18,7 +18,7 @@ import { State } from '@/lib/actions'
 import { CreateOrderSchema } from '@/lib/forms'
 import { cn } from '@/lib/utils'
 
-import CreateCustomer from '@/components/create-customer'
+import CreateCustomer from '@/components/customers/create-customer'
 import StatusBadge from '@/components/status-badge'
 import { Button } from '@/components/ui/button'
 import {
