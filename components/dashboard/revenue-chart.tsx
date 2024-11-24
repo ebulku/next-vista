@@ -1,6 +1,6 @@
 import { generateRevenueData } from "@/lib/utils";
 import { fetchRevenue } from "@/lib/data";
-import { Chart } from "@/components/chart";
+import { Chart } from "@/components/dashboard/chart";
 
 export default async function RevenueChart() {
   const revenue = await fetchRevenue();

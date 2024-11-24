@@ -1,8 +1,6 @@
-import AppLogo from '@/components/app-logo'
-import AcmeLogo from '@/components/app-logo'
+import AppLogo from '@/components/layout/app-logo'
 import { LoginForm } from '@/components/login-form'
 import { Metadata } from 'next'
-import App from 'next/app'
 
 export const metadata: Metadata = {
   title: 'Login',

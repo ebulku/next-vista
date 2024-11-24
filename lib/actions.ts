@@ -5,17 +5,20 @@ import { AuthError } from 'next-auth'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { z } from 'zod'
+import bcrypt from 'bcrypt'
 
 import {
+  ChangePasswordSchema,
   CreateCustomerSchema,
   CreateInvoiceSchema,
   CreateNoteSchema,
   CreateOrderSchema,
 } from '@/lib/forms'
+
 import prisma from '@/lib/prisma'
 import { isImageType } from '@/lib/utils'
 
-import { signIn } from '@/auth'
+import { signIn, auth } from '@/auth'
 
 export type State = {
   errors?: {
@@ -43,6 +46,16 @@ export type CreateCustomerState = {
     description?: string[]
   }
   message: string
+  success: boolean
+}
+
+export type ChangePasswordState = {
+  message: string
+  errors?: {
+    currentPassword?: string[]
+    newPassword?: string[]
+    confirmPassword?: string[]
+  }
   success: boolean
 }
 
@@ -172,7 +185,7 @@ export async function createOrder(
   if (!validatedFields.success) {
     return {
       errors: validatedFields.error.flatten().fieldErrors,
-      message: 'Missing Fields. Failed to Create Invoice.',
+      message: 'Missing Fields. Failed to Create Order.',
     }
   }
 
@@ -216,7 +229,7 @@ export async function updateOrder(
   if (!validatedFields.success) {
     return {
       errors: validatedFields.error.flatten().fieldErrors,
-      message: 'Missing Fields. Failed to Update Invoice.',
+      message: 'Missing Fields. Failed to Update Order.',
     }
   }
 
@@ -236,7 +249,7 @@ export async function updateOrder(
       },
     })
   } catch (error) {
-    return { message: 'Database Error: Failed to update invoice.' }
+    return { message: 'Database Error: Failed to update order.' }
   }
 
   revalidatePath(`/dashboard/orders/${id}`)
@@ -425,4 +438,95 @@ export async function deleteCustomer(id: string) {
     return { message: 'Database Error: Failed to delete customer.' }
   }
   revalidatePath('/dashboard/customers')
+}
+
+export async function changePassword(
+  prevState: ChangePasswordState,
+  formData: z.infer<typeof ChangePasswordSchema>,
+): Promise<ChangePasswordState> {
+
+  if (process.env.ENVIRONMENT === 'demo') {
+    return {
+      message: 'Password changes are not allowed in demo.',
+      success: true,
+    }
+  }
+
+  try {
+    // Get current user session
+    const session = await auth()
+    if (!session?.user?.email) {
+      return {
+        message: 'You must be logged in to change your password.',
+        success: false,
+      }
+    }
+
+    // Validate form data
+    const validatedFields = ChangePasswordSchema.safeParse(formData)
+
+    if (!validatedFields.success) {
+      return {
+        message: 'Invalid form data. Please check your input.',
+        errors: validatedFields.error.flatten().fieldErrors,
+        success: false,
+      }
+    }
+
+    const { currentPassword, newPassword } = validatedFields.data
+
+    // Get current user's password hash from database
+    const user = await prisma.user.findFirst({
+      where: {
+        email: session.user.email,
+      },
+    })
+
+    if (!user) {
+      return {
+        message: 'User not found.',
+        success: false,
+      }
+    }
+
+    // Verify current password
+    const isPasswordValid = await bcrypt.compare(
+      currentPassword,
+      user.password,
+    )
+
+    if (!isPasswordValid) {
+      return {
+        message: 'Current password is incorrect.',
+        errors: {
+          currentPassword: ['Current password is incorrect.'],
+        },
+        success: false,
+      }
+    }
+
+    // Hash new password
+    const hashedPassword = await bcrypt.hash(newPassword, 10)
+
+    // Update password in database
+    await prisma.user.update({
+      where: {
+        id: user.id,
+      },
+      data: {
+        password: hashedPassword,
+      },
+    })
+
+    return {
+      message: 'Password changed successfully.',
+      success: true,
+    }
+  } catch (error) {
+    console.error('Failed to change password:', error)
+    return {
+      message: 'An error occurred while changing your password.',
+      success: false,
+    }
+  }
 }

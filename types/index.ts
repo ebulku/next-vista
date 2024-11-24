@@ -66,7 +66,7 @@ export type InvoiceForm = {
 export type OrderForm = {
   id: string
   customerId: string | null
-  amount: number
+  amount: number | null
   title: string
   status: 'new' | 'production' | 'shipped' | 'paid'
 }

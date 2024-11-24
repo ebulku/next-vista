@@ -18,7 +18,7 @@ import { State } from '@/lib/actions'
 import { CreateOrderSchema } from '@/lib/forms'
 import { cn } from '@/lib/utils'
 
-import CreateCustomer from '@/components/create-customer'
+import CreateCustomer from '@/components/customers/create-customer'
 import StatusBadge from '@/components/status-badge'
 import { Button } from '@/components/ui/button'
 import {
@@ -190,7 +190,7 @@ export default function Form({
             <FormField
               control={form.control}
               name="amount"
-              defaultValue={order?.amount || 0}
+              defaultValue={order?.amount ? order.amount / 100 : 0}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Choose an amount</FormLabel>

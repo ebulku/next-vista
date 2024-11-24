@@ -107,35 +107,37 @@ export default function CreateCustomer({
             className="space-y-4"
           >
             <DialogHeader>
-              <DialogTitle>Add a new Note</DialogTitle>
+              <DialogTitle>Create a new customer</DialogTitle>
             </DialogHeader>
             <FormField
               control={form.control}
               name="name"
               render={({ field }) => (
-                <FormInput name="Name" field={field} required />
+                <FormInput label="Name" field={field} required />
               )}
             />
             <FormField
               control={form.control}
               name="email"
-              render={({ field }) => <FormInput name="Email" field={field} />}
+              render={({ field }) => <FormInput label="Email" field={field} />}
             />
             <FormField
               control={form.control}
               name="phone"
-              render={({ field }) => <FormInput name="Phone" field={field} />}
+              render={({ field }) => <FormInput label="Phone" field={field} />}
             />
             <FormField
               control={form.control}
               name="address"
-              render={({ field }) => <FormInput name="Address" field={field} />}
+              render={({ field }) => (
+                <FormInput label="Address" field={field} />
+              )}
             />
             <FormField
               control={form.control}
               name="description"
               render={({ field }) => (
-                <FormInput name="Description" field={field} />
+                <FormInput label="Description" field={field} />
               )}
             />
             {state?.message && (

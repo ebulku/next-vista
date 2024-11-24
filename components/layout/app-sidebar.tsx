@@ -2,8 +2,8 @@
 
 import { BookCopy, HomeIcon, ListCollapseIcon, Users } from 'lucide-react'
 
-import { NavProjects } from '@/components/nav-projects'
-import { NavUser } from '@/components/nav-user'
+import { NavProjects } from '@/components/layout/nav-projects'
+import { NavUser } from '@/components/layout/nav-user'
 import {
   Sidebar,
   SidebarContent,
@@ -14,7 +14,7 @@ import {
   SidebarMenuItem,
 } from '@/components/ui/sidebar'
 import Link from 'next/link'
-import { ModeToggle } from '@/components/mode-toggle'
+import { ModeToggle } from '@/components/layout/mode-toggle'
 import { User } from 'next-auth'
 import AppLogo from './app-logo'
 

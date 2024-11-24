@@ -7,7 +7,7 @@ export default function AppLogo() {
         <CommandIcon className="size-4" />
       </div>
       <div className="grid flex-1 text-left text-sm leading-tight">
-        <span className="font-semibold">NextJs Dashboard</span>
+        <span className="font-semibold">Next Vista</span>
         <span className="text-xs">Prisma | Shadcn</span>
       </div>
     </div>

@@ -1,4 +1,4 @@
-import { ChevronsUpDown, LogOut, PowerIcon } from 'lucide-react'
+import { ChevronsUpDown, LogOut } from 'lucide-react'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,6 +16,7 @@ import {
 import { UserAvatar } from '@/components/user-avatar'
 import { signOut } from '@/auth'
 import { User } from 'next-auth'
+import { ChangePassword } from '@/components/auth/change-password'
 
 export function NavUser({ user }: { user: User | undefined }) {
   const { isMobile } = useSidebar()
@@ -54,12 +55,13 @@ export function NavUser({ user }: { user: User | undefined }) {
                 </div>
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
+              <ChangePassword />
               <DropdownMenuItem
                 onClick={async () => {
                   await signOut()
                 }}
               >
-                <LogOut />
+                <LogOut className="mr-2 size-4" />
                 Log out
               </DropdownMenuItem>
             </DropdownMenuContent>
