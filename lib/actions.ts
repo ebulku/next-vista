@@ -172,7 +172,7 @@ export async function createOrder(
   if (!validatedFields.success) {
     return {
       errors: validatedFields.error.flatten().fieldErrors,
-      message: 'Missing Fields. Failed to Create Invoice.',
+      message: 'Missing Fields. Failed to Create Order.',
     }
   }
 
@@ -216,7 +216,7 @@ export async function updateOrder(
   if (!validatedFields.success) {
     return {
       errors: validatedFields.error.flatten().fieldErrors,
-      message: 'Missing Fields. Failed to Update Invoice.',
+      message: 'Missing Fields. Failed to Update Order.',
     }
   }
 
@@ -236,7 +236,7 @@ export async function updateOrder(
       },
     })
   } catch (error) {
-    return { message: 'Database Error: Failed to update invoice.' }
+    return { message: 'Database Error: Failed to update order.' }
   }
 
   revalidatePath(`/dashboard/orders/${id}`)

@@ -190,7 +190,7 @@ export default function Form({
             <FormField
               control={form.control}
               name="amount"
-              defaultValue={order?.amount || 0}
+              defaultValue={order?.amount ? order.amount / 100 : 0}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Choose an amount</FormLabel>

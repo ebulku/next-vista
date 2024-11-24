@@ -201,12 +201,8 @@ export async function fetchOrderById(id: string) {
 
     if (!order) {
       return null
-    }
-    // Convert amount from cents to dollars
-    return {
-      ...order,
-      amount: order.amount ? order.amount / 100 : 0,
-    }
+    } 
+    return order
   } catch (error) {
     console.error('Database Error:', error)
     throw new Error('Failed to fetch invoice.')

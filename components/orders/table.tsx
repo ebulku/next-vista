@@ -114,7 +114,7 @@ export default async function OrdersTable({
                     )}
                   </TableCell>
                   <TableCell>
-                    {order.amount && formatCurrency(order.amount)}
+                    {formatCurrency(order.amount || 0)}
                   </TableCell>
                   <TableCell>
                     <StatusBadge status={order.status} />
