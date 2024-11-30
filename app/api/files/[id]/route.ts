@@ -10,11 +10,6 @@ export async function GET(
   request: NextRequest,
   context: { params: Promise<{ id: string }> }
 ) {
-  const session = await auth()
-  if (!session?.user) {
-    return new NextResponse('Unauthorized', { status: 401 })
-  }
-
   const { id } = await context.params
 
   try {
@@ -22,6 +17,18 @@ export async function GET(
 
     if (!thisFile) {
       return new NextResponse('File not found', { status: 404 })
+    }
+
+    // Check if it's an image file
+    const isImageRequest = thisFile.type.startsWith('image/')
+
+    // Skip auth for images
+    let session = null
+    if (!isImageRequest) {
+      session = await auth()
+      if (!session?.user) {
+        return new NextResponse('Unauthorized', { status: 401 })
+      }
     }
 
     if (process.env.STORAGE === 'vercel_blob') {
@@ -58,18 +65,18 @@ export async function GET(
       const fileBuffer = fs.readFileSync(filePath)
       const stat = fs.statSync(filePath)
 
-      // Determine content type
-      const fileName = path.basename(filePath)
-      const fileExtension = path.extname(fileName).toLowerCase()
-
-      const contentType = thisFile.type
-
       // Return file with appropriate headers
       return new NextResponse(new Uint8Array(fileBuffer), {
+        status: 200,
         headers: {
-          'Content-Type': contentType,
+          'Content-Type': thisFile.type,
           'Content-Length': stat.size.toString(),
-          'Content-Disposition': `inline; filename="${fileName}"`,
+          'Content-Disposition': isImageRequest
+            ? 'inline'
+            : `attachment; filename="${path.basename(filePath)}"`,
+          'Cache-Control': isImageRequest
+            ? 'public, max-age=31536000, immutable' // Cache images for 1 year
+            : 'no-store, must-revalidate', // Don't cache other files
         },
       })
     }
