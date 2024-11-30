@@ -11,7 +11,7 @@ used for storing images and files.
 
 You can try a live demo of this dashboard here:
 
-[**Demo Site**](https://nextjs-dashboard-drab-seven-30.vercel.app/)
+[**Demo Site**](https://next-vista.vercel.app/)
 
 **Demo Login Credentials**
 
@@ -44,8 +44,8 @@ type-safe connection to the database.
 
 ### Prerequisites
 
-- Node.js v14 or later
-- `pnpm` package manager
+- Node.js v15 or later
+- `pnpm` package manager (you can use `npm` or `yarn` if preferred)
 - A database supported by Prisma (e.g., PostgreSQL, MySQL, SQLite, etc.)
 
 ### Installation
@@ -53,8 +53,8 @@ type-safe connection to the database.
 1. **Clone the repository**:
 
    ```bash
-   git clone https://github.com/ebulku/nextjs-dashboard.git
-   cd nextjs-dashboard
+   git clone https://github.com/ebulku/next-vista.git
+   cd next-vista
    ```
 
 2. **Install dependencies**:
@@ -65,9 +65,7 @@ type-safe connection to the database.
 
 3. **Configure Prisma**:
 
-   Copy `.env.example` to `.env` and fill your database connection: (For more
-   details, see this step guide in the
-   [Next.js Tutorial](https://nextjs.org/learn/dashboard-app/setting-up-your-database#create-a-postgres-database))
+   Copy `.env.example` to `.env` and fill your database connection:
 
    ```plaintext
     POSTGRES_URL=
@@ -80,6 +78,12 @@ type-safe connection to the database.
 
     # `openssl rand -base64 32`
     AUTH_SECRET=
+
+    # Vercel Blob Storage Auth
+    # 'vercel_blob' or 'local' if you want to use local storage
+    STORAGE="local"
+    BLOB_STORE_HOSTNAME=
+    BLOB_READ_WRITE_TOKEN=
    ```
 
 4. **Run Prisma migrations**:
