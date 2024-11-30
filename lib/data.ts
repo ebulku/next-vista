@@ -201,7 +201,7 @@ export async function fetchOrderById(id: string) {
 
     if (!order) {
       return null
-    } 
+    }
     return order
   } catch (error) {
     console.error('Database Error:', error)
@@ -369,7 +369,7 @@ export async function getFileUrlById(id: string) {
       },
     })
 
-    return file?.url
+    return file
   } catch (err) {
     console.error('Database Error:', err)
     throw new Error('Failed to fetch file.')

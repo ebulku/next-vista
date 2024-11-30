@@ -1,11 +1,13 @@
 'use server'
 
 import { put } from '@vercel/blob'
+import bcrypt from 'bcrypt'
+import fs from 'fs'
 import { AuthError } from 'next-auth'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
+import path from 'path'
 import { z } from 'zod'
-import bcrypt from 'bcrypt'
 
 import {
   ChangePasswordSchema,
@@ -14,11 +16,10 @@ import {
   CreateNoteSchema,
   CreateOrderSchema,
 } from '@/lib/forms'
-
 import prisma from '@/lib/prisma'
 import { isImageType } from '@/lib/utils'
 
-import { signIn, auth } from '@/auth'
+import { auth, signIn } from '@/auth'
 
 export type State = {
   errors?: {
@@ -316,12 +317,43 @@ export async function addFileToOrder(
     const uploadPromises = files.map(async (file) => {
       const isImage = isImageType(file.type)
       const directory = isImage ? 'images' : 'docs'
-      const blob = await put(`${directory}/${file.name}`, file, {
-        access: 'public',
-      })
-      await prisma.file.create({
-        data: { orderId, url: blob.url, type: file.type, name: file.name },
-      })
+
+      if (process.env.STORAGE === 'vercel_blob') {
+        const blob = await put(`${directory}/${file.name}`, file, {
+          access: 'public',
+        })
+
+        await prisma.file.create({
+          data: { orderId, url: blob.url, type: file.type, name: file.name },
+        })
+      } else if (process.env.STORAGE === 'local') {
+        const storageDir = path.join(process.cwd(), 'storage')
+        const uploadDir = path.join(storageDir, directory)
+
+        // Create directory if it doesn't exist
+        if (!fs.existsSync(uploadDir)) {
+          fs.mkdirSync(uploadDir, { recursive: true })
+        }
+
+        const fileName = `${Date.now()}-${file.name}`
+        const filePath = path.join(uploadDir, fileName)
+
+        // Write file to disk
+        const bytes = await file.arrayBuffer()
+        const uint8Array = new Uint8Array(bytes)
+        fs.writeFileSync(filePath, uint8Array)
+
+        // Save file info to database with storage path
+        const storagePath = path.join('storage', directory, fileName)
+        await prisma.file.create({
+          data: {
+            orderId,
+            url: storagePath.replace(/\\/g, '/'), // Ensure consistent forward slashes
+            type: file.type,
+            name: file.name,
+          },
+        })
+      }
     })
 
     await Promise.all(uploadPromises)
@@ -442,9 +474,8 @@ export async function deleteCustomer(id: string) {
 
 export async function changePassword(
   prevState: ChangePasswordState,
-  formData: z.infer<typeof ChangePasswordSchema>,
+  formData: z.infer<typeof ChangePasswordSchema>
 ): Promise<ChangePasswordState> {
-
   if (process.env.ENVIRONMENT === 'demo') {
     return {
       message: 'Password changes are not allowed in demo.',
@@ -490,10 +521,7 @@ export async function changePassword(
     }
 
     // Verify current password
-    const isPasswordValid = await bcrypt.compare(
-      currentPassword,
-      user.password,
-    )
+    const isPasswordValid = await bcrypt.compare(currentPassword, user.password)
 
     if (!isPasswordValid) {
       return {
