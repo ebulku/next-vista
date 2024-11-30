@@ -1,7 +1,7 @@
 "use client";
 
 import { ChartData } from "@/types";
-import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
+import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis, Tooltip } from "recharts";
 
 export function Chart({ data }: { data: ChartData[] }) {
   return (
@@ -20,6 +20,16 @@ export function Chart({ data }: { data: ChartData[] }) {
           tickLine={false}
           axisLine={false}
           tickFormatter={(value) => `$${value}`}
+        />
+        <Tooltip
+          cursor={{ fill: 'rgba(0, 0, 0, 0.1)' }}
+          contentStyle={{ 
+            backgroundColor: 'white', 
+            border: '1px solid #ccc',
+            borderRadius: '4px',
+            padding: '8px'
+          }}
+          formatter={(value) => [`$${value}`, 'Revenue']}
         />
         <Bar
           dataKey="total"
