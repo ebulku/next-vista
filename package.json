@@ -30,7 +30,7 @@
     "@vercel/blob": "^0.26.0",
     "autoprefixer": "10.4.19",
     "bcrypt": "^5.1.1",
-    "class-variance-authority": "^0.7.0",
+    "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "1.0.0",
     "date-fns": "^4.1.0",
@@ -44,9 +44,9 @@
     "react-dom": "19.0.0-rc-66855b96-20241106",
     "react-dropzone": "^14.3.5",
     "react-hook-form": "^7.53.2",
-    "recharts": "^2.13.3",
+    "recharts": "^2.14.1",
     "sonner": "^1.7.0",
-    "tailwind-merge": "^2.5.4",
+    "tailwind-merge": "^2.5.5",
     "tailwindcss": "3.4.4",
     "tailwindcss-animate": "^1.0.7",
     "typescript": "5.5.2",
@@ -54,14 +54,14 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@faker-js/faker": "^9.2.0",
+    "@faker-js/faker": "^9.3.0",
     "@hookform/resolvers": "^3.9.1",
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",
     "@types/bcrypt": "^5.0.2",
     "@types/node": "20.14.8",
     "@types/react": "npm:types-react@19.0.0-rc.1",
     "@types/react-dom": "npm:types-react-dom@19.0.0-rc.1",
-    "eslint": "^9.15.0",
+    "eslint": "^9.16.0",
     "eslint-config-next": "15.0.3",
     "prisma": "^5.22.0",
     "ts-node": "^10.9.2"
@@ -74,5 +74,6 @@
       "@types/react": "npm:types-react@19.0.0-rc.1",
       "@types/react-dom": "npm:types-react-dom@19.0.0-rc.1"
     }
-  }
+  },
+  "packageManager": "pnpm@9.12.3"
 }
