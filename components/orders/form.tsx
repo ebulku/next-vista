@@ -2,9 +2,9 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
+  BadgeEuroIcon,
   Check,
   ChevronsUpDown,
-  CircleDollarSignIcon,
   CircleUserIcon,
   TextIcon,
 } from 'lucide-react'
@@ -198,11 +198,11 @@ export default function Form({
                     <div className="relative">
                       <Input
                         type="number"
-                        placeholder="Enter USD amount"
+                        placeholder="Enter EUR amount"
                         className="pl-8"
                         {...field}
                       />
-                      <CircleDollarSignIcon className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+                      <BadgeEuroIcon className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
                     </div>
                   </FormControl>
                   <FormMessage />

@@ -1,32 +1,18 @@
 'use client'
 
-import { CustomerField, InvoiceForm } from '@/types'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { State } from '@/lib/actions'
+import { BadgeEuroIcon, CircleUserIcon } from 'lucide-react'
+import Link from 'next/link'
 import { startTransition } from 'react'
-import { Button } from '@/components/ui/button'
-import {
-  Form as FormComponent,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form'
+import { useFormStatus } from 'react-dom'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
+
+import { State } from '@/lib/actions'
 import { CreateInvoiceSchema } from '@/lib/forms'
-import { Input } from '@/components/ui/input'
-import { CircleDollarSignIcon, CircleUserIcon } from 'lucide-react'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
-import { useFormStatus } from 'react-dom'
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
+
+import StatusBadge from '@/components/status-badge'
+import { Button } from '@/components/ui/button'
 import {
   Card,
   CardContent,
@@ -35,8 +21,25 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import Link from 'next/link'
-import StatusBadge from '@/components/status-badge'
+import {
+  Form as FormComponent,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+
+import { CustomerField, InvoiceForm } from '@/types'
 
 export default function Form({
   customers,
@@ -118,11 +121,11 @@ export default function Form({
                     <div className="relative">
                       <Input
                         type="number"
-                        placeholder="Enter USD amount"
+                        placeholder="Enter EUR amount"
                         className="pl-8"
                         {...field}
                       />
-                      <CircleDollarSignIcon className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+                      <BadgeEuroIcon className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
                     </div>
                   </FormControl>
                   <FormMessage />
