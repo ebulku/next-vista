@@ -8,7 +8,7 @@ export const authConfig = {
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user
       const isOnDashboard = nextUrl.pathname.startsWith('/dashboard')
-      const isDemo = process.env.ENVIRONMENT === 'demo'
+      const isDemo = process.env.NEXT_PUBLIC_ENVIRONMENT === 'demo'
       const isWelcomePage = nextUrl.pathname === '/'
 
       if (isWelcomePage) {

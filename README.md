@@ -65,7 +65,7 @@ type-safe connection to the database.
 
 3. **Configure Prisma**:
 
-   Copy `.env.example` to `.env` and fill your database connection:
+   Copy `.env.example` to `.env` and fill your database connection and other env variables.:
 
    ```plaintext
     POSTGRES_PRISMA_URL=
@@ -83,6 +83,7 @@ type-safe connection to the database.
     BLOB_READ_WRITE_TOKEN=
 
     NEXT_PUBLIC_HOSTNAME="localhost"
+    NEXT_PUBLIC_ENVIRONMENT="development"
    ```
 
 4. **Run Prisma migrations and seed initial data**:

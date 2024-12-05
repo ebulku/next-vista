@@ -476,7 +476,7 @@ export async function changePassword(
   prevState: ChangePasswordState,
   formData: z.infer<typeof ChangePasswordSchema>
 ): Promise<ChangePasswordState> {
-  if (process.env.ENVIRONMENT === 'demo') {
+  if (process.env.NEXT_PUBLIC_ENVIRONMENT === 'demo') {
     return {
       message: 'Password changes are not allowed in demo.',
       success: true,

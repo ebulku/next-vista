@@ -41,7 +41,11 @@ export function LoginForm() {
                 type="email"
                 placeholder="m@example.com"
                 required
-                defaultValue={'user@nextmail.com'}
+                defaultValue={
+                  process.env.NEXT_PUBLIC_ENVIRONMENT === 'demo'
+                    ? 'user@nextmail.com'
+                    : ''
+                }
               />
             </div>
             <div className="grid gap-2">
@@ -53,7 +57,9 @@ export function LoginForm() {
                 type="password"
                 name="password"
                 required
-                defaultValue={'123456'}
+                defaultValue={
+                  process.env.NEXT_PUBLIC_ENVIRONMENT === 'demo' ? '123456' : ''
+                }
               />
             </div>
             <Button
