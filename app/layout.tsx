@@ -8,11 +8,12 @@ import '@/styles/global.css'
 
 export const metadata: Metadata = {
   title: {
-    template: '%s | Next Vista',
-    default: 'Next Vista',
+    template: `%s | ${process.env.NEXT_PUBLIC_APP_NAME || 'Next Vista'}`,
+    default: process.env.NEXT_PUBLIC_APP_NAME || 'Next Vista',
   },
-  description: 'The official Next.js Course Dashboard, built with App Router.',
-  metadataBase: new URL('https://next-learn-dashboard.vercel.sh'),
+  description:
+    process.env.NEXT_PUBLIC_DESCRIPTION ||
+    'Next.js 15 Admin Dashboard with Prisma and shadcn/ui',
 }
 
 export default function RootLayout({

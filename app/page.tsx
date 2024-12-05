@@ -1,10 +1,11 @@
-import AppLogo from '@/components/layout/app-logo'
 import { ArrowRightIcon } from '@heroicons/react/24/outline'
-import Link from 'next/link'
-import Image from 'next/image'
-import { Button } from '@/components/ui/button'
-import { ModeToggle } from '@/components/layout/mode-toggle'
 import { GithubIcon } from 'lucide-react'
+import Image from 'next/image'
+import Link from 'next/link'
+
+import AppLogo from '@/components/layout/app-logo'
+import { ModeToggle } from '@/components/layout/mode-toggle'
+import { Button } from '@/components/ui/button'
 
 export default function Page() {
   return (
@@ -30,10 +31,7 @@ export default function Page() {
           <div className="flex gap-2">
             <ModeToggle />
             <Button size="icon" asChild>
-              <a
-                href="https://github.com/ebulku/next-vista"
-                target="_blank"
-              >
+              <a href="https://github.com/ebulku/next-vista" target="_blank">
                 <GithubIcon />
               </a>
             </Button>
