@@ -68,28 +68,28 @@ type-safe connection to the database.
    Copy `.env.example` to `.env` and fill your database connection:
 
    ```plaintext
-    POSTGRES_URL=
     POSTGRES_PRISMA_URL=
     POSTGRES_URL_NON_POOLING=
-    POSTGRES_USER=
-    POSTGRES_HOST=
-    POSTGRES_PASSWORD=
-    POSTGRES_DATABASE=
 
     # `openssl rand -base64 32`
     AUTH_SECRET=
+    AUTH_URL=http://localhost:3000/api/auth
+    AUTH_TRUST_HOST=http://localhost:3000
 
     # Vercel Blob Storage Auth
     # 'vercel_blob' or 'local' if you want to use local storage
     STORAGE="local"
     BLOB_STORE_HOSTNAME=
     BLOB_READ_WRITE_TOKEN=
+
+    NEXT_PUBLIC_HOSTNAME="localhost"
    ```
 
-4. **Run Prisma migrations**:
+4. **Run Prisma migrations and seed initial data**:
 
    ```bash
    npx prisma migrate dev --name init
+   npx prisma db seed
    ```
 
 5. **Generate Prisma client**:

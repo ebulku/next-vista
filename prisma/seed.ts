@@ -1,7 +1,9 @@
-import bcrypt from 'bcrypt'
 import { faker } from '@faker-js/faker'
+import bcrypt from 'bcrypt'
+
+import prisma from '@/lib/prisma'
+
 import { revenue, users } from './data'
-import prisma from '../lib/prisma'
 
 // User Seeder
 const seedUsers = async () => {
@@ -160,12 +162,12 @@ const seedFiles = async () => {
 // Main Seeder Function
 async function main() {
   try {
-    // await seedUsers()
-    // await seedCustomers()
-    // await seedInvoices()
-    // await seedRevenue()
-    // await seedOrders()
-    // await seedNotes()
+    await seedUsers()
+    await seedCustomers()
+    await seedInvoices()
+    await seedRevenue()
+    await seedOrders()
+    await seedNotes()
     await seedFiles()
     console.log('Database seeded successfully')
   } catch (error) {
