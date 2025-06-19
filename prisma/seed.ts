@@ -1,7 +1,6 @@
+import prisma from '../lib/prisma'
 import { faker } from '@faker-js/faker'
-import bcrypt from 'bcrypt'
-
-import prisma from '@/lib/prisma'
+import bcrypt from 'bcryptjs'
 
 import { revenue, users } from './data'
 
@@ -159,6 +158,60 @@ const seedFiles = async () => {
   })
 }
 
+const seedProducts = async () => {
+  const fakerProducts = Array.from({ length: 10 }).map(() => ({
+    product_id: faker.number.int(),
+    name: faker.commerce.productName(),
+    url: faker.internet.url(),
+    status_id: faker.number.int({ min: 1, max: 2 }),
+    price: faker.finance.amount({ min: 5, max: 10, dec: 2, symbol: '$' }),
+  }))
+
+  return prisma.product.createMany({
+    data: fakerProducts,
+    skipDuplicates: true,
+  })
+}
+
+const seedSellers = async () => {
+  const fakerSellers = Array.from({ length: 10 }).map(() => ({
+    seller_id: faker.number.int(),
+    name: faker.company.name(),
+    phone: faker.phone.number(),
+    address: faker.location.streetAddress(),
+    url: faker.internet.url(),
+  }))
+
+  return prisma.seller.createMany({
+    data: fakerSellers,
+    skipDuplicates: true,
+  })
+}
+
+const seedSellersProducts = async () => {
+  const productIds = await prisma.product.findMany({
+    select: {
+      product_id: true,
+    },
+  })
+
+  const sellerIds = await prisma.seller.findMany({
+    select: {
+      seller_id: true,
+    },
+  })
+
+  const fakerSellersProducts = Array.from({ length: 10 }).map(() => ({
+    product_id: faker.helpers.arrayElement(productIds).product_id,
+    seller_id: faker.helpers.arrayElement(sellerIds).seller_id,
+  }))
+
+  return prisma.productSellers.createMany({
+    data: fakerSellersProducts,
+    skipDuplicates: true,
+  })
+}
+
 // Main Seeder Function
 async function main() {
   try {
@@ -169,6 +222,9 @@ async function main() {
     await seedOrders()
     await seedNotes()
     await seedFiles()
+    await seedProducts()
+    await seedSellers()
+    await seedSellersProducts()
     console.log('Database seeded successfully')
   } catch (error) {
     console.error('Error seeding database:', error)

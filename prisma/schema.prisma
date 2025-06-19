@@ -91,3 +91,41 @@ enum OrderStatus {
     shipped
     paid
 }
+
+model Seller {
+    id        BigInt  @id @default(autoincrement())
+    seller_id BigInt  @unique
+    name      String
+    phone     String?
+    address   String?
+    url       String?
+
+    createdAt DateTime         @default(now()) @map(name: "created_at")
+    updatedAt DateTime         @updatedAt @map(name: "updated_at")
+    products  ProductSellers[]
+}
+
+model Product {
+    id         BigInt  @id @default(autoincrement())
+    product_id BigInt  @unique
+    name       String
+    url        String?
+    status_id  Int
+    price      String?
+
+    createdAt DateTime         @default(now()) @map(name: "created_at")
+    updatedAt DateTime         @updatedAt @map(name: "updated_at")
+    sellers   ProductSellers[]
+}
+
+model ProductSellers {
+    product    Product @relation(fields: [product_id], references: [product_id])
+    product_id BigInt
+    seller     Seller  @relation(fields: [seller_id], references: [seller_id])
+    seller_id  BigInt
+
+    createdAt DateTime @default(now()) @map(name: "created_at")
+    updatedAt DateTime @updatedAt @map(name: "updated_at")
+
+    @@id([product_id, seller_id])
+}

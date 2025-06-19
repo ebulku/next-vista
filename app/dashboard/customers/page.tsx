@@ -6,6 +6,7 @@ import CustomersTable from '@/components/customers/table'
 import Search from '@/components/search'
 import { CustomerTableSkeleton } from '@/components/skeletons'
 import { TypographyH2 } from '@/components/ui/typography'
+import { notFound } from 'next/navigation'
 
 const title = 'Customers'
 export const metadata: Metadata = {
@@ -18,6 +19,12 @@ export default async function Page(props: {
     page?: string
   }>
 }) {
+  const isCustomersPageActive = process.env.NEXT_PUBLIC_CUSTOMERS_PAGE_ACTIVE
+
+  if (!isCustomersPageActive) {
+    notFound()
+  }
+
   const searchParams = await props.searchParams
   const query = searchParams?.query || ''
 

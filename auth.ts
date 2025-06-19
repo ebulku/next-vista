@@ -1,15 +1,14 @@
 'use server'
 
+import bcrypt from 'bcryptjs'
 import NextAuth from 'next-auth'
-import { authConfig } from './auth.config'
 import Credentials from 'next-auth/providers/credentials'
 import { z } from 'zod'
-import bcrypt from 'bcrypt'
 
-import { User } from '@prisma/client'
+import { authConfig } from './auth.config'
 import prisma from './lib/prisma'
 
-async function getUser(email: string): Promise<User | undefined | null> {
+async function getUser(email: string): Promise {
   try {
     const user = await prisma.user.findUnique({
       where: {

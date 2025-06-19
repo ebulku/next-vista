@@ -1,7 +1,7 @@
 'use server'
 
 import { put } from '@vercel/blob'
-import bcrypt from 'bcrypt'
+import bcrypt from 'bcryptjs'
 import fs from 'fs'
 import { AuthError } from 'next-auth'
 import { revalidatePath } from 'next/cache'

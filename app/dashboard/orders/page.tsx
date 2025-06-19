@@ -9,6 +9,7 @@ import Pagination from '@/components/pagination'
 import Search from '@/components/search'
 import { OrdersTableSkeleton } from '@/components/skeletons'
 import { TypographyH2 } from '@/components/ui/typography'
+import { notFound } from 'next/navigation'
 
 const title = 'Orders'
 export const metadata: Metadata = {
@@ -20,6 +21,12 @@ export default async function Page(props: {
     page?: string
   }>
 }) {
+  const isOrdersPageActive = process.env.NEXT_PUBLIC_ORDERS_PAGE_ACTIVE
+
+  if (!isOrdersPageActive) {
+    notFound()
+  }
+
   const searchParams = await props.searchParams
   const query = searchParams?.query || ''
   const currentPage = Number(searchParams?.page) || 1
