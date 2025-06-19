@@ -2,6 +2,37 @@ import prisma from '@/lib/prisma'
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 
+function validateApiKey(request: NextRequest): NextResponse | null {
+  const apiKey =
+    request.headers.get('x-api-key') ||
+    request.headers.get('authorization')?.replace('Bearer ', '')
+
+  if (!apiKey) {
+    return NextResponse.json(
+      {
+        error:
+          'API key is required. Provide it via x-api-key header or Authorization: Bearer <key>',
+      },
+      { status: 401 }
+    )
+  }
+
+  const validApiKey = process.env.API_KEY
+  if (!validApiKey) {
+    console.error('API_KEY environment variable is not set')
+    return NextResponse.json(
+      { error: 'Server configuration error' },
+      { status: 500 }
+    )
+  }
+
+  if (apiKey !== validApiKey) {
+    return NextResponse.json({ error: 'Invalid API key' }, { status: 403 })
+  }
+
+  return null // No error, validation passed
+}
+
 // Validation schemas
 const sellerIdsSchema = z.object({
   seller_ids: z
@@ -23,6 +54,9 @@ const createSellerSchema = z.object({
 
 // GET: Check which seller_ids exist
 export async function GET(request: NextRequest) {
+  const authError = validateApiKey(request)
+  if (authError) return authError
+
   try {
     const { searchParams } = new URL(request.url)
     const sellerIdsParam = searchParams.get('seller_ids')
@@ -102,6 +136,9 @@ export async function GET(request: NextRequest) {
 
 // POST: Create new seller
 export async function POST(request: NextRequest) {
+  const authError = validateApiKey(request)
+  if (authError) return authError
+
   try {
     const body = await request.json()
 
