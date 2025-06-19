@@ -19,6 +19,7 @@ export function NavProjects({
     name: string
     url: string
     icon: LucideIcon
+    show: boolean
   }[]
 }) {
   const pathname = usePathname()
@@ -26,16 +27,20 @@ export function NavProjects({
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
       <SidebarGroupLabel>Main Menu</SidebarGroupLabel>
       <SidebarMenu>
-        {links.map((item) => (
-          <SidebarMenuItem key={item.name}>
-            <SidebarMenuButton isActive={pathname === item.url} asChild>
-              <Link href={item.url}>
-                <item.icon />
-                <span>{item.name}</span>
-              </Link>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        ))}
+        {links.map((item) => {
+          return (
+            item.show && (
+              <SidebarMenuItem key={item.name}>
+                <SidebarMenuButton isActive={pathname === item.url} asChild>
+                  <Link href={item.url}>
+                    <item.icon />
+                    <span>{item.name}</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            )
+          )
+        })}
       </SidebarMenu>
     </SidebarGroup>
   )

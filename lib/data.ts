@@ -375,3 +375,71 @@ export async function getFileUrlById(id: string) {
     throw new Error('Failed to fetch file.')
   }
 }
+
+export async function fetchProductPages(query: string) {
+  const feed = await prisma.product.count({
+    where: {
+      OR: [
+        { name: { contains: query, mode: 'insensitive' } },
+        { url: { contains: query, mode: 'insensitive' } },
+        {
+          sellers: {
+            some: {
+              seller: {
+                name: { contains: query, mode: 'insensitive' },
+              },
+            },
+          },
+        },
+      ],
+    },
+  })
+
+  return Math.ceil(feed / ITEMS_PER_PAGE)
+}
+
+export async function fetchFilteredProducts(
+  query: string,
+  currentPage: number
+) {
+  const offset = (currentPage - 1) * ITEMS_PER_PAGE
+  const feed = await prisma.product.findMany({
+    take: ITEMS_PER_PAGE,
+    skip: offset,
+    include: {
+      sellers: {
+        include: {
+          seller: {
+            select: {
+              name: true,
+              url: true,
+              address: true,
+              phone: true,
+            },
+          },
+        },
+      },
+    },
+    where: {
+      status_id: 1,
+      OR: [
+        { name: { contains: query, mode: 'insensitive' } },
+        { url: { contains: query, mode: 'insensitive' } },
+        {
+          sellers: {
+            some: {
+              seller: {
+                name: { contains: query, mode: 'insensitive' },
+              },
+            },
+          },
+        },
+      ],
+    },
+    orderBy: {
+      createdAt: 'desc',
+    },
+  })
+
+  return feed
+}
