@@ -379,6 +379,7 @@ export async function getFileUrlById(id: string) {
 export async function fetchProductPages(query: string) {
   const feed = await prisma.product.count({
     where: {
+      status_id: 1,
       OR: [
         { name: { contains: query, mode: 'insensitive' } },
         { url: { contains: query, mode: 'insensitive' } },
