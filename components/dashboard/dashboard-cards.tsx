@@ -6,7 +6,13 @@ import {
   UsersIcon,
 } from 'lucide-react'
 
-import { fetchCardData } from '@/lib/data'
+import {
+  fetchCardData,
+  fetchProductTotalCount,
+  fetchProductWithSellersCount,
+  fetchSellersProductsCount,
+  fetchSellersTotalCount,
+} from '@/lib/data'
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
@@ -26,6 +32,11 @@ export default async function CardWrapper() {
     totalPendingInvoices,
   } = await fetchCardData()
 
+  const totalProducts = await fetchProductTotalCount()
+  const totalProductsWithSellers = await fetchProductWithSellersCount()
+  const totalSellers = await fetchSellersTotalCount()
+  const totalSellersProducts = await fetchSellersProductsCount()
+
   return (
     <>
       <CardObject title="Orders" value={numberOfOrders} type="orders" />
@@ -40,6 +51,14 @@ export default async function CardWrapper() {
         value={numberOfInvoices}
         type="invoices"
       />
+      <CardObject title="Total Products" value={totalProducts} type="orders" />
+      <CardObject
+        title="Products with Sellers"
+        value={totalProductsWithSellers}
+        type="orders"
+      />
+      <CardObject title="Total Sellers" value={totalSellers} type="customers" />
+      <CardObject title="Leads" value={totalSellersProducts} type="customers" />
     </>
   )
 }

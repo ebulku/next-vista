@@ -444,3 +444,23 @@ export async function fetchFilteredProducts(
 
   return feed
 }
+
+export async function fetchProductTotalCount() {
+  return await prisma.product.count()
+}
+
+export async function fetchProductWithSellersCount() {
+  return await prisma.product.count({
+    where: {
+      status_id: 1,
+    },
+  })
+}
+
+export async function fetchSellersTotalCount() {
+  return await prisma.seller.count()
+}
+
+export async function fetchSellersProductsCount() {
+  return await prisma.productSellers.count()
+}
