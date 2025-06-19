@@ -7,8 +7,9 @@ import { z } from 'zod'
 
 import { authConfig } from './auth.config'
 import prisma from './lib/prisma'
+import { User } from '@prisma/client'
 
-async function getUser(email: string): Promise {
+async function getUser(email: string): Promise<User | undefined | null> {
   try {
     const user = await prisma.user.findUnique({
       where: {
