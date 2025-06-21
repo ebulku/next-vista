@@ -35,14 +35,13 @@ export default async function SellersTable({
                 <TableHead># Reviews</TableHead>
                 <TableHead>Products</TableHead>
                 <TableHead>Created</TableHead>
+                <TableHead>Store</TableHead>
                 <TableHead className="text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {sellers?.flatMap((seller) => {
                 const rows = []
-
-                // Main product row
                 rows.push(
                   <TableRow
                     key={`product-${seller.id}`}
@@ -56,13 +55,16 @@ export default async function SellersTable({
                       {seller.address}
                     </TableCell>
                     <TableCell className="text-muted-foreground text-sm">
-                      0
+                      {seller.reviews}
                     </TableCell>
                     <TableCell className="text-muted-foreground text-sm">
                       {seller._count.products}
                     </TableCell>
                     <TableCell>
                       {formatDateToLocal(seller.createdAt, 'en-US')}
+                    </TableCell>
+                    <TableCell className="text-muted-foreground text-sm">
+                      {seller.store}
                     </TableCell>
                     <TableCell>
                       <div className="flex justify-end gap-3">

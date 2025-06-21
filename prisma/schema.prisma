@@ -99,6 +99,8 @@ model Seller {
     phone     String?
     address   String?
     url       String?
+    store     String  @default("walmart")
+    reviews   Int?
 
     createdAt DateTime         @default(now()) @map(name: "created_at")
     updatedAt DateTime         @updatedAt @map(name: "updated_at")
@@ -112,6 +114,7 @@ model Product {
     url        String?
     status_id  Int
     price      String?
+    store      String  @default("walmart")
 
     createdAt DateTime         @default(now()) @map(name: "created_at")
     updatedAt DateTime         @updatedAt @map(name: "updated_at")

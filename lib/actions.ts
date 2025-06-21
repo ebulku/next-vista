@@ -569,9 +569,10 @@ export async function exportSellersAction(query: string) {
       Name: seller.name,
       Phone: seller.phone,
       Address: seller.address,
-      'Review Count': 0,
+      'Review Count': seller.reviews,
       'Product Count': seller._count?.products || 0,
       'Created At': formatDateToLocal(seller.createdAt, 'en-US'),
+      Store: seller.store,
       URL: seller.url,
     }))
 
