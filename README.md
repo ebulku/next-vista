@@ -1,4 +1,5 @@
-# Next.js 15 Admin Dashboard with Prisma and shadcn/ui
+# Next Vista 
+Next.js 15 Admin Dashboard with Prisma and shadcn/ui
 
 This Admin Dashboard is built following the
 [Next.js tutorial](https://nextjs.org/learn) for Next.js 15 with added
