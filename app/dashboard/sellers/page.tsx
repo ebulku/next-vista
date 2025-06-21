@@ -1,16 +1,17 @@
 import { Metadata } from 'next'
 import { Suspense } from 'react'
 
-import { fetchProductPages } from '@/lib/data'
+import { fetchSellersPages } from '@/lib/data'
 
 import Pagination from '@/components/pagination'
 import Search from '@/components/search'
 import { OrdersTableSkeleton } from '@/components/skeletons'
 import { TypographyH2 } from '@/components/ui/typography'
 import { notFound } from 'next/navigation'
-import ProductsTable from '@/components/products/table'
+import SellersTable from '@/components/sellers/table'
+import ExportSellersButton from '@/components/sellers/export-button'
 
-const title = 'Products'
+const title = 'Sellers'
 export const metadata: Metadata = {
   title: title,
 }
@@ -30,17 +31,17 @@ export default async function Page(props: {
   const query = searchParams?.query || ''
   const currentPage = Number(searchParams?.page) || 1
 
-  const totalPages = await fetchProductPages(query)
+  const totalPages = await fetchSellersPages(query)
 
   return (
     <>
       <TypographyH2 text={title} />
       <div className="flex items-center justify-between gap-2 mt-2">
-        <Search placeholder="Search Products..." />
-        {/* <CreateOrderButton /> */}
+        <Search placeholder="Search Sellers..." />
+        <ExportSellersButton query={query} />
       </div>
       <Suspense key={query + currentPage} fallback={<OrdersTableSkeleton />}>
-        <ProductsTable query={query} currentPage={currentPage} />
+        <SellersTable query={query} currentPage={currentPage} />
       </Suspense>
       <div className="mt-5 flex w-full justify-center">
         <Pagination totalPages={totalPages} />

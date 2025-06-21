@@ -464,3 +464,72 @@ export async function fetchSellersTotalCount() {
 export async function fetchSellersProductsCount() {
   return await prisma.productSellers.count()
 }
+
+export async function fetchSellersPages(query: string) {
+  const feed = await prisma.seller.count({
+    where: {
+      OR: [
+        { name: { contains: query, mode: 'insensitive' } },
+        { url: { contains: query, mode: 'insensitive' } },
+        { address: { contains: query, mode: 'insensitive' } },
+        { phone: { contains: query, mode: 'insensitive' } },
+      ],
+    },
+  })
+
+  return Math.ceil(feed / ITEMS_PER_PAGE)
+}
+
+// add products count
+export async function fetchFilteredSellers(query: string, currentPage: number) {
+  const offset = (currentPage - 1) * ITEMS_PER_PAGE
+  const feed = await prisma.seller.findMany({
+    take: ITEMS_PER_PAGE,
+    skip: offset,
+    include: {
+      _count: {
+        select: {
+          products: true,
+        },
+      },
+    },
+    where: {
+      OR: [
+        { name: { contains: query, mode: 'insensitive' } },
+        { url: { contains: query, mode: 'insensitive' } },
+        { address: { contains: query, mode: 'insensitive' } },
+        { phone: { contains: query, mode: 'insensitive' } },
+      ],
+    },
+    orderBy: {
+      createdAt: 'desc',
+    },
+  })
+
+  return feed
+}
+
+export async function fetchAllFilteredSellers(query: string) {
+  const feed = await prisma.seller.findMany({
+    include: {
+      _count: {
+        select: {
+          products: true,
+        },
+      },
+    },
+    where: {
+      OR: [
+        { name: { contains: query, mode: 'insensitive' } },
+        { url: { contains: query, mode: 'insensitive' } },
+        { address: { contains: query, mode: 'insensitive' } },
+        { phone: { contains: query, mode: 'insensitive' } },
+      ],
+    },
+    orderBy: {
+      createdAt: 'desc',
+    },
+  })
+
+  return feed
+}

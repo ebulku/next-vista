@@ -8,6 +8,7 @@ import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import path from 'path'
 import { z } from 'zod'
+import Papa from 'papaparse'
 
 import {
   ChangePasswordSchema,
@@ -17,9 +18,10 @@ import {
   CreateOrderSchema,
 } from '@/lib/forms'
 import prisma from '@/lib/prisma'
-import { isImageType } from '@/lib/utils'
+import { formatDateToLocal, isImageType } from '@/lib/utils'
 
 import { auth, signIn } from '@/auth'
+import { fetchAllFilteredSellers } from './data'
 
 export type State = {
   errors?: {
@@ -556,5 +558,25 @@ export async function changePassword(
       message: 'An error occurred while changing your password.',
       success: false,
     }
+  }
+}
+
+export async function exportSellersAction(query: string) {
+  try {
+    const sellers = await fetchAllFilteredSellers(query)
+
+    const data = sellers.map((seller) => ({
+      Name: seller.name,
+      Phone: seller.phone,
+      Address: seller.address,
+      'Review Count': 0,
+      'Product Count': seller._count?.products || 0,
+      'Created At': formatDateToLocal(seller.createdAt, 'en-US'),
+      URL: seller.url,
+    }))
+
+    return Papa.unparse(data)
+  } catch (error) {
+    throw new Error('Export failed')
   }
 }

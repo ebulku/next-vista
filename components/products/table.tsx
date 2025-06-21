@@ -54,7 +54,7 @@ export default async function ProductsTable({
                     <TableCell className="text-muted-foreground text-sm"></TableCell>
                     <TableCell className="text-muted-foreground text-sm"></TableCell>
                     <TableCell>
-                      {formatDateToLocal(product.createdAt)}
+                      {formatDateToLocal(product.createdAt, 'en-US')}
                     </TableCell>
                     <TableCell>
                       <div className="flex justify-end gap-3">

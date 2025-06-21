@@ -45,8 +45,14 @@ const data = {
       show: process.env.NEXT_PUBLIC_CUSTOMERS_PAGE_ACTIVE === 'true',
     },
     {
-      name: 'Products',
-      url: '/dashboard/products',
+      name: 'Sellers',
+      url: '/dashboard/sellers',
+      icon: Users,
+      show: process.env.NEXT_PUBLIC_PRODUCTS_PAGE_ACTIVE === 'true',
+    },
+    {
+      name: 'Walmart',
+      url: '/dashboard/walmart',
       icon: ListCollapseIcon,
       show: process.env.NEXT_PUBLIC_PRODUCTS_PAGE_ACTIVE === 'true',
     },
