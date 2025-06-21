@@ -19,6 +19,9 @@ export const metadata: Metadata = {
 }
 
 export default async function Page() {
+  const isInvoicesPageActive = process.env.NEXT_PUBLIC_INVOICES_PAGE_ACTIVE
+  const isOrdersPageActive = process.env.NEXT_PUBLIC_ORDERS_PAGE_ACTIVE
+
   return (
     <main className="space-y-4">
       <TypographyH2 text={title} />
@@ -28,26 +31,30 @@ export default async function Page() {
         </Suspense>
       </div>
       <div className="grid gap-4 lg:grid-cols-7">
-        <Card className="lg:col-span-3">
-          <CardHeader>
-            <CardTitle>Recent Revenue (demo)</CardTitle>
-          </CardHeader>
-          <CardContent className="pl-2 pt-4">
-            <Suspense fallback={<RevenueChartSkeleton />}>
-              <RevenueChart />
-            </Suspense>
-          </CardContent>
-        </Card>
-        <Card className="lg:col-span-4">
-          <CardHeader>
-            <CardTitle>Latest Orders</CardTitle>
-          </CardHeader>
-          <CardContent className="pt-4">
-            <Suspense fallback={<LatestOrdersSkeleton />}>
-              <LatestOrders />
-            </Suspense>
-          </CardContent>
-        </Card>
+        {isInvoicesPageActive && (
+          <Card className="lg:col-span-3">
+            <CardHeader>
+              <CardTitle>Recent Revenue (demo)</CardTitle>
+            </CardHeader>
+            <CardContent className="pl-2 pt-4">
+              <Suspense fallback={<RevenueChartSkeleton />}>
+                <RevenueChart />
+              </Suspense>
+            </CardContent>
+          </Card>
+        )}
+        {isOrdersPageActive && (
+          <Card className="lg:col-span-2">
+            <CardHeader>
+              <CardTitle>Latest Orders</CardTitle>
+            </CardHeader>
+            <CardContent className="pt-4">
+              <Suspense fallback={<LatestOrdersSkeleton />}>
+                <LatestOrders />
+              </Suspense>
+            </CardContent>
+          </Card>
+        )}
       </div>
     </main>
   )

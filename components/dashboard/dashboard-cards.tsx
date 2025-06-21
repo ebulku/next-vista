@@ -25,6 +25,8 @@ const iconMap = {
 }
 
 export default async function CardWrapper() {
+  const isOrdersPageActive = process.env.NEXT_PUBLIC_ORDERS_PAGE_ACTIVE
+
   const {
     numberOfOrders,
     numberOfInvoices,
@@ -39,18 +41,26 @@ export default async function CardWrapper() {
 
   return (
     <>
-      <CardObject title="Orders" value={numberOfOrders} type="orders" />
-      <CardObject
-        title="Collected"
-        value={totalPaidInvoices}
-        type="collected"
-      />
-      <CardObject title="Pending" value={totalPendingInvoices} type="pending" />
-      <CardObject
-        title="Total Invoices"
-        value={numberOfInvoices}
-        type="invoices"
-      />
+      {isOrdersPageActive && (
+        <>
+          <CardObject title="Orders" value={numberOfOrders} type="orders" />
+          <CardObject
+            title="Collected"
+            value={totalPaidInvoices}
+            type="collected"
+          />
+          <CardObject
+            title="Pending"
+            value={totalPendingInvoices}
+            type="pending"
+          />
+          <CardObject
+            title="Total Invoices"
+            value={numberOfInvoices}
+            type="invoices"
+          />
+        </>
+      )}
       <CardObject title="Total Products" value={totalProducts} type="orders" />
       <CardObject
         title="Products with Sellers"

@@ -3,15 +3,6 @@ import Link from 'next/link'
 import { fetchFilteredProducts } from '@/lib/data'
 import { formatDateToLocal } from '@/lib/utils'
 
-// import {
-//   DeleteOrderButton,
-//   UpdateOrderButton,
-//   ViewOrderButton,
-// } from '@/components/buttons'
-// import InvoiceStatus from '@/components/status-badge'
-// import StatusBadge from '@/components/status-badge'
-// import { Card, CardContent, CardHeader } from '@/components/ui/card'
-// import { Separator } from '@/components/ui/separator'
 import {
   Table,
   TableBody,
@@ -20,7 +11,6 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-// import { UserAvatar } from '@/components/user-avatar'
 import { Link2Icon } from 'lucide-react'
 
 export default async function ProductsTable({
@@ -36,53 +26,6 @@ export default async function ProductsTable({
     <div className="mt-2 flow-root">
       <div className="inline-block min-w-full align-middle">
         <div className="rounded-lg p-2 md:pt-0">
-          <div className="md:hidden space-y-4">
-            {/* {orders?.map((order) => (
-              <Card key={order.id}>
-                <CardHeader className="flex flex-row items-center justify-between">
-                  <div className="flex items-center space-x-4">
-                    <UserAvatar
-                      imageUrl={order.customer?.imageUrl || undefined}
-                      name={order.customer?.name}
-                    />
-                    <div>
-                      <p className="text-sm font-medium leading-none">
-                        {order.customer?.name}
-                      </p>
-                      <p className="text-sm text-muted-foreground">
-                        {order.customer?.email}
-                      </p>
-                    </div>
-                  </div>
-                  <InvoiceStatus status={order.status} />
-                </CardHeader>
-                <CardContent>
-                  <Separator />
-                  <div className="text-xl font-bold py-2">
-                    <Link href={`/dashboard/orders/${order.id}`}>
-                      {order.title}
-                    </Link>
-                  </div>
-                  <Separator />
-                  <div className="flex w-full items-center justify-between pt-4">
-                    <div>
-                      <div className="text-2xl font-bold">
-                        {formatCurrency(order.amount || 0)}
-                      </div>
-                      <p className="text-muted-foreground">
-                        {formatDateToLocal(order.createdAt)}
-                      </p>
-                    </div>
-                    <div className="flex justify-end gap-2">
-                      <ViewOrderButton id={order.id} />
-                      <UpdateOrderButton id={order.id} />
-                      <DeleteOrderButton id={order.id} />
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))} */}
-          </div>
           <Table className="table">
             <TableHeader>
               <TableRow>
@@ -155,7 +98,9 @@ export default async function ProductsTable({
                           <span className="text-muted-foreground">—</span>
                         )}
                       </TableCell>
-                      <TableCell className="text-muted-foreground text-sm"></TableCell>
+                      <TableCell className="text-muted-foreground text-sm">
+                        {formatDateToLocal(seller.createdAt)}
+                      </TableCell>
                       <TableCell>
                         <div className="flex justify-end gap-3">
                           {seller.seller.url && (
